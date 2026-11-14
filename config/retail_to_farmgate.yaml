@@ -1,0 +1,16 @@
+# Retail -> farm-gate price step for config/retail_prices.csv (manual entry: store or bazaar visit).
+#
+#   farm-gate price [USD/t] = retail_uzs_per_kg x farm_gate_share x 1000 / uzs_per_usd
+#
+# A crop row WITH a retail price overrides the FAOSTAT (or proxy) price in crops.csv.
+# config/local_prices.csv wins over this if both list the same crop. Empty rows keep FAOSTAT.
+# Cotton and wheat are not retail goods: keep FAOSTAT for them. Carrot is listed for reference
+# only (it is not one of the 14 planner crops) and is ignored by the planner.
+
+# PLACEHOLDER - SET THE CURRENT RATE (so'm per 1 USD, e.g. from the Central Bank of Uzbekistan,
+# cbu.uz) together with its date. While this is null, retail prices are NOT used and a warning is shown.
+uzs_per_usd: null
+uzs_per_usd_date: null
+
+default_farm_gate_share: 0.40   # APPROXIMATE, retail-to-farm-gate assumption (vegetables and pulses)
+farm_gate_share: {}             # per-crop override, e.g.  tomato: 0.35   (approximate, editable)

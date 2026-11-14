@@ -294,3 +294,50 @@ def test_local_prices_override_faostat(tmp_path):
 def test_local_prices_file_ships_with_headers_only():
     lp = pd.read_csv(ROOT / "config" / "local_prices.csv")
     assert list(lp.columns) == ["crop", "price_usd_per_t", "source", "date"]
+
+
+# ------------------------------------------------------------------ retail -> farm-gate prices (manual entry)
+def _retail(tmp_path, rows: str, rate="12500"):
+    rp = tmp_path / "retail_prices.csv"
+    rp.write_text("crop,retail_uzs_per_kg,where,date\n" + rows)
+    cfg = tmp_path / "retail.yaml"
+    cfg.write_text(f"uzs_per_usd: {rate}\ndefault_farm_gate_share: 0.40\nfarm_gate_share: {{tomato: 0.5}}\n")
+    return rp, cfg
+
+
+def test_shipped_retail_prices_are_empty_and_rate_is_a_placeholder():
+    rp = pd.read_csv(ROOT / "config" / "retail_prices.csv")
+    assert list(rp.columns) == ["crop", "retail_uzs_per_kg", "where", "date"]
+    assert set(rp["crop"]) == {"chickpea", "mung_bean", "tomato", "onion", "potato", "carrot", "melon"}
+    assert rp["retail_uzs_per_kg"].isna().all()                      # no invented prices
+    cfg = yaml.safe_load((ROOT / "config" / "retail_to_farmgate.yaml").read_text(encoding="utf-8"))
+    assert cfg["uzs_per_usd"] is None and cfg["default_farm_gate_share"] == 0.40
+
+
+def test_retail_price_becomes_farm_gate_price(tmp_path):
+    from dalashift.crops import CROPS_CSV
+    rp, cfg = _retail(tmp_path, "chickpea,15000,Test bazaar,2026-11-14\ntomato,10000,Test store,2026-11-14\n"
+                                "onion,,,\ncarrot,5000,Test bazaar,2026-11-14\n")
+    t = load_crop_table(CROPS_CSV, None, rp, cfg)
+    assert t.loc["chickpea", "price_usd_t"] == pytest.approx(15000 * 0.40 * 1000 / 12500)   # 480 USD/t
+    assert t.loc["tomato", "price_usd_t"] == pytest.approx(10000 * 0.50 * 1000 / 12500)     # per-crop share
+    assert t.loc["onion", "price_usd_t"] == TABLE.loc["onion", "price_usd_t"]               # empty row -> FAOSTAT
+    assert t.loc["cotton", "price_usd_t"] == TABLE.loc["cotton", "price_usd_t"]
+    assert "carrot" not in t.index
+    assert t.loc["chickpea", "price_status"] == "approximate" and "Test bazaar" in t.loc["chickpea", "price_source"]
+
+
+def test_local_prices_win_over_retail(tmp_path):
+    from dalashift.crops import CROPS_CSV
+    rp, cfg = _retail(tmp_path, "chickpea,15000,Test bazaar,2026-11-14\n")
+    lp = tmp_path / "local_prices.csv"
+    lp.write_text("crop,price_usd_per_t,source,date\nchickpea,900,test,2026-11-14\n")
+    assert load_crop_table(CROPS_CSV, lp, rp, cfg).loc["chickpea", "price_usd_t"] == 900
+
+
+def test_retail_prices_ignored_with_warning_until_rate_is_set(tmp_path):
+    from dalashift.crops import CROPS_CSV
+    rp, cfg = _retail(tmp_path, "chickpea,15000,Test bazaar,2026-11-14\n", rate="null")
+    with pytest.warns(UserWarning, match="uzs_per_usd"):
+        t = load_crop_table(CROPS_CSV, None, rp, cfg)
+    assert t.loc["chickpea", "price_usd_t"] == TABLE.loc["chickpea", "price_usd_t"]

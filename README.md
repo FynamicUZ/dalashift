@@ -118,6 +118,9 @@ feasible           ⇔ every crop passes Climate Fit, need_t ≤ budget in EVERY
 
 **Local prices.** [`config/local_prices.csv`](config/local_prices.csv) (`crop,price_usd_per_t,source,date`) overrides the FAOSTAT/proxy price for any crop listed. It ships with headers only.
 
+**Retail prices (manual entry).** [`config/retail_prices.csv`](config/retail_prices.csv) (`crop,retail_uzs_per_kg,where,date`) has rows for chickpea, mung bean, tomato, onion, potato, carrot and melon with **empty prices**: fill them in from a store or bazaar visit. A filled row becomes the crop price:
+`farm-gate USD/t = retail so'm/kg × farm_gate_share × 1000 ÷ uzs_per_usd`, with `farm_gate_share` = 0.40 by default (*approximate, retail-to-farm-gate assumption*, editable per crop) and `uzs_per_usd` set in [`config/retail_to_farmgate.yaml`](config/retail_to_farmgate.yaml). **`uzs_per_usd` is a placeholder (empty): set the current rate and its date first**; until then retail prices are ignored with a warning. Precedence: `local_prices.csv` > retail > FAOSTAT. Empty rows keep FAOSTAT. Cotton and wheat are not retail goods and keep FAOSTAT prices; carrot is recorded but is not a planner crop.
+
 **Brute force.** The year options are every crop that passes Climate Fit and fits the water budget, plus the wheat→mung bean double crop. The planner enumerates **all** 5-year sequences of those options (at most 14⁵ = 537,824) as numpy arrays and evaluates every one; nothing is sampled.
 - **Most profit**: the highest discounted profit.
 - **Least water**: the lowest total water; ties are broken by profit.
