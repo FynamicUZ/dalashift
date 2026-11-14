@@ -17,7 +17,8 @@ from streamlit_folium import st_folium
 
 from dalashift.appeears import load_appeears
 from dalashift.crops import BASELINE
-from dalashift.i18n import CROP_NAMES, DISTRICTS, MONTHS, ROTATION_NAMES, field_label, t
+from dalashift.i18n import (CROP_NAMES, DISTRICTS, MONTHS, ROTATION_NAMES, field_label, fields_str,
+                            profile_label, t)
 
 ROOT = Path(__file__).parent
 DATA = ROOT / "data"
@@ -65,22 +66,27 @@ def style(fig: go.Figure, title: str, ytitle: str = "", height: int = 340) -> go
 
 
 # ------------------------------------------------------------------ state + sidebar
+# The keyed selectbox is the single source of truth for the selected field. A map click
+# stores "pending_point" and reruns; it is applied here, BEFORE the widget is created
+# (Streamlit forbids changing a widget's state after it has been drawn in the same run).
 if "point" not in st.session_state:
     st.session_state.point = "Karshi_field1"
 if "last_click" not in st.session_state:
     st.session_state.last_click = None
+if "pending_point" in st.session_state:
+    st.session_state.point = st.session_state.pop("pending_point")
 
 with st.sidebar:
     lang = "uz" if st.radio(t("language", "en"), ["English", "Oʻzbekcha"], horizontal=True) == "Oʻzbekcha" else "en"
-    sel = st.selectbox(t("field", lang), ids, index=ids.index(st.session_state.point),
-                       format_func=lambda p: field_label(p, lang))
-    if sel != st.session_state.point:
-        st.session_state.point = sel
+    st.selectbox(t("field", lang), ids, key="point", format_func=lambda p: field_label(p, lang))
     st.caption(t("credits", lang))
 
 pid = st.session_state.point
 S, R = summary["points"][pid], recs["points"][pid]
 district = pid.split("_")[0]
+cell_fields = S["cell_fields"]
+shared = len(cell_fields) > 1                     # fields in one POWER cell share a district profile
+climate_title = profile_label(cell_fields, lang)
 
 st.title("🌾 " + t("title", lang))
 st.caption(t("tagline", lang))
@@ -98,11 +104,15 @@ with tab_map:
         folium.TileLayer(
             "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
             attr="Esri World Imagery", name="Satellite").add_to(m)
+        for cell in summary["cells"].values():  # MERRA-2 cell: 0.5 deg lat x 0.625 deg lon
+            f0 = summary["points"][cell["fields"][0]]
+            clat, clon = round(f0["lat"] / 0.5) * 0.5, round(f0["lon"] / 0.625) * 0.625
+            folium.Rectangle([[clat - 0.25, clon - 0.3125], [clat + 0.25, clon + 0.3125]],
+                             color=INK2, weight=1.5, dash_array="6 4", fill=True, fill_opacity=0.05,
+                             tooltip=f"{t('power_cell', lang)}: {profile_label(cell['fields'], lang)}").add_to(m)
         for d, g in points.groupby(points["id"].str.split("_").str[0]):
             c = [g["lat"].mean(), g["lon"].mean()]
-            folium.Circle(c, radius=30000, color=MUTED, weight=1, fill=True, fill_opacity=0.06,
-                          tooltip=DISTRICTS[d][lang]).add_to(m)
-            folium.Marker([c[0] + 0.32, c[1]], icon=folium.DivIcon(
+            folium.Marker([c[0] + 0.42, c[1]], icon=folium.DivIcon(
                 html=f'<div style="font:600 12px system-ui;color:{INK};white-space:nowrap;'
                      f'text-shadow:0 0 3px #fff,0 0 3px #fff">{DISTRICTS[d][lang]}</div>')).add_to(m)
         for r in points.itertuples():
@@ -120,7 +130,7 @@ with tab_map:
             d = np.hypot(points["lat"] - click["lat"], points["lon"] - click["lng"])
             nearest = points["id"].iloc[int(d.idxmin())]
             if nearest != pid:
-                st.session_state.point = nearest
+                st.session_state.pending_point = nearest
                 st.rerun()
     with right:
         st.subheader(field_label(pid, lang))
@@ -128,6 +138,8 @@ with tab_map:
         top = R["ranking"]["now"][:3]
         st.markdown(f"**{t('top3', lang)}:** " + " · ".join(
             f"{CROP_NAMES[k]['icon']} {CROP_NAMES[k][lang]}" for k in top))
+        st.markdown(f"**{t('climate_profile', lang)}: {climate_title}**")
+        st.caption(t("shared_note", lang, fields=fields_str(cell_fields, lang)) if shared else t("own_cell", lang))
         rows = [(t("hot_days", lang), "hot_days", ""), (t("gdd10", lang), "gdd10", ""),
                 (t("frost_free", lang), "frost_free_days", ""),
                 (t("gs_rain", lang), "gs_rain", " mm"), (t("gs_et0", lang), "gs_et0", " mm")]
@@ -141,10 +153,11 @@ with tab_map:
 
 # ------------------------------------------------------------------ 2. THEN vs NOW
 with tab_then:
-    st.subheader(field_label(pid, lang))
-    twins = [o for o in ids if o != pid and summary["points"][o]["annual"]["hot_days"] == S["annual"]["hot_days"]]
-    if twins:
-        st.caption("ℹ️ " + t("same_cell", lang, other=", ".join(field_label(o, lang) for o in twins)))
+    st.subheader(climate_title)
+    if shared:
+        st.info("🛰️ " + t("shared_note", lang, fields=fields_str(cell_fields, lang)))
+    else:
+        st.caption("ℹ️ " + t("own_cell", lang))
 
     th, nw = S["then"], S["now"]
 
@@ -236,6 +249,7 @@ with tab_then:
 with tab_water:
     st.subheader(field_label(pid, lang))
     st.caption(t("water_intro", lang))
+    st.caption("🔎 " + t("field_level_note", lang))
     water = load_water()
     wp = water[water["point"] == pid] if len(water) else water
     if wp.empty:
@@ -267,6 +281,8 @@ with tab_water:
 # ------------------------------------------------------------------ 4. WHAT TO PLANT
 with tab_plant:
     st.subheader(field_label(pid, lang))
+    if shared:
+        st.caption("ℹ️ " + t("plant_shared_note", lang, fields=fields_str(cell_fields, lang)))
     now, then = R["crops"]["now"], R["crops"]["then"]
     rank_now, rank_then = R["ranking"]["now"], R["ranking"]["then"]
     cot = now[BASELINE]["need_m3ha"]

@@ -5,6 +5,7 @@ Writes data/summary.json (climate) and data/recommendations.json (crops).
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import sys
 from datetime import date
@@ -46,26 +47,39 @@ def main() -> None:
                "precip_qc_max_mm_day": PRECIP_QC_MAX, "points": {}}
     recs = {"generated": date.today().isoformat(), "periods": PERIODS, "points": {}}
 
-    for row in pts.itertuples():
-        elev = meta[row.id]["elevation_m"]
-        df = load_point(DATA / "power" / f"{row.id}.csv", row.lat, elev)
+    # Fields whose POWER files are byte-identical sit in the same MERRA-2 grid cell
+    # (0.5 deg x 0.625 deg). They get ONE climate profile, computed at the cells' mean location;
+    # field-level differences must come from the satellite layers (SMAP, ECOSTRESS, HLS).
+    pts["hash"] = [hashlib.md5((DATA / "power" / f"{i}.csv").read_bytes()).hexdigest() for i in pts["id"]]
+    summary["cells"] = {}
+    for _, g in pts.groupby("hash", sort=False):
+        fields = g["id"].tolist()
+        district = fields[0].split("_")[0]
+        cell_id = f"{district}_cell" if len(fields) > 1 else fields[0]
+        lat, lon = float(g["lat"].mean()), float(g["lon"].mean())
+        elev = meta[fields[0]]["elevation_m"]
+        df = load_point(DATA / "power" / f"{fields[0]}.csv", lat, elev)
         ann = annual_indicators(df)
         then, now = period_mean(ann, "then"), period_mean(ann, "now")
         change = {k: (None if then[k] is None or now[k] is None else round(now[k] - then[k], 1)) for k in then}
         for p in (then, now):
             p["last_spring_frost_date"] = doy_to_date(p["last_spring_frost"])
             p["first_autumn_frost_date"] = doy_to_date(p["first_autumn_frost"])
-        summary["points"][row.id] = {
-            "lat": row.lat, "lon": row.lon, "district": row.id.split("_")[0], "elevation_m": elev,
+        climate = {
+            "cell_id": cell_id, "cell_fields": fields, "cell_lat": round(lat, 4), "cell_lon": round(lon, 4),
+            "district": district, "elevation_m": elev,
             "precip_qc_days_removed": int(df["P_QC_FLAG"].sum()),
             "then": then, "now": now, "change": change,
             "annual": {"year": ann.index.tolist(), **{c: ann[c].tolist() for c in ann.columns}},
             "monthly": {p: monthly_climatology(df, p) for p in PERIODS},
         }
-        recs["points"][row.id] = recommend_point(df)
-        top = recs["points"][row.id]["ranking"]["now"][:3]
-        print(f"{row.id:16s} hot days {then['hot_days']:5.1f} -> {now['hot_days']:5.1f} | "
-              f"GDD10 {then['gdd10']} -> {now['gdd10']} | ET0 gs {then['gs_et0']} -> {now['gs_et0']} | top: {top}")
+        rec = recommend_point(df)
+        summary["cells"][cell_id] = {"fields": fields, "lat": lat, "lon": lon}
+        for row in g.itertuples():
+            summary["points"][row.id] = {"lat": row.lat, "lon": row.lon, **climate}
+            recs["points"][row.id] = {"cell_id": cell_id, **rec}
+        print(f"{cell_id:16s} {fields} hot days {then['hot_days']:5.1f} -> {now['hot_days']:5.1f} | "
+              f"GDD10 {then['gdd10']} -> {now['gdd10']} | top: {rec['ranking']['now'][:3]}")
 
     (DATA / "summary.json").write_text(json.dumps(clean(summary), indent=1))
     (DATA / "recommendations.json").write_text(json.dumps(clean(recs), indent=1))

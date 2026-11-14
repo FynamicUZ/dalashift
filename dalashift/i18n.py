@@ -39,8 +39,17 @@ T = {
     "year": {"en": "Year", "uz": "Yil"},
     "month": {"en": "Month", "uz": "Oy"},
     "period_mean": {"en": "period mean", "uz": "davr oʻrtachasi"},
-    "same_cell": {"en": "Note: this field shares a NASA POWER grid cell (~50 km) with {other}, so its climate numbers are identical.",
-                  "uz": "Eslatma: bu dala {other} bilan bitta NASA POWER katagida (~50 km), shuning uchun iqlim raqamlari bir xil."},
+    "climate_profile": {"en": "Climate profile", "uz": "Iqlim profili"},
+    "district_profile": {"en": "district climate profile", "uz": "tuman iqlim profili"},
+    "power_cell": {"en": "NASA POWER grid cell (~50 km)", "uz": "NASA POWER katagi (~50 km)"},
+    "shared_note": {"en": "**One climate profile for this district.** {fields} sit in the same NASA POWER grid cell (~50 km, MERRA-2 0.5° × 0.625°), so their weather record is identical. Differences *between* the fields come from the satellite layers on screen 3: SMAP root-zone soil moisture, ECOSTRESS evaporative stress and HLS NDVI.",
+                    "uz": "**Bu tuman uchun bitta iqlim profili.** {fields} bitta NASA POWER katagida joylashgan (~50 km, MERRA-2 0,5° × 0,625°), shuning uchun ularning ob-havo qatori bir xil. Dalalar *orasidagi* farqlar 3-ekrandagi sunʼiy yoʻldosh qatlamlaridan keladi: SMAP ildiz qatlami namligi, ECOSTRESS bugʻlanish stressi va HLS NDVI."},
+    "own_cell": {"en": "This field has its own NASA POWER grid cell (~50 km), so this climate profile is specific to it.",
+                 "uz": "Bu dala alohida NASA POWER katagiga ega (~50 km), shuning uchun bu iqlim profili faqat unga tegishli."},
+    "plant_shared_note": {"en": "The crop ranking uses the district climate profile, so it is the same for {fields}. Screen 3 (satellite layers) shows how this field differs.",
+                          "uz": "Ekinlar reytingi tuman iqlim profiliga asoslanadi, shuning uchun {fields} uchun bir xil. Bu dalaning farqini 3-ekran (sunʼiy yoʻldosh qatlamlari) koʻrsatadi."},
+    "field_level_note": {"en": "These satellite layers are field-level (SMAP ~9 km, ECOSTRESS ~70 m, HLS 30 m). This is where differences between fields in the same district show up.",
+                         "uz": "Bu sunʼiy yoʻldosh qatlamlari dala darajasida (SMAP ~9 km, ECOSTRESS ~70 m, HLS 30 m). Bir tumandagi dalalar orasidagi farqlar aynan shu yerda koʻrinadi."},
     # water stress
     "water_intro": {"en": "Satellite view of current water stress at this field (NASA SMAP, ECOSTRESS, HLS via AppEEARS).",
                     "uz": "Ushbu daladagi hozirgi suv tanqisligining sunʼiy yoʻldosh koʻrinishi (NASA SMAP, ECOSTRESS, HLS — AppEEARS orqali)."},
@@ -85,14 +94,14 @@ T = {
     "risk_score": {"en": "Risk score", "uz": "Xavf balli"},
     "limits": {"en": "Limits", "uz": "Cheklovlar"},
     "limits_text": {"en": """
-* **Coarse climate grid.** NASA POWER weather is ~50 km (MERRA-2 0.5°×0.625°). Fields in the same cell get the same climate; it cannot see your field's soil, salinity or irrigation.
+* **Coarse climate grid.** NASA POWER weather is ~50 km (MERRA-2 0.5°×0.625°). Fields in the same cell share one district climate profile; it cannot see your field's soil, salinity or irrigation. Field-level differences come from the satellite layers (SMAP, ECOSTRESS, HLS).
 * **Desert bias.** The reanalysis model has no irrigation, so over irrigated oases its Tmax and ET0 are likely too high (roughly 10–20 %). Use the water numbers to *compare crops*; the ranking is robust to a uniform bias.
 * **Net water only.** m³/ha is the *net* crop need (FAO-56 ETc − effective rain). Real field delivery is higher: furrow irrigation efficiency is often 50–60 %, plus leaching for salinity.
 * **Rules, not yields.** Fit = heat sum, frost window and heat days with simple thresholds; it does not predict yield, price or market. Sowing dates are fixed typical dates.
 * **Rain QC.** A few spurious POWER rain spikes (> 80 mm/day) were removed.
 * Talk to your local agronomist / water user association before changing crops.
 """, "uz": """
-* **Iqlim katagi yirik.** NASA POWER obi-havosi ~50 km (MERRA-2 0,5°×0,625°). Bitta katakdagi dalalar bir xil iqlimga ega; tuproq, shoʻrlanish va sugʻorishni koʻrmaydi.
+* **Iqlim katagi yirik.** NASA POWER obi-havosi ~50 km (MERRA-2 0,5°×0,625°). Bitta katakdagi dalalar bitta tuman iqlim profiliga ega; tuproq, shoʻrlanish va sugʻorishni koʻrmaydi. Dala darajasidagi farqlar sunʼiy yoʻldosh qatlamlaridan (SMAP, ECOSTRESS, HLS) keladi.
 * **Choʻl xatoligi.** Reanaliz modelida sugʻorish yoʻq, shuning uchun vohalarda Tmax va ET0 taxminan 10–20 % yuqori boʻlishi mumkin. Suv raqamlaridan ekinlarni *solishtirish* uchun foydalaning.
 * **Faqat sof suv.** m³/ga — ekinning *sof* ehtiyoji (FAO-56 ETc − samarali yogʻin). Dalaga beriladigan suv koʻproq: egat sugʻorishda FIK koʻpincha 50–60 %, shoʻr yuvish ham kerak.
 * **Qoidalar, hosil emas.** Moslik — issiqlik yigʻindisi, sovuq oynasi va issiq kunlar; hosil, narx yoki bozorni bashorat qilmaydi.
@@ -150,3 +159,17 @@ def field_label(pid: str, lang: str) -> str:
     n = field.replace("field", "")
     word = "field" if lang == "en" else "dala"
     return f"{DISTRICTS[district][lang]} — {word} {n}"
+
+
+def fields_str(fields: list[str], lang: str) -> str:
+    nums = [f.split("_")[1].replace("field", "") for f in fields]
+    return f"Fields {' & '.join(nums)}" if lang == "en" else f"{' va '.join(nums)}-dalalar"
+
+
+def profile_label(fields: list[str], lang: str) -> str:
+    """Title for a climate profile: the field itself, or the district when fields share a POWER cell."""
+    if len(fields) == 1:
+        return field_label(fields[0], lang)
+    district = fields[0].split("_")[0]
+    fs = fields_str(fields, lang)
+    return f"{DISTRICTS[district][lang]} — {T['district_profile'][lang]} ({fs.lower() if lang == 'en' else fs})"

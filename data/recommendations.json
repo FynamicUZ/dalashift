@@ -12,6 +12,7 @@
  },
  "points": {
   "Nukus_field1": {
+   "cell_id": "Nukus_field1",
    "crops": {
     "then": {
      "cotton": {
@@ -895,6 +896,7 @@
    }
   },
   "Nukus_field2": {
+   "cell_id": "Nukus_field2",
    "crops": {
     "then": {
      "cotton": {
@@ -1778,6 +1780,7 @@
    }
   },
   "Urgench_field1": {
+   "cell_id": "Urgench_cell",
    "crops": {
     "then": {
      "cotton": {
@@ -1786,7 +1789,7 @@
       "sow": "15 Apr",
       "harvest": "26 Oct",
       "season_days": 195,
-      "etc_mm": 1362.0,
+      "etc_mm": 1361.0,
       "peff_mm": 31.0,
       "need_mm": 1331.0,
       "need_m3ha": 13310,
@@ -2010,7 +2013,7 @@
       "sow": "20 Mar",
       "harvest": "30 Oct",
       "season_days": 225,
-      "etc_mm": 1496.0,
+      "etc_mm": 1495.0,
       "peff_mm": 42.0,
       "need_mm": 1454.0,
       "need_m3ha": 14540,
@@ -2070,8 +2073,8 @@
       "season_days": 245,
       "etc_mm": 609.0,
       "peff_mm": 81.0,
-      "need_mm": 529.0,
-      "need_m3ha": 5290,
+      "need_mm": 528.0,
+      "need_m3ha": 5280,
       "gdd": 3155.0,
       "min_gdd": 2000,
       "gdd_base": 0,
@@ -2086,9 +2089,9 @@
       "fits": true,
       "fit_score": 89.1,
       "second_crop": false,
-      "water_score": 72.1,
+      "water_score": 72.2,
       "score": 82.3,
-      "saved_vs_cotton_m3ha": 8130
+      "saved_vs_cotton_m3ha": 8140
      },
      "maize": {
       "crop": "maize",
@@ -2098,8 +2101,8 @@
       "season_days": 150,
       "etc_mm": 1156.0,
       "peff_mm": 24.0,
-      "need_mm": 1133.0,
-      "need_m3ha": 11330,
+      "need_mm": 1132.0,
+      "need_m3ha": 11320,
       "gdd": 2571.0,
       "min_gdd": 1500,
       "gdd_base": 10,
@@ -2114,9 +2117,9 @@
       "fits": true,
       "fit_score": 70.0,
       "second_crop": false,
-      "water_score": 40.3,
-      "score": 58.1,
-      "saved_vs_cotton_m3ha": 2090
+      "water_score": 40.4,
+      "score": 58.2,
+      "saved_vs_cotton_m3ha": 2100
      },
      "rice": {
       "crop": "rice",
@@ -2180,7 +2183,7 @@
       "sow": "15 Apr",
       "harvest": "22 Aug",
       "season_days": 130,
-      "etc_mm": 940.0,
+      "etc_mm": 939.0,
       "peff_mm": 28.0,
       "need_mm": 912.0,
       "need_m3ha": 9120,
@@ -2264,7 +2267,7 @@
       "sow": "20 Mar",
       "harvest": "30 Oct",
       "season_days": 225,
-      "etc_mm": 1493.0,
+      "etc_mm": 1492.0,
       "peff_mm": 49.0,
       "need_mm": 1444.0,
       "need_m3ha": 14440,
@@ -2317,11 +2320,11 @@
       "winter_wheat",
       "mung_bean"
      ],
-     "need_m3ha": 11210,
+     "need_m3ha": 11200,
      "fits": true,
      "harvests_per_year": 2,
      "heat_risk": "medium",
-     "saved_vs_cotton_m3ha": 2210
+     "saved_vs_cotton_m3ha": 2220
     },
     {
      "key": "cotton_wheat_mung",
@@ -2330,11 +2333,11 @@
       "winter_wheat",
       "mung_bean"
      ],
-     "need_m3ha": 12320,
+     "need_m3ha": 12310,
      "fits": false,
      "harvests_per_year": 1.5,
      "heat_risk": "high",
-     "saved_vs_cotton_m3ha": 1100
+     "saved_vs_cotton_m3ha": 1110
     },
     {
      "key": "alfalfa_cotton",
@@ -2661,6 +2664,7 @@
    }
   },
   "Urgench_field2": {
+   "cell_id": "Urgench_cell",
    "crops": {
     "then": {
      "cotton": {
@@ -2687,8 +2691,8 @@
       "fits": false,
       "fit_score": 38.5,
       "second_crop": false,
-      "water_score": 29.1,
-      "score": 34.7,
+      "water_score": 29.2,
+      "score": 34.8,
       "saved_vs_cotton_m3ha": 0
      },
      "winter_wheat": {
@@ -2755,8 +2759,8 @@
       "season_days": 150,
       "etc_mm": 1397.0,
       "peff_mm": 18.0,
-      "need_mm": 1878.0,
-      "need_m3ha": 18780,
+      "need_mm": 1879.0,
+      "need_m3ha": 18790,
       "gdd": 2462.0,
       "min_gdd": 1600,
       "gdd_base": 10,
@@ -2773,7 +2777,7 @@
       "second_crop": false,
       "water_score": 0.0,
       "score": 42.0,
-      "saved_vs_cotton_m3ha": -5470
+      "saved_vs_cotton_m3ha": -5480
      },
      "sorghum": {
       "crop": "sorghum",
@@ -2855,7 +2859,7 @@
       "fits": true,
       "fit_score": 88.5,
       "second_crop": true,
-      "water_score": 68.7,
+      "water_score": 68.8,
       "score": 80.6,
       "saved_vs_cotton_m3ha": 7440
      },
@@ -2895,8 +2899,8 @@
       "season_days": 225,
       "etc_mm": 1495.0,
       "peff_mm": 42.0,
-      "need_mm": 1453.0,
-      "need_m3ha": 14530,
+      "need_mm": 1454.0,
+      "need_m3ha": 14540,
       "gdd": 3898.0,
       "min_gdd": 1000,
       "gdd_base": 5,
@@ -2913,7 +2917,7 @@
       "second_crop": false,
       "water_score": 22.6,
       "score": 59.9,
-      "saved_vs_cotton_m3ha": -1220
+      "saved_vs_cotton_m3ha": -1230
      }
     },
     "now": {
@@ -2925,8 +2929,8 @@
       "season_days": 195,
       "etc_mm": 1374.0,
       "peff_mm": 33.0,
-      "need_mm": 1341.0,
-      "need_m3ha": 13410,
+      "need_mm": 1342.0,
+      "need_m3ha": 13420,
       "gdd": 2840.0,
       "min_gdd": 1900,
       "gdd_base": 10,
@@ -2971,7 +2975,7 @@
       "second_crop": false,
       "water_score": 72.2,
       "score": 82.3,
-      "saved_vs_cotton_m3ha": 8130
+      "saved_vs_cotton_m3ha": 8140
      },
      "maize": {
       "crop": "maize",
@@ -2999,7 +3003,7 @@
       "second_crop": false,
       "water_score": 40.4,
       "score": 58.2,
-      "saved_vs_cotton_m3ha": 2090
+      "saved_vs_cotton_m3ha": 2100
      },
      "rice": {
       "crop": "rice",
@@ -3007,7 +3011,7 @@
       "sow": "10 May",
       "harvest": "06 Oct",
       "season_days": 150,
-      "etc_mm": 1416.0,
+      "etc_mm": 1417.0,
       "peff_mm": 19.0,
       "need_mm": 1898.0,
       "need_m3ha": 18980,
@@ -3027,7 +3031,7 @@
       "second_crop": false,
       "water_score": 0.0,
       "score": 42.0,
-      "saved_vs_cotton_m3ha": -5570
+      "saved_vs_cotton_m3ha": -5560
      },
      "sorghum": {
       "crop": "sorghum",
@@ -3055,7 +3059,7 @@
       "second_crop": false,
       "water_score": 51.7,
       "score": 64.8,
-      "saved_vs_cotton_m3ha": 4250
+      "saved_vs_cotton_m3ha": 4260
      },
      "sunflower": {
       "crop": "sunflower",
@@ -3083,7 +3087,7 @@
       "second_crop": false,
       "water_score": 51.9,
       "score": 62.8,
-      "saved_vs_cotton_m3ha": 4290
+      "saved_vs_cotton_m3ha": 4300
      },
      "mung_bean": {
       "crop": "mung_bean",
@@ -3111,7 +3115,7 @@
       "second_crop": true,
       "water_score": 68.8,
       "score": 81.6,
-      "saved_vs_cotton_m3ha": 7490
+      "saved_vs_cotton_m3ha": 7500
      },
      "melon": {
       "crop": "melon",
@@ -3139,7 +3143,7 @@
       "second_crop": false,
       "water_score": 52.4,
       "score": 65.2,
-      "saved_vs_cotton_m3ha": 4370
+      "saved_vs_cotton_m3ha": 4380
      },
      "alfalfa": {
       "crop": "alfalfa",
@@ -3149,8 +3153,8 @@
       "season_days": 225,
       "etc_mm": 1492.0,
       "peff_mm": 49.0,
-      "need_mm": 1443.0,
-      "need_m3ha": 14430,
+      "need_mm": 1444.0,
+      "need_m3ha": 14440,
       "gdd": 4020.0,
       "min_gdd": 1000,
       "gdd_base": 5,
@@ -3165,7 +3169,7 @@
       "fits": true,
       "fit_score": 82.7,
       "second_crop": false,
-      "water_score": 24.0,
+      "water_score": 23.9,
       "score": 59.2,
       "saved_vs_cotton_m3ha": -1020
      }
@@ -3204,7 +3208,7 @@
      "fits": true,
      "harvests_per_year": 2,
      "heat_risk": "medium",
-     "saved_vs_cotton_m3ha": 2210
+     "saved_vs_cotton_m3ha": 2220
     },
     {
      "key": "cotton_wheat_mung",
@@ -3213,7 +3217,7 @@
       "winter_wheat",
       "mung_bean"
      ],
-     "need_m3ha": 12300,
+     "need_m3ha": 12310,
      "fits": false,
      "harvests_per_year": 1.5,
      "heat_risk": "high",
@@ -3225,7 +3229,7 @@
       "alfalfa",
       "cotton"
      ],
-     "need_m3ha": 14090,
+     "need_m3ha": 14100,
      "fits": false,
      "harvests_per_year": 1,
      "heat_risk": "high",
@@ -3544,6 +3548,7 @@
    }
   },
   "Gulistan_field1": {
+   "cell_id": "Gulistan_cell",
    "crops": {
     "then": {
      "cotton": {
@@ -3636,7 +3641,7 @@
       "sow": "10 May",
       "harvest": "06 Oct",
       "season_days": 150,
-      "etc_mm": 1217.0,
+      "etc_mm": 1216.0,
       "peff_mm": 47.0,
       "need_mm": 1670.0,
       "need_m3ha": 16700,
@@ -3776,7 +3781,7 @@
       "sow": "20 Mar",
       "harvest": "30 Oct",
       "season_days": 225,
-      "etc_mm": 1257.0,
+      "etc_mm": 1256.0,
       "peff_mm": 113.0,
       "need_mm": 1143.0,
       "need_m3ha": 11430,
@@ -3824,8 +3829,8 @@
       "fits": true,
       "fit_score": 60.6,
       "second_crop": false,
-      "water_score": 33.3,
-      "score": 49.7,
+      "water_score": 33.2,
+      "score": 49.6,
       "saved_vs_cotton_m3ha": 0
      },
      "winter_wheat": {
@@ -3834,7 +3839,7 @@
       "sow": "10 Oct",
       "harvest": "11 Jun",
       "season_days": 245,
-      "etc_mm": 490.0,
+      "etc_mm": 489.0,
       "peff_mm": 166.0,
       "need_mm": 324.0,
       "need_m3ha": 3240,
@@ -3880,7 +3885,7 @@
       "fits": true,
       "fit_score": 70.0,
       "second_crop": false,
-      "water_score": 42.8,
+      "water_score": 42.7,
       "score": 59.1,
       "saved_vs_cotton_m3ha": 1650
      },
@@ -3892,8 +3897,8 @@
       "season_days": 150,
       "etc_mm": 1273.0,
       "peff_mm": 41.0,
-      "need_mm": 1732.0,
-      "need_m3ha": 17320,
+      "need_mm": 1731.0,
+      "need_m3ha": 17310,
       "gdd": 2673.0,
       "min_gdd": 1600,
       "gdd_base": 10,
@@ -3910,7 +3915,7 @@
       "second_crop": false,
       "water_score": 0.0,
       "score": 42.0,
-      "saved_vs_cotton_m3ha": -5760
+      "saved_vs_cotton_m3ha": -5750
      },
      "sorghum": {
       "crop": "sorghum",
@@ -4427,6 +4432,7 @@
    }
   },
   "Gulistan_field2": {
+   "cell_id": "Gulistan_cell",
    "crops": {
     "then": {
      "cotton": {
@@ -4437,8 +4443,8 @@
       "season_days": 195,
       "etc_mm": 1181.0,
       "peff_mm": 80.0,
-      "need_mm": 1100.0,
-      "need_m3ha": 11000,
+      "need_mm": 1101.0,
+      "need_m3ha": 11010,
       "gdd": 2894.0,
       "min_gdd": 1900,
       "gdd_base": 10,
@@ -4483,7 +4489,7 @@
       "second_crop": false,
       "water_score": 80.7,
       "score": 87.0,
-      "saved_vs_cotton_m3ha": 7780
+      "saved_vs_cotton_m3ha": 7790
      },
      "maize": {
       "crop": "maize",
@@ -4511,7 +4517,7 @@
       "second_crop": false,
       "water_score": 44.0,
       "score": 59.6,
-      "saved_vs_cotton_m3ha": 1650
+      "saved_vs_cotton_m3ha": 1660
      },
      "rice": {
       "crop": "rice",
@@ -4521,8 +4527,8 @@
       "season_days": 150,
       "etc_mm": 1216.0,
       "peff_mm": 47.0,
-      "need_mm": 1669.0,
-      "need_m3ha": 16690,
+      "need_mm": 1670.0,
+      "need_m3ha": 16700,
       "gdd": 2557.0,
       "min_gdd": 1600,
       "gdd_base": 10,
@@ -4565,9 +4571,9 @@
       "fits": true,
       "fit_score": 73.8,
       "second_crop": false,
-      "water_score": 55.2,
+      "water_score": 55.3,
       "score": 66.4,
-      "saved_vs_cotton_m3ha": 3530
+      "saved_vs_cotton_m3ha": 3540
      },
      "sunflower": {
       "crop": "sunflower",
@@ -4595,7 +4601,7 @@
       "second_crop": false,
       "water_score": 56.8,
       "score": 62.7,
-      "saved_vs_cotton_m3ha": 3790
+      "saved_vs_cotton_m3ha": 3800
      },
      "mung_bean": {
       "crop": "mung_bean",
@@ -4623,7 +4629,7 @@
       "second_crop": true,
       "water_score": 69.1,
       "score": 77.4,
-      "saved_vs_cotton_m3ha": 5840
+      "saved_vs_cotton_m3ha": 5850
      },
      "melon": {
       "crop": "melon",
@@ -4651,7 +4657,7 @@
       "second_crop": false,
       "water_score": 56.2,
       "score": 66.9,
-      "saved_vs_cotton_m3ha": 3690
+      "saved_vs_cotton_m3ha": 3700
      },
      "alfalfa": {
       "crop": "alfalfa",
@@ -4677,9 +4683,9 @@
       "fits": true,
       "fit_score": 80.1,
       "second_crop": false,
-      "water_score": 31.5,
+      "water_score": 31.6,
       "score": 60.7,
-      "saved_vs_cotton_m3ha": -430
+      "saved_vs_cotton_m3ha": -420
      }
     },
     "now": {
@@ -4719,8 +4725,8 @@
       "season_days": 245,
       "etc_mm": 489.0,
       "peff_mm": 166.0,
-      "need_mm": 323.0,
-      "need_m3ha": 3230,
+      "need_mm": 324.0,
+      "need_m3ha": 3240,
       "gdd": 3704.0,
       "min_gdd": 2000,
       "gdd_base": 0,
@@ -4737,7 +4743,7 @@
       "second_crop": false,
       "water_score": 81.3,
       "score": 85.1,
-      "saved_vs_cotton_m3ha": 8330
+      "saved_vs_cotton_m3ha": 8320
      },
      "maize": {
       "crop": "maize",
@@ -4966,11 +4972,11 @@
       "winter_wheat",
       "mung_bean"
      ],
-     "need_m3ha": 8660,
+     "need_m3ha": 8670,
      "fits": true,
      "harvests_per_year": 2,
      "heat_risk": "medium",
-     "saved_vs_cotton_m3ha": 2900
+     "saved_vs_cotton_m3ha": 2890
     },
     {
      "key": "cotton_wheat_mung",
@@ -4979,11 +4985,11 @@
       "winter_wheat",
       "mung_bean"
      ],
-     "need_m3ha": 10110,
+     "need_m3ha": 10120,
      "fits": true,
      "harvests_per_year": 1.5,
      "heat_risk": "high",
-     "saved_vs_cotton_m3ha": 1450
+     "saved_vs_cotton_m3ha": 1440
     },
     {
      "key": "alfalfa_cotton",
@@ -5310,6 +5316,7 @@
    }
   },
   "Fergana_field1": {
+   "cell_id": "Fergana_cell",
    "crops": {
     "then": {
      "cotton": {
@@ -6193,6 +6200,7 @@
    }
   },
   "Fergana_field2": {
+   "cell_id": "Fergana_cell",
    "crops": {
     "then": {
      "cotton": {
@@ -6201,7 +6209,7 @@
       "sow": "15 Apr",
       "harvest": "26 Oct",
       "season_days": 195,
-      "etc_mm": 1120.0,
+      "etc_mm": 1121.0,
       "peff_mm": 73.0,
       "need_mm": 1048.0,
       "need_m3ha": 10480,
@@ -6680,7 +6688,7 @@
       "harvest": "30 Oct",
       "season_days": 225,
       "etc_mm": 1259.0,
-      "peff_mm": 111.0,
+      "peff_mm": 112.0,
       "need_mm": 1147.0,
       "need_m3ha": 11470,
       "gdd": 4327.0,
@@ -7076,6 +7084,7 @@
    }
   },
   "Karshi_field1": {
+   "cell_id": "Karshi_cell",
    "crops": {
     "then": {
      "cotton": {
@@ -7086,8 +7095,8 @@
       "season_days": 195,
       "etc_mm": 1599.0,
       "peff_mm": 45.0,
-      "need_mm": 1554.0,
-      "need_m3ha": 15540,
+      "need_mm": 1555.0,
+      "need_m3ha": 15550,
       "gdd": 3057.0,
       "min_gdd": 1900,
       "gdd_base": 10,
@@ -7112,7 +7121,7 @@
       "sow": "10 Oct",
       "harvest": "11 Jun",
       "season_days": 245,
-      "etc_mm": 601.0,
+      "etc_mm": 602.0,
       "peff_mm": 161.0,
       "need_mm": 440.0,
       "need_m3ha": 4400,
@@ -7132,7 +7141,7 @@
       "second_crop": false,
       "water_score": 79.1,
       "score": 84.1,
-      "saved_vs_cotton_m3ha": 11140
+      "saved_vs_cotton_m3ha": 11150
      },
      "maize": {
       "crop": "maize",
@@ -7160,7 +7169,7 @@
       "second_crop": false,
       "water_score": 36.7,
       "score": 56.7,
-      "saved_vs_cotton_m3ha": 2220
+      "saved_vs_cotton_m3ha": 2230
      },
      "rice": {
       "crop": "rice",
@@ -7170,8 +7179,8 @@
       "season_days": 150,
       "etc_mm": 1625.0,
       "peff_mm": 21.0,
-      "need_mm": 2104.0,
-      "need_m3ha": 21040,
+      "need_mm": 2105.0,
+      "need_m3ha": 21050,
       "gdd": 2677.0,
       "min_gdd": 1600,
       "gdd_base": 10,
@@ -7216,7 +7225,7 @@
       "second_crop": false,
       "water_score": 49.1,
       "score": 61.6,
-      "saved_vs_cotton_m3ha": 4830
+      "saved_vs_cotton_m3ha": 4840
      },
      "sunflower": {
       "crop": "sunflower",
@@ -7242,9 +7251,9 @@
       "fits": true,
       "fit_score": 63.3,
       "second_crop": false,
-      "water_score": 51.2,
+      "water_score": 51.3,
       "score": 58.5,
-      "saved_vs_cotton_m3ha": 5280
+      "saved_vs_cotton_m3ha": 5290
      },
      "mung_bean": {
       "crop": "mung_bean",
@@ -7270,9 +7279,9 @@
       "fits": true,
       "fit_score": 81.1,
       "second_crop": true,
-      "water_score": 65.6,
+      "water_score": 65.7,
       "score": 74.9,
-      "saved_vs_cotton_m3ha": 8310
+      "saved_vs_cotton_m3ha": 8320
      },
      "melon": {
       "crop": "melon",
@@ -7300,7 +7309,7 @@
       "second_crop": false,
       "water_score": 51.3,
       "score": 62.5,
-      "saved_vs_cotton_m3ha": 5290
+      "saved_vs_cotton_m3ha": 5300
      },
      "alfalfa": {
       "crop": "alfalfa",
@@ -7308,10 +7317,10 @@
       "sow": "20 Mar",
       "harvest": "30 Oct",
       "season_days": 225,
-      "etc_mm": 1659.0,
+      "etc_mm": 1660.0,
       "peff_mm": 77.0,
-      "need_mm": 1582.0,
-      "need_m3ha": 15820,
+      "need_mm": 1583.0,
+      "need_m3ha": 15830,
       "gdd": 4308.0,
       "min_gdd": 1000,
       "gdd_base": 5,
@@ -7338,7 +7347,7 @@
       "sow": "15 Apr",
       "harvest": "26 Oct",
       "season_days": 195,
-      "etc_mm": 1641.0,
+      "etc_mm": 1642.0,
       "peff_mm": 38.0,
       "need_mm": 1604.0,
       "need_m3ha": 16040,
@@ -7422,7 +7431,7 @@
       "sow": "10 May",
       "harvest": "06 Oct",
       "season_days": 150,
-      "etc_mm": 1673.0,
+      "etc_mm": 1674.0,
       "peff_mm": 16.0,
       "need_mm": 2157.0,
       "need_m3ha": 21570,
@@ -7959,6 +7968,7 @@
    }
   },
   "Karshi_field2": {
+   "cell_id": "Karshi_cell",
    "crops": {
     "then": {
      "cotton": {
@@ -7997,8 +8007,8 @@
       "season_days": 245,
       "etc_mm": 602.0,
       "peff_mm": 161.0,
-      "need_mm": 441.0,
-      "need_m3ha": 4410,
+      "need_mm": 440.0,
+      "need_m3ha": 4400,
       "gdd": 3915.0,
       "min_gdd": 2000,
       "gdd_base": 0,
@@ -8013,9 +8023,9 @@
       "fits": true,
       "fit_score": 87.4,
       "second_crop": false,
-      "water_score": 79.0,
-      "score": 84.0,
-      "saved_vs_cotton_m3ha": 11140
+      "water_score": 79.1,
+      "score": 84.1,
+      "saved_vs_cotton_m3ha": 11150
      },
      "maize": {
       "crop": "maize",
@@ -8025,8 +8035,8 @@
       "season_days": 150,
       "etc_mm": 1363.0,
       "peff_mm": 31.0,
-      "need_mm": 1333.0,
-      "need_m3ha": 13330,
+      "need_mm": 1332.0,
+      "need_m3ha": 13320,
       "gdd": 2658.0,
       "min_gdd": 1500,
       "gdd_base": 10,
@@ -8043,7 +8053,7 @@
       "second_crop": false,
       "water_score": 36.7,
       "score": 56.7,
-      "saved_vs_cotton_m3ha": 2220
+      "saved_vs_cotton_m3ha": 2230
      },
      "rice": {
       "crop": "rice",
@@ -8051,7 +8061,7 @@
       "sow": "10 May",
       "harvest": "06 Oct",
       "season_days": 150,
-      "etc_mm": 1626.0,
+      "etc_mm": 1625.0,
       "peff_mm": 21.0,
       "need_mm": 2105.0,
       "need_m3ha": 21050,
@@ -8279,8 +8289,8 @@
       "season_days": 150,
       "etc_mm": 1407.0,
       "peff_mm": 23.0,
-      "need_mm": 1385.0,
-      "need_m3ha": 13850,
+      "need_mm": 1384.0,
+      "need_m3ha": 13840,
       "gdd": 2790.0,
       "min_gdd": 1500,
       "gdd_base": 10,
@@ -8297,7 +8307,7 @@
       "second_crop": false,
       "water_score": 35.8,
       "score": 56.3,
-      "saved_vs_cotton_m3ha": 2190
+      "saved_vs_cotton_m3ha": 2200
      },
      "rice": {
       "crop": "rice",
