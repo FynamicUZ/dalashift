@@ -91,6 +91,8 @@ FT = {
     "w_tight": {"uz": "Suvingiz zoʻrgʻa yetadi", "en": "Your water is just enough"},
     "w_short": {"uz": "Suvingiz yetmaydi", "en": "Not enough water"},
     "why": {"uz": "Nega?", "en": "Why?"},
+    "cotton_short": {"uz": "Paxta uchun gektariga taxminan {n} ming tonna suv kerak, sizda {b} ming tonna bor. Quyida eng kam zararli reja.",
+                     "en": "Cotton needs about {n} thousand tonnes of water per hectare, you have {b} thousand. Below is the least-harmful plan."},
     "no_plan": {"uz": "Bu suv bilan barcha qoidalarga mos reja yoʻq. Quyida eng yaqin reja.",
                 "en": "No plan fits every rule with this much water. Here is the closest one."},
     "no_cotton": {"uz": "🌱 Paxta bu yerda suvingizdan koʻproq suv talab qiladi, shuning uchun rejada yoʻq.",
@@ -230,7 +232,11 @@ def render(lang: str, planner_data: dict, summary: dict, points: pd.DataFrame) -
         plan = out["plans"][st.session_state.f_plan]
     else:
         plan = out["plans"].get("least_harm")
-        st.error(ft("no_plan", lang))
+        need = point["baseline"]["cotton"]["need_m3ha"]
+        if must and need > budget:
+            st.error(ft("cotton_short", lang, n=round(need / 1000), b=round(budget / 1000)))
+        else:
+            st.error(ft("no_plan", lang))
         if not plan:
             return
 

@@ -43,3 +43,17 @@ def test_every_district_and_water_level_renders():
             a.segmented_control(key="f_district").set_value(d)
             a.segmented_control(key="f_water").set_value(w).run()
             assert not a.exception, (d, w)
+
+
+def test_must_cotton_without_enough_water_explains_in_one_line():
+    a = AppTest.from_file(APP, default_timeout=180)
+    a.run()
+    a.toggle(key="f_must").set_value(True).run()            # Qarshi, 8,000: cotton needs ~13,000
+    assert not a.exception
+    msg = " ".join(e.value for e in a.tabs[0].error)
+    assert "13 ming tonna" in msg and "8 ming tonna" in msg
+
+
+def test_barley_and_wheat_have_different_icons():
+    from dalashift.i18n import CROP_NAMES
+    assert CROP_NAMES["barley"]["icon"] != CROP_NAMES["winter_wheat"]["icon"]
