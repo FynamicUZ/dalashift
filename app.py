@@ -15,7 +15,7 @@ import plotly.graph_objects as go
 import streamlit as st
 from streamlit_folium import st_folium
 
-from dalashift import planner_ui
+from dalashift import planner_ui, simple_ui
 from dalashift.appeears import load_appeears
 from dalashift.crops import BASELINE
 from dalashift.i18n import (CROP_NAMES, DISTRICTS, MONTHS, ROTATION_NAMES, field_label, fields_str, ldate,
@@ -79,8 +79,24 @@ if "last_click" not in st.session_state:
 if "pending_point" in st.session_state:
     st.session_state.point = st.session_state.pop("pending_point")
 
-with st.sidebar:
-    lang = "uz" if st.radio(t("language", "en"), ["English", "Oʻzbekcha"], horizontal=True) == "Oʻzbekcha" else "en"
+# ---- top bar: app name left, language toggle right (Uzbek first)
+top_l, top_r = st.columns([3, 2], vertical_alignment="center")
+with top_r:
+    lang = "en" if st.segmented_control("Til / Language", ["Oʻzbekcha", "English"], default="Oʻzbekcha",
+                                        key="lang_toggle", label_visibility="collapsed") == "English" else "uz"
+with top_l:
+    st.markdown("## 🌾 DalaShift")
+
+tab_farmer, tab_expert = st.tabs([t("tab_farmer", lang), t("tab_expert", lang)])
+
+# ------------------------------------------------------------------ FARMER VIEW (default)
+with tab_farmer:
+    simple_ui.render(lang, planner_data, summary, points)
+
+# ------------------------------------------------------------------ EXPERT VIEW (everything else)
+with tab_expert:
+    st.title("🌾 " + t("title", lang))
+    st.caption(t("tagline", lang))
     # one widget per language so option labels re-render in the chosen language;
     # "point" stays the canonical selection and is synced in via the widget's state + on_change
     wkey = f"field_select_{lang}"
@@ -96,12 +112,10 @@ cell_fields = S["cell_fields"]
 shared = len(cell_fields) > 1                     # fields in one POWER cell share a district profile
 climate_title = profile_label(cell_fields, lang)
 
-st.title("🌾 " + t("title", lang))
-st.caption(t("tagline", lang))
-
-tab_map, tab_then, tab_water, tab_plant, tab_planner = st.tabs(
-    [t("tab_map", lang), t("tab_then_now", lang), t("tab_water", lang), t("tab_plant", lang),
-     t("tab_planner", lang)])
+with tab_expert:
+    tab_map, tab_then, tab_water, tab_plant, tab_planner = st.tabs(
+        [t("tab_map", lang), t("tab_then_now", lang), t("tab_water", lang), t("tab_plant", lang),
+         t("tab_planner", lang)])
 
 # ------------------------------------------------------------------ 1. MAP
 with tab_map:

@@ -12,6 +12,18 @@ The app is bilingual (English / Oʻzbekcha). It runs entirely on precomputed fil
 
 ## App screens
 
+The app opens on a simple **Farmer view** (Uzbek first, English toggle top-right). Everything below
+is kept in the **"Mutaxassislar / For judges & experts"** tab.
+
+**Farmer view** ([`dalashift/simple_ui.py`](dalashift/simple_ui.py); screenshots in [`docs/screenshots/`](docs/screenshots/)):
+1. *Dalangiz qayerda?* (where is your field?): big buttons for Qarshi, Fargʻona, Urganch, Nukus, Guliston; map optional.
+2. *Dalangizda nima oʻzgardi?* (what changed?): three cards: very hot days (+N days), frost-free season, and extra water the crops need (tonnes per hectare = m³).
+3. *5 yillik reja* (5-year plan): water as *Kam / Oʻrtacha / Koʻp* (6,000 / 8,000 / 12,000 m³/ha, hypothetical levels), a *must grow cotton/wheat* switch (2 of 5 years each) that shows its cost in soʻm, and three plan buttons: *Koʻproq daromad*, *Muvozanat*, *Kam suv*. The chosen plan shows 5 crop icons, one income range in **mln soʻm / ga / yil** (USD × the CBU rate in `config/retail_to_farmgate.yaml`, rounded), a green/amber/red water bar for the thirstiest year against the farm's water, and one plain *Nega?* (why) sentence per crop.
+
+No jargon on farmer screens (no ET0, GDD, NDVI, m³/ha or USD). Same engine and numbers as the expert view.
+
+**Expert view:**
+
 1. **Map**: click a field or district (Nukus, Urgench, Gulistan, Fergana, Karshi, Navoi). Dashed boxes show the NASA POWER grid cells.
 2. **Your field then vs now**: hot days, heat sum (growing degree days, GDD), frost dates, growing-season rain and water demand (ET0).
 3. **Water stress now**: satellite layers from NASA SMAP root-zone soil moisture, ECOSTRESS Evaporative Stress Index (ESI) and HLS NDVI, via AppEEARS. Shows "coming soon" until the files are added.
