@@ -16,9 +16,11 @@ money:
   profit_uncertainty: 0.15          # +/- 15 %
   margin_check_usd_ha: 3000         # USD/ha/year
 
-# FAOSTAT national-average yields of fresh-market vegetables (tomato, onion, potato) include
-# greenhouse and intensive farms; open-field farms get less. APPROXIMATE, editable.
-fresh_yield_realism_factor: 0.7
+# FAOSTAT national-average yields of fresh-market vegetables (tomato, onion, potato) and maize include
+# intensive farms; ordinary open-field farms get less, and costs per ha are placeholders.
+# APPROXIMATE, editable: yield x factor for the crops listed.
+yield_realism_factor: 0.7
+yield_realism_crops: [tomato, onion, potato, maize]
 
 # Expected yield = FAOSTAT typical yield x climate factor x rotation effect (rotation_rules.yaml).
 # Climate factor (APPROXIMATE): FAOSTAT national-average yield is treated as the yield of a

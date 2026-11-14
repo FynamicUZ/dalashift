@@ -121,7 +121,7 @@ feasible           ⇔ every crop passes Climate Fit, need_t ≤ budget in EVERY
 ```
 
 **Money realism.** Costs per ha are placeholders, so the app never shows a single profit number:
-- fresh-market vegetable yields (tomato, onion, potato) are FAOSTAT national averages, so they are multiplied by an **open-field realism factor of 0.7** (approximate, `fresh_yield_realism_factor` in `config/planner.yaml`);
+- tomato, onion, potato and maize yields are FAOSTAT national averages (intensive farms included), so they are multiplied by an **open-field realism factor of 0.7** (approximate, `yield_realism_factor` / `yield_realism_crops` in `config/planner.yaml`);
 - cotton uses the FAOSTAT producer price **plus the 2025 state subsidy of 1,000 so'm/kg** (`config/local_prices.csv`). Even so, cotton's margin stays low, which matches the real debate about cotton profitability for farmers;
 - every profit is an **estimate range**, low = 0.85 × profit, high = 1.15 × profit (`money.profit_uncertainty` in `config/planner.yaml`);
 - each plan shows the **average profit per ha per year** next to the **5-year total** (the discounted value, used to rank plans, is in the tooltip);
