@@ -9,8 +9,8 @@
 
 # PLACEHOLDER - SET THE CURRENT RATE (so'm per 1 USD, e.g. from the Central Bank of Uzbekistan,
 # cbu.uz) together with its date. While this is null, retail prices are NOT used and a warning is shown.
-uzs_per_usd: null
-uzs_per_usd_date: null
+uzs_per_usd: 12014.37        # Central Bank of Uzbekistan official rate (cbu.uz JSON API)
+uzs_per_usd_date: 2026-11-14
 
 default_farm_gate_share: 0.40   # APPROXIMATE, retail-to-farm-gate assumption (vegetables and pulses)
 farm_gate_share: {}             # per-crop override, e.g.  tomato: 0.35   (approximate, editable)

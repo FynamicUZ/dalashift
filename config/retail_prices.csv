@@ -1,8 +1,8 @@
 crop,retail_uzs_per_kg,where,date
-chickpea,,,
-mung_bean,,,
-tomato,,,
-onion,,,
-potato,,,
-carrot,,,
-melon,,,
+chickpea,,"not listed in Korzinka search (https://korzinka.uz/en/catalog (site search, Tashkent region))",
+mung_bean,,"not listed in Korzinka search (https://korzinka.uz/en/catalog (site search, Tashkent region))",
+tomato,9390,"Korzinka: 'Pomidory krasnye dala Uzb, ves' loose per kg; https://korzinka.uz/en/catalog (site search, Tashkent region)",2026-11-14
+onion,3290,"Korzinka: 'Luk repchatyi fasovannyi Uzb, ves' per kg; https://korzinka.uz/en/catalog (site search, Tashkent region)",2026-11-14
+potato,6330,"Korzinka: 'Kartofel zheltyi 365 kun' 3 kg bag 18,990 so'm -> 6,330 so'm/kg; https://korzinka.uz/en/catalog (site search, Tashkent region)",2026-11-14
+carrot,7790,"Korzinka: 'Morkov zheltaya Arzon, ves' regular price per kg (promo 3,990 not used); https://korzinka.uz/en/catalog (site search, Tashkent region)",2026-11-14
+melon,,"not listed in Korzinka search, out of season (https://korzinka.uz/en/catalog (site search, Tashkent region))",
