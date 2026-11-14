@@ -10,6 +10,11 @@ that fits the climate *now*, stays within the farm's irrigation water, and follo
 
 The app is bilingual (English / Oʻzbekcha). It runs entirely on precomputed files and never calls a NASA API live.
 
+## Team KarPS
+
+Ahmedov Zuhriddin · Alisherov Azimbek · Shermaxmatov Ozodbek · Botirxonov Faxriyor · Boyqulov Afzalbek
+(NASA Space Apps Challenge 2026, Karshi local event)
+
 ## App screens
 
 The app opens on a simple **Farmer view** ([`dalashift/simple_ui.py`](dalashift/simple_ui.py); screenshots in [`docs/screenshots/`](docs/screenshots/)), a calm field-card + plan layout (Inter font, Lucide SVG icons, no emoji):

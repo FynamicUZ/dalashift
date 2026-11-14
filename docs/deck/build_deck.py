@@ -111,7 +111,7 @@ SLIDES = f"""
   <div class="fragment fade-up">
     <h1>DalaShift</h1>
     <p class="tag">Don't just choose the most profitable crop for this year.<br>Choose the best five-year future for your field.</p>
-    <p class="meta">Field Shift: Adapting Farms with NASA Data · NASA Space Apps 2026 · Karshi · <span class="ph">[TEAM NAME]</span></p>
+    <p class="meta">Field Shift: Adapting Farms with NASA Data · NASA Space Apps 2026 · Karshi · <b>KarPS</b></p>
   </div>
   <p class="credit">Karshi oasis from space: NASA MODIS Terra, 12 Aug 2025 (Worldview). The farmer is an illustrative persona.</p>
 </section>
@@ -175,7 +175,7 @@ SLIDES = f"""
     <div class="rs fragment fade-up"><b>Telegram bot</b><span>in Uzbek</span></div>
     <div class="rs fragment fade-up"><b>More crops</b><span>melon varieties, real costs</span></div>
   </div>
-  <p class="team"><span class="ph">[TEAM NAME]</span> · {TEAM}</p>
+  <p class="team"><b>KarPS</b> · {TEAM}</p>
   <p class="sub">{tests_txt}up to {n_seq:,} five-year plans checked per farm · Repo <span class="ph">[REPO LINK]</span> · App <span class="ph">[APP LINK]</span></p>
 </section>
 """

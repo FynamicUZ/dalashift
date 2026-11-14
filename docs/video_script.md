@@ -8,7 +8,7 @@ lines as subtitles). It follows the deck's story. Every number comes from the ap
 
 | Time | Beat | On screen | Subtitle / voice-over (English) |
 |---|---|---|---|
-| 0:00–0:02 | Team | Team name and members (Ahmedov Zuhriddin, Alisherov Azimbek, Shermaxmatov Ozodbek, Botirxonov Faxriyor, Boyqulov Afzalbek) over the NASA image of the Karshi oasis | "We are [TEAM NAME], from Karshi." |
+| 0:00–0:02 | Team | Team name and members (Ahmedov Zuhriddin, Alisherov Azimbek, Shermaxmatov Ozodbek, Botirxonov Faxriyor, Boyqulov Afzalbek) over the NASA image of the Karshi oasis | "We are KarPS, from Karshi." |
 | 0:02–0:05 | Challenge | Text: *Field Shift: Adapting Farms with NASA Data* · NASA Space Apps 2026 | "Our challenge: Field Shift, adapting farms with NASA data." |
 | 0:05–0:10 | Title + tagline | Deck slide 1: "Every spring, a farmer near Karshi bets the family's year on one decision: what to plant." → DalaShift + tagline | "DalaShift. Don't just choose the most profitable crop for this year. Choose the best five-year future for your field." |
 | 0:10–0:13 | Demo: the field | Screen recording, Fermer tab, Qarshi selected: field card "96 → 104" hot days, rain 68 → 54 mm | "Near Karshi there are now 104 very hot days a year, up from 96, and less rain." |
