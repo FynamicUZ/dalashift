@@ -61,6 +61,7 @@ which is widely grown in Karakalpakstan and Khorezm.
 ### Crop database — [`config/crops.csv`](config/crops.csv)
 
 There are 14 approved crops: cotton, winter wheat, barley, maize, rice, sorghum, sunflower, mung bean (only as a 2nd crop after wheat), chickpea, potato, onion, tomato, melon and alfalfa.
+**Melon is excluded from the 5-year planner** (`planner_enabled = False`): many varieties with different soil/season needs and no reliable farm-gate price; future work. Its data stay in the table and on screen 4 for reference.
 
 Each crop has: family, season window (sowing date + FAO-56 stage lengths), GDD needed, heat tolerance, frost sensitivity, winterkill,
 salinity tolerance, FAO-56 Kc values, typical yield, price, cost and `local_market_tag`.

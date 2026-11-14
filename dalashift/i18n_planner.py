@@ -14,8 +14,8 @@ PLANNER_T = {
     "pl_budget": {"en": "Irrigation water available (m³/ha per year, net)", "uz": "Mavjud sugʻorish suvi (m³/ga yiliga, sof)"},
     "pl_rate": {"en": "Discount rate (%)", "uz": "Diskont stavkasi (%)"},
     "pl_fresh": {"en": "Max years of fresh-market crops", "uz": "Yangi bozor ekinlari, maks. yillar"},
-    "pl_fresh_help": {"en": "Tomato, potato, onion, melon. Hypothetical market assumption: local fresh markets saturate.",
-                      "uz": "Pomidor, kartoshka, piyoz, qovun. Taxminiy bozor farazi: mahalliy bozorlar toʻyinadi."},
+    "pl_fresh_help": {"en": "Tomato, potato, onion. Hypothetical market assumption: local fresh markets saturate.",
+                      "uz": "Pomidor, kartoshka, piyoz. Taxminiy bozor farazi: mahalliy bozorlar toʻyinadi."},
     "pl_must": {"en": "Must grow cotton / wheat", "uz": "Paxta / bugʻdoy ekish majburiy"},
     "pl_must_cotton": {"en": "Cotton: minimum % of years", "uz": "Paxta: yillarning minimal %"},
     "pl_must_wheat": {"en": "Winter wheat: minimum % of years", "uz": "Kuzgi bugʻdoy: yillarning minimal %"},
@@ -121,6 +121,7 @@ PLANNER_T = {
 * **Prices and yields:** FAOSTAT Uzbekistan where available (yields 2022–24, producer prices 2023–24). Melon, chickpea and mung bean prices use labelled proxies; alfalfa yield/price and **all costs per ha are approximate placeholders**. The FAOSTAT tomato price is an annual average and probably overstates open-field farm-gate prices — see `config/crops.csv`.
 * **Water need** uses ET0 × the site's correction factor (default 0.80, approximate, provisional bias correction for MERRA-2 desert bias over irrigated land; *calibrated with ECOSTRESS* when those data are added).
 * **Expected yield** = FAOSTAT national yield × climate-risk factor × rotation effect; these factors are approximate and editable (`config/planner.yaml`, `config/rotation_rules.yaml`).
+* **Melon is not planned:** many varieties with different soil/season needs and no reliable farm-gate price (future work).
 * **Hypothetical inputs:** water budgets, the fresh-market limit and demo-farm obligations are examples, not data.
 * **Scenarios** are simple: +1.5 °C added to every day (ET0, heat, frost and GDD recomputed); −20 % water budget. No price or policy changes.
 * Profit is per hectare and ignores subsidies, credit, labour limits and price risk. It is shown as a **±30 % estimate range**; any crop margin above 3,000 USD/ha/year is flagged **"check this number"**.
@@ -130,6 +131,7 @@ PLANNER_T = {
 * **Narx va hosil:** imkon boricha FAOSTAT Oʻzbekiston (hosil 2022–24, narxlar 2023–24). Qovun, noʻxat va mosh narxlari — belgilangan proksi; beda hosili/narxi va **barcha xarajatlar taxminiy**. FAOSTAT pomidor narxi yillik oʻrtacha va ochiq dala narxidan yuqori boʻlishi mumkin — `config/crops.csv` ga qarang.
 * **Suv ehtiyoji** ET0 × joy tuzatma koeffitsiyenti bilan hisoblanadi (standart 0,80 — MERRA-2 choʻl xatoligi uchun taxminiy, vaqtinchalik tuzatma; ECOSTRESS maʼlumotlari qoʻshilsa — *ECOSTRESS bilan kalibrlangan*).
 * **Kutilgan hosil** = FAOSTAT milliy hosildorligi × iqlim xavfi koeffitsiyenti × almashlab ekish taʼsiri; bular taxminiy va tahrirlanadi.
+* **Qovun rejalashtirilmaydi:** navlari koʻp, tuproq/mavsum talablari turlicha va ishonchli narx yoʻq (keyingi ish).
 * **Taxminiy (gipotetik) kiritmalar:** suv byudjetlari, bozor cheklovi va demo xoʻjalik majburiyatlari — misollar, maʼlumot emas.
 * **Ssenariylar** oddiy: har kunga +1,5 °C (ET0, issiqlik, sovuq va SHY qayta hisoblangan); suv byudjeti −20 %. Narx yoki siyosat oʻzgarmaydi.
 * Foyda gektarga hisoblangan; subsidiya, kredit, ishchi kuchi va narx xavfi hisobga olinmagan. U **±30 % taxminiy oraliq** sifatida koʻrsatiladi; 3 000 USD/ga/yildan yuqori foyda **"bu raqamni tekshiring"** deb belgilanadi.

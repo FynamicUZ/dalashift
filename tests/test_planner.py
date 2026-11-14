@@ -344,3 +344,10 @@ def test_retail_prices_ignored_with_warning_until_rate_is_set(tmp_path):
     with pytest.warns(UserWarning, match="uzs_per_usd"):
         t = load_crop_table(CROPS_CSV, None, rp, cfg)
     assert t.loc["chickpea", "price_usd_t"] == pd.read_csv(CROPS_CSV).set_index("crop").loc["chickpea", "price_usd_t"]
+
+
+def test_melon_is_excluded_from_the_planner_but_kept_in_the_table():
+    assert "melon" in TABLE.index and str(TABLE.loc["melon", "planner_enabled"]) == "False"
+    assert "excluded" in TABLE.loc["melon", "planner_note"]
+    ctx = make_context(PLANNER["points"]["Fergana_field1"]["baseline"], 20000)
+    assert all("melon" not in o.crops for o in ctx.options)

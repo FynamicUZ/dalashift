@@ -103,8 +103,10 @@ def build_options(metrics: dict, table: pd.DataFrame, rules: dict, cfg: dict) ->
     bit = {f: 1 << i for i, f in enumerate(fams)}
     exempt = set(rules["hard_rules"].get("family_rule_exempt", []))
     losses = cfg["climate_yield_losses"]
-    groups = [(c,) for c in table.index if table.loc[c, "role"] != "second_crop"]
-    groups += [tuple(pair) for pair in rules["hard_rules"].get("double_crops", [])]
+    # crops with planner_enabled = False (config/crops.csv, e.g. melon) are kept for reference only
+    enabled = {c for c in table.index if str(table.loc[c, "planner_enabled"]).strip().lower() != "false"}
+    groups = [(c,) for c in table.index if table.loc[c, "role"] != "second_crop" and c in enabled]
+    groups += [tuple(pair) for pair in rules["hard_rules"].get("double_crops", []) if set(pair) <= enabled]
     opts = []
     for crops in groups:
         rows = [table.loc[c] for c in crops]
