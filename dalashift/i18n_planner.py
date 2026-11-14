@@ -50,6 +50,10 @@ PLANNER_T = {
     "pl_et0_provisional": {"en": "approximate, provisional bias correction for MERRA-2 desert bias over irrigated land",
                            "uz": "MERRA-2 choʻl xatoligi uchun taxminiy, vaqtinchalik tuzatma"},
     "pl_et0_ecostress": {"en": "calibrated with ECOSTRESS", "uz": "ECOSTRESS bilan kalibrlangan"},
+    "pl_vs_usual": {"en": "Compared with the usual wheat ↔ cotton rotation: income {i}, water {w}.{d}",
+                    "uz": "Odatiy bugʻdoy ↔ paxta almashlab ekishga nisbatan: daromad {i}, suv {w}.{d}"},
+    "pl_usual_deficit": {"en": " The usual rotation needs {n:,.0f} m³/ha more than the budget in cotton years.",
+                         "uz": " Odatiy almashlab ekish paxta yillarida byudjetdan {n:,.0f} m³/ga koʻp suv talab qiladi."},
     "pl_estimate": {"en": "estimate", "uz": "taxminiy"},
     "pl_profit_year_avg": {"en": "Profit per ha per year (avg, estimate)", "uz": "Yillik foyda, gektariga (oʻrtacha, taxminiy)"},
     "pl_profit_5y": {"en": "5-year total profit (estimate)", "uz": "5 yillik jami foyda (taxminiy)"},
@@ -124,7 +128,8 @@ PLANNER_T = {
 * **Melon is not planned:** many varieties with different soil/season needs and no reliable farm-gate price (future work).
 * **Hypothetical inputs:** water budgets, the fresh-market limit and demo-farm obligations are examples, not data.
 * **Scenarios** are simple: +1.5 °C added to every day (ET0, heat, frost and GDD recomputed); −20 % water budget. No price or policy changes.
-* Profit is per hectare and ignores subsidies, credit, labour limits and price risk. It is shown as a **±15 % estimate range**; any crop margin above 3,000 USD/ha/year is flagged **"check this number"**.
+* Cotton includes the 2025 state subsidy (1,000 so'm/kg); its margin stays low, which matches the real debate about cotton profitability. Fresh vegetable yields are × 0.7 (open-field realism, approximate).
+* Profit is per hectare and ignores other subsidies, credit, labour limits and price risk. It is shown as a **±15 % estimate range**; any crop margin above 3,000 USD/ha/year is flagged **"check this number"**.
 * **Area share:** the farm is assumed to run the plan on 5 blocks, each one year behind the next, so a crop grown in k of 5 years covers k/5 of the farm each year. Tomato, potato, onion and melon are limited to 25 % of the area (= 1 year in 5). Legumes (chickpea, mung bean, alfalfa) are provisionally limited to 40 % (= 2 years in 5) because their prices are proxies, until real local prices are added in `config/local_prices.csv`. Editable in `config/crops.csv`.
 """, "uz": """
 * **Almashlab ekish salomatligi — qoida bali, tuproq modeli emas.** U qoidalar boʻyicha ball beradi (takrorlar, dukkakli tanaffus, oilalar xilma-xilligi); tuproq uglerodi, azot, shoʻrlanish yoki zararkunandalarni **simulyatsiya qilmaydi**.
@@ -134,7 +139,8 @@ PLANNER_T = {
 * **Qovun rejalashtirilmaydi:** navlari koʻp, tuproq/mavsum talablari turlicha va ishonchli narx yoʻq (keyingi ish).
 * **Taxminiy (gipotetik) kiritmalar:** suv byudjetlari, bozor cheklovi va demo xoʻjalik majburiyatlari — misollar, maʼlumot emas.
 * **Ssenariylar** oddiy: har kunga +1,5 °C (ET0, issiqlik, sovuq va SHY qayta hisoblangan); suv byudjeti −20 %. Narx yoki siyosat oʻzgarmaydi.
-* Foyda gektarga hisoblangan; subsidiya, kredit, ishchi kuchi va narx xavfi hisobga olinmagan. U **±15 % taxminiy oraliq** sifatida koʻrsatiladi; 3 000 USD/ga/yildan yuqori foyda **"bu raqamni tekshiring"** deb belgilanadi.
+* Paxtaga 2025 yilgi davlat subsidiyasi (1 000 soʻm/kg) qoʻshilgan; baribir uning foydasi past — bu paxta rentabelligi haqidagi haqiqiy bahsga mos. Yangi sabzavot hosili × 0,7 (ochiq dala, taxminiy).
+* Foyda gektarga hisoblangan; boshqa subsidiya, kredit, ishchi kuchi va narx xavfi hisobga olinmagan. U **±15 % taxminiy oraliq** sifatida koʻrsatiladi; 3 000 USD/ga/yildan yuqori foyda **"bu raqamni tekshiring"** deb belgilanadi.
 * **Maydon ulushi:** xoʻjalik rejani 5 ta boʻlakda, har biri bir yil orqada yuritadi deb faraz qilinadi; k yil ekilgan ekin har yili maydonning k/5 qismini egallaydi. Pomidor, kartoshka, piyoz va qovun maydonning 25 % i bilan cheklangan (= 5 yilda 1 yil). Dukkaklilar (noʻxat, mosh, beda) narxi proksi boʻlgani uchun vaqtincha 40 % (= 5 yilda 2 yil) bilan cheklangan — haqiqiy mahalliy narxlar `config/local_prices.csv` ga kiritilguncha.
 """},
 }

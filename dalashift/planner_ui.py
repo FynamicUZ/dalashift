@@ -10,6 +10,7 @@ import yaml
 from plotly.subplots import make_subplots
 
 from .i18n import CROP_NAMES, field_label, t
+from .baseline import compare, evaluate_usual, water_deficit
 from .planner import CONFIG, load_planner_config, plan_farm
 
 # validated categorical slots 1-3 (blue, orange, aqua); comparison plan in neutral gray
@@ -232,6 +233,11 @@ def render(lang: str, pid: str, planner_data: dict) -> None:
 
     rb = res.get("repeat_best")
     _plan_metrics(plan, rb, lang, rate)
+    usual = evaluate_usual(planner_data["points"][point_id]["baseline"], float(budget), float(rate), int(fresh))
+    c = compare(plan, usual)
+    deficit = water_deficit(usual, float(budget))
+    st.caption("🔁 " + t("pl_vs_usual", lang, i=(f"{c['income_pct']:+.0f} %" if c["income_pct"] is not None else "–"),
+                             w=f"{c['water_pct']:+.0f} %", d=(t("pl_usual_deficit", lang, n=deficit) if deficit > 0 else "")))
     _soft_note(plan, lang)
 
     # comparison

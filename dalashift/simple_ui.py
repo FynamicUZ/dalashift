@@ -14,7 +14,7 @@ import pandas as pd
 import streamlit as st
 import yaml
 
-from .baseline import compare, evaluate_usual
+from .baseline import compare, evaluate_usual, water_deficit
 from .crops import load_crop_table
 from .i18n import CROP_NAMES, DISTRICTS, MONTHS
 from .planner import CONFIG, load_planner_config
@@ -136,6 +136,7 @@ FT = {
     "conservative": {"uz": "taxminan, ehtiyotkor hisob", "en": "approx., conservative estimate"},
     "band": {"uz": "oraliq ±15 %: {lo}–{hi} mln", "en": "range ±15 %: {lo}–{hi} mln"},
     "vs_usual": {"uz": "Odatiy almashlab ekishga nisbatan", "en": "Compared with your usual rotation"},
+    "usual_short": {"uz": "suvingiz yetmaydi: paxta yilida {n} ming tonna kam", "en": "not enough water: {n} thousand tonnes short in cotton years"},
     "c_income": {"uz": "Daromad", "en": "Income"},
     "c_water": {"uz": "Suv", "en": "Water"},
     "c_risk": {"uz": "Xavf", "en": "Risk"},
@@ -296,7 +297,7 @@ def _timeline(plan: dict, point: dict, budget: float, lang: str) -> str:
     return f"<div class='f-steps'>{''.join(steps)}</div>"
 
 
-def _comparison(cmp: dict, usual: dict, lang: str) -> str:
+def _comparison(cmp: dict, usual: dict, lang: str, deficit: float = 0.0) -> str:
     inc, inc_col = pct_text(cmp["income_pct"], lang)
     wp = cmp["water_pct"]
     wat = ft("same", lang) if abs(wp) < 3 else f"{wp:+.0f} %"
@@ -304,7 +305,10 @@ def _comparison(cmp: dict, usual: dict, lang: str) -> str:
     risk_col = {"low": OK, "medium": WARN, "high": BAD}[cmp["risk_plan"]]
     usual_name = " ↔ ".join(dict.fromkeys(CROP_NAMES[k][lang] for k in usual["sequence"]))
     return (f"<div class='f-cmp'><div><div class='l'>{ft('vs_usual', lang)}</div>"
-            f"<div class='v' style='font-size:.95rem'>{usual_name}</div></div>"
+            f"<div class='v' style='font-size:.95rem'>{usual_name}</div>"
+            + (f"<div style='color:{BAD};font-size:.8rem;font-weight:600;margin-top:2px'>"
+               f"{ft('usual_short', lang, n=fmt_mln(round(deficit / 100) / 10, lang))}</div>" if deficit > 0 else "")
+            + "</div>"
             f"<div><div class='l'>{icon('coins', MUTED, 14)} {ft('c_income', lang)}</div><div class='v' style='color:{inc_col}'>{inc}</div></div>"
             f"<div><div class='l'>{icon('drop', MUTED, 14)} {ft('c_water', lang)}</div><div class='v' style='color:{wat_col}'>{wat}</div></div>"
             f"<div><div class='l'>{icon('shield', MUTED, 14)} {ft('c_risk', lang)}</div>"
@@ -394,7 +398,7 @@ def render(lang: str, planner_data: dict, summary: dict, points: pd.DataFrame) -
                 f"<div class='f-money'>≈ {fmt_mln(low, lang)} {ft('mln', lang)}</div>"
                 f"<div class='f-sub'>{ft('conservative', lang)} · "
                 f"{ft('band', lang, lo=fmt_mln(lo_b, lang), hi=fmt_mln(hi_b, lang))}</div></div>"
-                f"{_comparison(cmp, usual, lang)}</div>", unsafe_allow_html=True)
+                f"{_comparison(cmp, usual, lang, water_deficit(usual, budget))}</div>", unsafe_allow_html=True)
 
     if must and out["status"] == "ok":
         cc = (res.get("constraint_cost") or {}).get(kind)

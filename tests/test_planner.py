@@ -288,12 +288,15 @@ def test_local_prices_override_faostat(tmp_path):
     f.write_text("crop,price_usd_per_t,source,date\nchickpea,700,test market,2026-11-14\n")
     t = load_crop_table(CROPS_CSV, f)
     assert t.loc["chickpea", "price_usd_t"] == 700 and "test market" in t.loc["chickpea", "price_source"]
-    assert t.loc["cotton", "price_usd_t"] == TABLE.loc["cotton", "price_usd_t"]
+    assert t.loc["cotton", "price_usd_t"] == pd.read_csv(CROPS_CSV).set_index("crop").loc["cotton", "price_usd_t"]
 
 
-def test_local_prices_file_ships_with_headers_only():
+def test_local_prices_file_is_sourced():
     lp = pd.read_csv(ROOT / "config" / "local_prices.csv")
     assert list(lp.columns) == ["crop", "price_usd_per_t", "source", "date"]
+    assert lp["source"].str.len().gt(20).all() and lp["date"].notna().all()
+    cot = lp.set_index("crop").loc["cotton"]
+    assert 369.6 < cot["price_usd_per_t"] < 369.6 + 100          # FAOSTAT + 1,000 so'm/kg subsidy
 
 
 # ------------------------------------------------------------------ retail -> farm-gate prices (manual entry)
@@ -325,7 +328,7 @@ def test_retail_price_becomes_farm_gate_price(tmp_path):
     assert t.loc["tomato", "price_usd_t"] == pytest.approx(10000 * 0.50 * 1000 / 12500)     # per-crop share
     faostat = pd.read_csv(CROPS_CSV).set_index("crop")["price_usd_t"]
     assert t.loc["onion", "price_usd_t"] == faostat["onion"]                                # empty row -> FAOSTAT
-    assert t.loc["cotton", "price_usd_t"] == TABLE.loc["cotton", "price_usd_t"]
+    assert t.loc["cotton", "price_usd_t"] == pd.read_csv(CROPS_CSV).set_index("crop").loc["cotton", "price_usd_t"]
     assert "carrot" not in t.index
     assert t.loc["chickpea", "price_status"] == "approximate" and "Test bazaar" in t.loc["chickpea", "price_source"]
 

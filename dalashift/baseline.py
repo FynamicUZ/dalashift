@@ -1,7 +1,7 @@
 """'Your usual rotation' baseline for the farmer view (presentation helper, no new modelling).
 
-The usual Uzbek rotation is winter wheat <-> cotton. Where cotton's net water need is above the
-farm's water, the farmer would grow maize instead, and where maize does not fit either, barley.
+The usual Uzbek rotation is winter wheat <-> cotton, in every district. Where cotton needs more
+water than the farm has, the baseline is still shown (with the deficit), because it is what farms do.
 The baseline is evaluated with the same planner (same yields, prices, rotation effects), but it is
 NOT required to obey the rotation rules: it is what farms do today, not a recommendation.
 """
@@ -13,12 +13,13 @@ RISK = {"low": 0, "medium": 1, "high": 2}
 
 
 def usual_rotation(metrics: dict, budget: float) -> list[str]:
-    second = "barley"
-    for c in ("cotton", "maize"):
-        if metrics[c]["fits"] and metrics[c]["need_m3ha"] <= budget:
-            second = c
-            break
-    return ["winter_wheat", second, "winter_wheat", second, "winter_wheat"]
+    """What farms actually do: winter wheat <-> cotton (even where cotton needs more water than the farm has)."""
+    return ["winter_wheat", "cotton", "winter_wheat", "cotton", "winter_wheat"]
+
+
+def water_deficit(usual: dict, budget: float) -> float:
+    """m3/ha by which the thirstiest year of the usual rotation exceeds the farm's water (0 if it fits)."""
+    return max(max(y["water"] for y in usual["years"]) - budget, 0.0)
 
 
 def evaluate_usual(metrics: dict, budget: float, discount_rate: float, max_fresh_years: int) -> dict:

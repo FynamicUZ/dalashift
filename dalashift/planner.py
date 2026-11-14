@@ -117,7 +117,10 @@ def build_options(metrics: dict, table: pd.DataFrame, rules: dict, cfg: dict) ->
             key="+".join(crops), crops=crops,
             fits=all(m["fits"] for m in ms),
             water=float(sum(m["need_m3ha"] for m in ms)),
-            revenue=float(sum(r["yield_t_ha"] * r["price_usd_t"] * f for r, f in zip(rows, cf))),
+            revenue=float(sum(r["yield_t_ha"] * r["price_usd_t"] * f
+                              * (cfg.get("fresh_yield_realism_factor", 1.0)
+                                 if str(r["local_market_tag"]).startswith("fresh") else 1.0)
+                              for r, f in zip(rows, cf))),
             cost=float(sum(r["cost_usd_ha"] for r in rows)),
             family_bits=int(np.bitwise_or.reduce([bit[r["family"]] for r in rows])),
             family_rule_bits=int(np.bitwise_or.reduce([0 if c in exempt else bit[r["family"]]
