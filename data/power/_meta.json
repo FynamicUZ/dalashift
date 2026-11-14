@@ -1,0 +1,132 @@
+{
+  "Nukus_field1": {
+    "elevation_m": 71.09,
+    "units": {
+      "T2M_MAX": "C",
+      "T2M_MIN": "C",
+      "T2M": "C",
+      "PRECTOTCORR": "mm/day",
+      "EVPTRNS": "MJ/m^2/day",
+      "RH2M": "%",
+      "WS2M": "m/s",
+      "ALLSKY_SFC_SW_DWN": "MJ/m^2/day"
+    }
+  },
+  "Nukus_field2": {
+    "elevation_m": 61.86,
+    "units": {
+      "T2M_MAX": "C",
+      "T2M_MIN": "C",
+      "T2M": "C",
+      "PRECTOTCORR": "mm/day",
+      "EVPTRNS": "MJ/m^2/day",
+      "RH2M": "%",
+      "WS2M": "m/s",
+      "ALLSKY_SFC_SW_DWN": "MJ/m^2/day"
+    }
+  },
+  "Urgench_field1": {
+    "elevation_m": 100.94,
+    "units": {
+      "T2M_MAX": "C",
+      "T2M_MIN": "C",
+      "T2M": "C",
+      "PRECTOTCORR": "mm/day",
+      "EVPTRNS": "MJ/m^2/day",
+      "RH2M": "%",
+      "WS2M": "m/s",
+      "ALLSKY_SFC_SW_DWN": "MJ/m^2/day"
+    }
+  },
+  "Urgench_field2": {
+    "elevation_m": 100.94,
+    "units": {
+      "T2M_MAX": "C",
+      "T2M_MIN": "C",
+      "T2M": "C",
+      "PRECTOTCORR": "mm/day",
+      "EVPTRNS": "MJ/m^2/day",
+      "RH2M": "%",
+      "WS2M": "m/s",
+      "ALLSKY_SFC_SW_DWN": "MJ/m^2/day"
+    }
+  },
+  "Gulistan_field1": {
+    "elevation_m": 291.86,
+    "units": {
+      "T2M_MAX": "C",
+      "T2M_MIN": "C",
+      "T2M": "C",
+      "PRECTOTCORR": "mm/day",
+      "EVPTRNS": "MJ/m^2/day",
+      "RH2M": "%",
+      "WS2M": "m/s",
+      "ALLSKY_SFC_SW_DWN": "MJ/m^2/day"
+    }
+  },
+  "Gulistan_field2": {
+    "elevation_m": 291.86,
+    "units": {
+      "T2M_MAX": "C",
+      "T2M_MIN": "C",
+      "T2M": "C",
+      "PRECTOTCORR": "mm/day",
+      "EVPTRNS": "MJ/m^2/day",
+      "RH2M": "%",
+      "WS2M": "m/s",
+      "ALLSKY_SFC_SW_DWN": "MJ/m^2/day"
+    }
+  },
+  "Fergana_field1": {
+    "elevation_m": 718.68,
+    "units": {
+      "T2M_MAX": "C",
+      "T2M_MIN": "C",
+      "T2M": "C",
+      "PRECTOTCORR": "mm/day",
+      "EVPTRNS": "MJ/m^2/day",
+      "RH2M": "%",
+      "WS2M": "m/s",
+      "ALLSKY_SFC_SW_DWN": "MJ/m^2/day"
+    }
+  },
+  "Fergana_field2": {
+    "elevation_m": 718.68,
+    "units": {
+      "T2M_MAX": "C",
+      "T2M_MIN": "C",
+      "T2M": "C",
+      "PRECTOTCORR": "mm/day",
+      "EVPTRNS": "MJ/m^2/day",
+      "RH2M": "%",
+      "WS2M": "m/s",
+      "ALLSKY_SFC_SW_DWN": "MJ/m^2/day"
+    }
+  },
+  "Karshi_field1": {
+    "elevation_m": 351.25,
+    "units": {
+      "T2M_MAX": "C",
+      "T2M_MIN": "C",
+      "T2M": "C",
+      "PRECTOTCORR": "mm/day",
+      "EVPTRNS": "MJ/m^2/day",
+      "RH2M": "%",
+      "WS2M": "m/s",
+      "ALLSKY_SFC_SW_DWN": "MJ/m^2/day"
+    }
+  },
+  "Karshi_field2": {
+    "elevation_m": 351.25,
+    "units": {
+      "T2M_MAX": "C",
+      "T2M_MIN": "C",
+      "T2M": "C",
+      "PRECTOTCORR": "mm/day",
+      "EVPTRNS": "MJ/m^2/day",
+      "RH2M": "%",
+      "WS2M": "m/s",
+      "ALLSKY_SFC_SW_DWN": "MJ/m^2/day"
+    }
+  }
+}
