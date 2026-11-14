@@ -44,9 +44,11 @@ All rules are transparent and live in [`dalashift/`](dalashift/) and [`config/`]
 - Effective rain uses the USDA-SCS monthly method (the FAO CROPWAT 8 default) and is capped at each month's crop water use.
 - Rice adds a rough 500 mm for paddy soaking and percolation.
 
-**Climate Fit.** A crop fits if both hold, using fixed typical sowing dates:
+**Sowing window.** Each crop has a typical Uzbek sowing window in `config/crops.csv` (cotton 1–20 April; potato 1–20 March **or** a summer planting 25 June–15 July; maize 10 April–10 May; …). The engine tries every 5th day in the window and keeps, per site, the date with the best Climate Fit (ties → closest to the usual date). One date is used for all years of the period, so there is no hindsight. Winter cereals keep a fixed date (see the wheat sowing-shift chart).
+
+**Climate Fit.** A crop fits if both hold:
 - its heat requirement (GDD) is met in ≥ 80 % of years (winter cereals are counted up to a latest harvest date, because cool years ripen later rather than fail);
-- in-season frost (frost-sensitive crops) hits ≤ 20 % of years.
+- frost (Tmin ≤ 0 °C) between **emergence and harvest** hits ≤ 20 % of years (frost-sensitive crops). Frost between sowing and emergence (`emergence_days`, e.g. cotton 10 d, potato 21 d) is not counted: the seed or tuber is still in the soil.
 
 **Winterkill (winter wheat, barley) is a risk warning, not an exclusion.** The app shows the % of winters with air Tmin below
 an approximate limit (−25 °C for hardened winter wheat). This lowers the score slightly but never removes wheat,
@@ -145,7 +147,7 @@ The engine is the same for both farms, but they get different plans. With 20 % l
 - **Rotation health is a rule score, not a soil model.** It does not simulate soil carbon, nitrogen, salinity or pests.
 - **Prices and costs.** FAOSTAT national averages and annual prices; the tomato price probably overstates open-field farm-gate prices. **All costs are placeholders.** Profit ignores subsidies, credit, labour limits and price risk.
 - **Hypothetical inputs.** Water budgets, the fresh-market limit (2 of 5 years) and demo-farm obligations are examples, not data.
-- **Frost check.** It counts any frost after the fixed sowing date, including before emergence, which is conservative for early spring crops such as potato.
+- **Frost check.** Frost counts from emergence to harvest at one sowing date per site; emergence days and sowing windows are approximate. Air Tmin is a proxy for canopy temperature.
 - **Rain QC.** A few implausible `PRECTOTCORR` spikes above 80 mm/day were removed (0–3 days per point).
 
 ## Run locally

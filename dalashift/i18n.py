@@ -98,14 +98,14 @@ T = {
 * **Coarse climate grid.** NASA POWER weather is ~50 km (MERRA-2 0.5°×0.625°). Fields in the same cell share one district climate profile; it cannot see your field's soil, salinity or irrigation. Field-level differences come from the satellite layers (SMAP, ECOSTRESS, HLS).
 * **Desert bias.** The reanalysis model has no irrigation, so over irrigated oases its Tmax and ET0 are likely too high (roughly 10–20 %). Use the water numbers to *compare crops*; the ranking is robust to a uniform bias.
 * **Net water only.** m³/ha is the *net* crop need (FAO-56 ETc − effective rain). Real field delivery is higher: furrow irrigation efficiency is often 50–60 %, plus leaching for salinity.
-* **Rules, not yields.** Fit = heat sum, frost window and heat days with simple thresholds; it does not predict yield, price or market. Sowing dates are fixed typical dates.
+* **Rules, not yields.** Fit = heat sum, frost window and heat days with simple thresholds; it does not predict yield, price or market. The sowing date is the best date inside each crop's typical Uzbek sowing window (e.g. cotton 1–20 April, potato early March or a summer planting); frost counts only between emergence and harvest.
 * **Rain QC.** A few spurious POWER rain spikes (> 80 mm/day) were removed.
 * Talk to your local agronomist / water user association before changing crops.
 """, "uz": """
 * **Iqlim katagi yirik.** NASA POWER obi-havosi ~50 km (MERRA-2 0,5°×0,625°). Bitta katakdagi dalalar bitta tuman iqlim profiliga ega; tuproq, shoʻrlanish va sugʻorishni koʻrmaydi. Dala darajasidagi farqlar sunʼiy yoʻldosh qatlamlaridan (SMAP, ECOSTRESS, HLS) keladi.
 * **Choʻl xatoligi.** Reanaliz modelida sugʻorish yoʻq, shuning uchun vohalarda Tmax va ET0 taxminan 10–20 % yuqori boʻlishi mumkin. Suv raqamlaridan ekinlarni *solishtirish* uchun foydalaning.
 * **Faqat sof suv.** m³/ga — ekinning *sof* ehtiyoji (FAO-56 ETc − samarali yogʻin). Dalaga beriladigan suv koʻproq: egat sugʻorishda FIK koʻpincha 50–60 %, shoʻr yuvish ham kerak.
-* **Qoidalar, hosil emas.** Moslik — issiqlik yigʻindisi, sovuq oynasi va issiq kunlar; hosil, narx yoki bozorni bashorat qilmaydi.
+* **Qoidalar, hosil emas.** Moslik — issiqlik yigʻindisi, sovuq oynasi va issiq kunlar; hosil, narx yoki bozorni bashorat qilmaydi. Ekish sanasi — har bir ekinning odatiy ekish oynasi ichidagi eng yaxshi sana (masalan, paxta 1–20 aprel, kartoshka mart boshi yoki yozgi ekish); sovuq faqat unib chiqqandan yigʻimgacha hisoblanadi.
 * **Yogʻin nazorati.** POWER dagi bir nechta notoʻgʻri yogʻin choʻqqilari (> 80 mm/kun) olib tashlandi.
 * Ekinni oʻzgartirishdan oldin mahalliy agronom / suv isteʼmolchilari uyushmasi bilan maslahatlashing.
 """},

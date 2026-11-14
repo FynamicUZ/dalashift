@@ -5,7 +5,8 @@ For each field point, period ('then' / 'now'), crop and season-year:
   Peff  = monthly effective rainfall            USDA-SCS method (FAO CROPWAT 8 default), capped at monthly ETc
   Need  = ETc - Peff + extra                    net irrigation need, mm  ->  x10 = m3/ha
   GDD   = sum(max(Tmean - Tbase, 0))            vs crop minimum  -> season fits?
-  Frost = any Tmin <= 0 degC inside the season  (frost-sensitive crops) / winterkill Tmin
+  Frost = any Tmin <= 0 degC between emergence and harvest (frost-sensitive crops) / winterkill Tmin
+  Sowing date = best date inside the crop's typical Uzbek sowing window(s) (config/crops.csv)
   Heat  = days with Tmax > crop threshold inside the mid (flowering / grain-fill) stage
 Results are averaged over all season-years of the period.
 """
@@ -63,21 +64,35 @@ def net_need(df: pd.DataFrame, s: pd.DataFrame, etc_daily: np.ndarray) -> tuple[
 
 
 # ---------------------------------------------------------------- one season
-def season_years(crop: Crop, period: str, df: pd.DataFrame) -> list[int]:
+def sow_candidates(crop: Crop) -> list[tuple[int, int]]:
+    """Sowing dates tried for a crop: every 5 days inside each typical sowing window (plus the
+    window end). Crops without a window (winter cereals) keep their fixed typical date."""
+    if not crop.sow_windows:
+        return [crop.sow]
+    out = []
+    for a, b in crop.sow_windows:
+        d0, d1 = pd.Timestamp(2001, *a), pd.Timestamp(2001, *b)
+        days = list(pd.date_range(d0, d1, freq="5D"))
+        if days[-1] != d1:
+            days.append(d1)
+        out += [(d.month, d.day) for d in days]
+    return out
+
+
+def season_years(crop: Crop, period: str, df: pd.DataFrame, sow_md: tuple[int, int] | None = None) -> list[int]:
     a, b = PERIODS[period]
     years = []
     for y in range(a, b + 1):
-        start, end = season_window(crop, y)
+        start, end = season_window(crop, y, sow_md)
         if start >= df.index.min() and end <= df.index.max():
             years.append(y)
     return years
 
 
-def season_window(crop: Crop, year: int, sow: pd.Timestamp | None = None):
-    """Season keyed by harvest year (winter wheat sown in year-1)."""
-    if sow is None:
-        sow_year = year - 1 if crop.overwinter else year
-        sow = pd.Timestamp(sow_year, *crop.sow)
+def season_window(crop: Crop, year: int, sow_md: tuple[int, int] | None = None):
+    """Season keyed by harvest year (winter wheat sown in year-1). Returns (sowing, harvest)."""
+    sow_year = year - 1 if crop.overwinter else year
+    sow = pd.Timestamp(sow_year, *(sow_md or crop.sow))
     return sow, sow + pd.Timedelta(days=crop.season_days - 1)
 
 
@@ -95,7 +110,10 @@ def simulate_season(crop: Crop, df: pd.DataFrame, start: pd.Timestamp, end: pd.T
     need += crop.extra_mm
     gdd_end = pd.Timestamp(end.year, *crop.latest_harvest) if crop.latest_harvest else end
     gdd = float(np.maximum(df.loc[start:gdd_end, "TMEAN"] - crop.gdd_base, 0).sum())
-    frost = bool((s["T2M_MIN"] <= 0).any()) if crop.frost_sensitive else False
+    # frost only damages the crop between EMERGENCE and harvest: before emergence the seed or
+    # tuber is still in the soil (a frost then is not counted)
+    emerged = s.iloc[crop.emergence_days:]
+    frost = bool((emerged["T2M_MIN"] <= 0).any()) if crop.frost_sensitive else False
     # winterkill is a RISK warning (lowers the score), not an exclusion: snow cover and
     # hardening often protect the crop, and air Tmin is only a proxy for crown temperature
     winterkill = bool((s["T2M_MIN"] < crop.winterkill_tmin).any()) if crop.winterkill_tmin is not None else False
@@ -109,8 +127,10 @@ def heat_flag(heat_days: float, mid_len: int) -> str:
     return "low" if frac < 0.15 else ("medium" if frac < 0.40 else "high")
 
 
-def evaluate_crop(crop: Crop, df: pd.DataFrame, period: str) -> dict:
-    runs = [simulate_season(crop, df, *season_window(crop, y)) for y in season_years(crop, period, df)]
+def evaluate_crop_at(crop: Crop, df: pd.DataFrame, period: str, sow_md: tuple[int, int]) -> dict:
+    """All season-years of a period for ONE fixed sowing date (the same date every year)."""
+    runs = [simulate_season(crop, df, *season_window(crop, y, sow_md))
+            for y in season_years(crop, period, df, sow_md)]
     r = pd.DataFrame(runs)
     p_gdd = float((r["gdd"] >= crop.min_gdd).mean())
     p_frost = float(r["frost"].mean())
@@ -121,12 +141,15 @@ def evaluate_crop(crop: Crop, df: pd.DataFrame, period: str) -> dict:
     # transparent fit score, 0-100
     fit_score = (100 - 50 * (1 - p_gdd) - 50 * p_frost - 25 * p_winterkill
                  - 60 * min(heat_days / mid_len, 0.5))
-    sow, end = season_window(crop, 2001)
+    sow, end = season_window(crop, 2001, sow_md)
     return {
         "crop": crop.key,
         "n_years": len(r),
         "sow": sow.strftime("%d %b"),
         "harvest": end.strftime("%d %b"),
+        "sow_window": [[pd.Timestamp(2001, *a).strftime("%d %b"), pd.Timestamp(2001, *b).strftime("%d %b")]
+                       for a, b in crop.sow_windows],
+        "emergence_days": crop.emergence_days,
         "season_days": crop.season_days,
         "etc_mm": round(float(r["etc"].mean()), 0),
         "peff_mm": round(float(r["peff"].mean()), 0),
@@ -147,6 +170,20 @@ def evaluate_crop(crop: Crop, df: pd.DataFrame, period: str) -> dict:
         "fit_score": round(max(fit_score, 0), 1),
         "second_crop": crop.second_crop,
     }
+
+
+def evaluate_crop(crop: Crop, df: pd.DataFrame, period: str) -> dict:
+    """Try every sowing date in the crop's typical window(s) and keep the best for this site:
+    fits first, then highest fit score, then the date closest to the usual sowing date.
+    ONE date is chosen for all years of the period (no hindsight per year)."""
+    usual = pd.Timestamp(2001, *crop.sow)
+    best, best_key = None, None
+    for md in sow_candidates(crop):
+        res = evaluate_crop_at(crop, df, period, md)
+        key = (not res["fits"], -res["fit_score"], abs((pd.Timestamp(2001, *md) - usual).days))
+        if best_key is None or key < best_key:
+            best, best_key = res, key
+    return best
 
 
 def rank(results: dict[str, dict]) -> list[str]:

@@ -47,6 +47,10 @@ class Crop:
     perennial: bool = False
     family: str = ""
     legume: bool = False
+    # sowing windows [((m, d), (m, d)), ...]; the engine picks the best date inside them per site.
+    # Empty = fixed date `sow` (winter cereals: see engine.wheat_sowing_shift).
+    sow_windows: tuple = ()
+    emergence_days: int = 0            # frost before emergence does not count (seed / tuber is in the soil)
 
     @property
     def season_days(self) -> int:
@@ -59,6 +63,16 @@ def _bool(v) -> bool:
 
 def _opt_float(v):
     return None if pd.isna(v) or str(v).strip() == "" else float(v)
+
+
+def _windows(v) -> tuple:
+    if not isinstance(v, str) or not v.strip():
+        return ()
+    out = []
+    for w in v.split(";"):
+        a, b = w.split(":")
+        out.append((tuple(int(x) for x in a.split("-")), tuple(int(x) for x in b.split("-"))))
+    return tuple(out)
 
 
 def load_crop_table(path: Path = CROPS_CSV) -> pd.DataFrame:
@@ -81,6 +95,7 @@ def load_crops(path: Path = CROPS_CSV) -> dict[str, Crop]:
             extra_mm=float(r.extra_water_mm), latest_harvest=lh,
             second_crop=r.role == "second_crop", overwinter=_bool(r.overwinter), perennial=r.role == "perennial",
             family=r.family, legume=_bool(r.legume),
+            sow_windows=_windows(r.sow_window), emergence_days=int(r.emergence_days),
         )
     return crops
 

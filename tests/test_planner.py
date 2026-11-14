@@ -129,10 +129,9 @@ def test_no_water_reports_no_feasible_plan():
 
 
 def test_navoi_less_water_reports_no_feasible_plan():
-    """Navoi demo: -20 % water leaves only cereals (no legume possible) -> must say infeasible."""
-    farm = FARMS["navoi"]
-    metrics = PLANNER["points"][farm["point"]]["baseline"]
-    budget = farm["water_budget_m3_ha"] * CFG["scenarios"]["less_water"]["water_factor"]
+    """Navoi, 4,800 m3/ha: only cereals fit the budget (no legume possible) -> must say infeasible."""
+    metrics = PLANNER["points"]["Navoi_field1"]["baseline"]
+    budget = 4800
     res = optimize(make_context(metrics, budget))
     assert res["status"] == "infeasible" and res["plans"] == {}
     assert "legume" in res["blocking"]
