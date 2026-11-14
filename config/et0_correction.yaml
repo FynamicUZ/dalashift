@@ -1,0 +1,27 @@
+# ET0 bias correction for crop water need (FAO-56 ETc = Kc x ET0).
+#
+# NASA POWER weather comes from MERRA-2, which has no irrigation. Over irrigated oases its air is
+# too hot and dry, so the Penman-Monteith ET0 computed from it is too high ("desert bias"), and
+# crop water needs come out too large (e.g. cotton at Karshi ~16,000 m3/ha net without correction).
+#
+# Order used for each climate profile (district / POWER cell):
+#   1. ECOSTRESS calibration, if data/appeears/ holds ECOSTRESS ETdaily for a field of that profile:
+#        factor = median(ECOSTRESS ETdaily, Jun-Aug clear-sky days)
+#               / median(POWER ET0 x Kc_mid of the reference crop, same days)
+#      label: "calibrated with ECOSTRESS"
+#   2. a per-site value below (key = field id, e.g. Karshi_field1, or district, e.g. Karshi)
+#   3. default_factor
+# The correction is applied to the crop engine and planner only. Screen 2 ("then vs now") keeps
+# the raw POWER ET0 because it compares two periods of the same data.
+
+default_factor: 0.80   # APPROXIMATE, provisional bias correction for MERRA-2 desert bias over irrigated land
+default_label: "approximate, provisional bias correction for MERRA-2 desert bias over irrigated land"
+
+sites: {}              # e.g.  Karshi: 0.80   or   Fergana_field1: 0.85   (editable)
+
+ecostress:
+  months: [6, 7, 8]          # June-August
+  reference_crop: cotton     # dominant crop: denominator = POWER ET0 x Kc_mid of this crop
+  min_days: 5                # fewer matched clear-sky days -> calibration not used
+  clip: [0.4, 1.2]           # safety limits for the calibrated factor
+  label: "calibrated with ECOSTRESS"

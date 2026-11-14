@@ -141,7 +141,7 @@ The three baseline plans are re-checked under each scenario (feasible or not, an
 | Karshi farm | Karshi_field1 (38.92 N, 65.62 E), Kashkadarya | 8,000 m³/ha (editable) | **hypothetical** |
 | Fergana farm | Fergana_field1 (40.49 N, 71.63 E) | 12,000 m³/ha (editable) | **hypothetical** |
 
-The engine is the same for both farms, but they get different plans: Fergana's water lets it grow high-value crops, while at Karshi the budget rules out cotton (its modelled net need is far above 8,000 m³/ha — see *Desert bias* under Limits).
+The engine is the same for both farms, but they get different plans: Fergana's water lets it grow high-value crops, while Karshi's 8,000 m³/ha budget limits the choice (see *Desert bias → ET0 correction* under Limits).
 
 ### Main references
 - Allen, R.G., Pereira, L.S., Raes, D., Smith, M. (1998). *Crop evapotranspiration — Guidelines for computing crop water requirements.* **FAO Irrigation and Drainage Paper 56.** FAO, Rome.
@@ -151,7 +151,7 @@ The engine is the same for both farms, but they get different plans: Fergana's w
 ## Limits (also shown in the app)
 
 - **Coarse grid.** NASA POWER weather is about 50 km (MERRA-2, 0.5° × 0.625°). Field pairs at Urgench, Gulistan, Fergana and Karshi fall in the same grid cell, so they share one district climate profile. Field-level differences come from the satellite layers (SMAP, ECOSTRESS, HLS).
-- **Desert bias.** The reanalysis has no irrigation, so Tmax and ET0 over irrigated oases are likely 10–20 % too high. The modelled actual ET (`EVPTRNS`) is close to zero there, so it is stored but not used. Treat the m³/ha values as a tool for **comparing crops**.
+- **Desert bias → ET0 correction.** The reanalysis has no irrigation, so Tmax and ET0 over irrigated oases are too high (without correction, cotton at Karshi needed ~16,300 m³/ha net). The crop engine and planner use **ET0 × 0.80**, an *approximate, provisional bias correction for MERRA-2 desert bias over irrigated land* ([`config/et0_correction.yaml`](config/et0_correction.yaml), editable per field or district). If `data/appeears/` holds ECOSTRESS `ETdaily` for a site, the factor is instead *calibrated with ECOSTRESS*: median(ECOSTRESS ETdaily, June–August clear-sky days) ÷ median(POWER ET0 × cotton Kc_mid, same days), clipped to 0.4–1.2, at least 5 days. Screen 2 keeps the raw ET0. The modelled actual ET (`EVPTRNS`) is close to zero there, so it is stored but not used.
 - **Net need only.** Values are net crop water need. Gross field delivery is higher: furrow irrigation efficiency is about 50–60 %, and salt leaching needs extra water.
 - **Rotation health is a rule score, not a soil model.** It does not simulate soil carbon, nitrogen, salinity or pests.
 - **Prices and costs.** FAOSTAT national averages and annual prices; the tomato price probably overstates open-field farm-gate prices. **All costs are placeholders.** Profit ignores subsidies, credit, labour limits and price risk.

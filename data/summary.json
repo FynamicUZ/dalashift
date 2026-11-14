@@ -699,6 +699,12 @@
       0.0
      ]
     }
+   },
+   "et0_correction": {
+    "factor": 0.8,
+    "method": "default",
+    "n_days": 0,
+    "label": "approximate, provisional bias correction for MERRA-2 desert bias over irrigated land"
    }
   },
   "Nukus_field2": {
@@ -1387,6 +1393,12 @@
       0.13
      ]
     }
+   },
+   "et0_correction": {
+    "factor": 0.8,
+    "method": "default",
+    "n_days": 0,
+    "label": "approximate, provisional bias correction for MERRA-2 desert bias over irrigated land"
    }
   },
   "Urgench_field1": {
@@ -2076,6 +2088,12 @@
       0.03
      ]
     }
+   },
+   "et0_correction": {
+    "factor": 0.8,
+    "method": "default",
+    "n_days": 0,
+    "label": "approximate, provisional bias correction for MERRA-2 desert bias over irrigated land"
    }
   },
   "Urgench_field2": {
@@ -2765,6 +2783,12 @@
       0.03
      ]
     }
+   },
+   "et0_correction": {
+    "factor": 0.8,
+    "method": "default",
+    "n_days": 0,
+    "label": "approximate, provisional bias correction for MERRA-2 desert bias over irrigated land"
    }
   },
   "Gulistan_field1": {
@@ -3454,6 +3478,12 @@
       0.02
      ]
     }
+   },
+   "et0_correction": {
+    "factor": 0.8,
+    "method": "default",
+    "n_days": 0,
+    "label": "approximate, provisional bias correction for MERRA-2 desert bias over irrigated land"
    }
   },
   "Gulistan_field2": {
@@ -4143,6 +4173,12 @@
       0.02
      ]
     }
+   },
+   "et0_correction": {
+    "factor": 0.8,
+    "method": "default",
+    "n_days": 0,
+    "label": "approximate, provisional bias correction for MERRA-2 desert bias over irrigated land"
    }
   },
   "Fergana_field1": {
@@ -4832,6 +4868,12 @@
       0.01
      ]
     }
+   },
+   "et0_correction": {
+    "factor": 0.8,
+    "method": "default",
+    "n_days": 0,
+    "label": "approximate, provisional bias correction for MERRA-2 desert bias over irrigated land"
    }
   },
   "Fergana_field2": {
@@ -5521,6 +5563,12 @@
       0.01
      ]
     }
+   },
+   "et0_correction": {
+    "factor": 0.8,
+    "method": "default",
+    "n_days": 0,
+    "label": "approximate, provisional bias correction for MERRA-2 desert bias over irrigated land"
    }
   },
   "Karshi_field1": {
@@ -6210,6 +6258,12 @@
       0.03
      ]
     }
+   },
+   "et0_correction": {
+    "factor": 0.8,
+    "method": "default",
+    "n_days": 0,
+    "label": "approximate, provisional bias correction for MERRA-2 desert bias over irrigated land"
    }
   },
   "Karshi_field2": {
@@ -6899,6 +6953,12 @@
       0.03
      ]
     }
+   },
+   "et0_correction": {
+    "factor": 0.8,
+    "method": "default",
+    "n_days": 0,
+    "label": "approximate, provisional bias correction for MERRA-2 desert bias over irrigated land"
    }
   },
   "Navoi_field1": {
@@ -7587,6 +7647,12 @@
       0.0
      ]
     }
+   },
+   "et0_correction": {
+    "factor": 0.8,
+    "method": "default",
+    "n_days": 0,
+    "label": "approximate, provisional bias correction for MERRA-2 desert bias over irrigated land"
    }
   }
  },

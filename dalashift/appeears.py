@@ -3,6 +3,8 @@
 Expected (any subset):
   * SMAP L4 (SPL4SMGP)        -> column ending in 'sm_rootzone'                [m3/m3]
   * ECOSTRESS ESI             -> column ending in 'ESI' or 'ESIavg'             [-]
+  * ECOSTRESS ET (PT-JPL)     -> column ending in 'ETdaily'                     [mm/day; W/m2 converted]
+                                 (used to calibrate the ET0 bias correction, dalashift/et0_correction.py)
   * HLS L30 / S30             -> column containing 'NDVI', or computed from
                                  B04 (red) and B05 (L30 NIR) / B8A (S30 NIR)
 Rows are matched to field points by the AppEEARS 'ID' column (use data/appeears_points.csv
@@ -16,7 +18,15 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-VARS = ("sm", "esi", "ndvi")
+VARS = ("sm", "esi", "ndvi", "etdaily")
+W_M2_TO_MM_DAY = 86400 / 2.45e6   # latent heat flux W/m2 -> mm/day of water
+
+
+def etdaily_mm(values: pd.Series) -> pd.Series:
+    """ECOSTRESS ETdaily is W/m2 in collection 1 (ECO3ETPTJPL) and mm/day in collection 2.
+    A column whose median is above 30 can only be W/m2 and is converted."""
+    v = pd.to_numeric(values, errors="coerce")
+    return v * W_M2_TO_MM_DAY if v.median() > 30 else v
 
 
 def _find(cols, pattern):
@@ -63,6 +73,8 @@ def load_appeears(folder: Path, points: pd.DataFrame) -> pd.DataFrame:
             series["sm"] = _clean(df[c])
         if c := _find(df.columns, r"(_|^)ESI(avg)?$"):
             series["esi"] = _clean(df[c])
+        if c := _find(df.columns, r"ETdaily$"):
+            series["etdaily"] = etdaily_mm(_clean(df[c]))
         if c := _find(df.columns, r"NDVI"):
             series["ndvi"] = _clean(df[c])
         else:

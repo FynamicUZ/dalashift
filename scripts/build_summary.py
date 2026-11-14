@@ -20,7 +20,9 @@ sys.path.insert(0, str(ROOT))
 
 from dalashift.climate import (PERIODS, PRECIP_QC_MAX, annual_indicators, doy_to_date,  # noqa: E402
                                load_point, monthly_climatology, period_mean, warmed)
+from dalashift.appeears import load_appeears  # noqa: E402
 from dalashift.crops import CROPS  # noqa: E402
+from dalashift.et0_correction import apply as apply_et0, et0_factor, load_config as et0_config  # noqa: E402
 from dalashift.engine import evaluate_crop, recommend_point  # noqa: E402
 
 HOTTER_DT = float(yaml.safe_load((ROOT / 'config' / 'planner.yaml').read_text())['scenarios']['hotter']['delta_t_c'])
@@ -57,6 +59,8 @@ def main() -> None:
     # Fields whose POWER files are byte-identical sit in the same MERRA-2 grid cell
     # (0.5 deg x 0.625 deg). They get ONE climate profile, computed at the cells' mean location;
     # field-level differences must come from the satellite layers (SMAP, ECOSTRESS, HLS).
+    appeears = load_appeears(DATA / "appeears", pts)
+    et0_cfg = et0_config()
     pts["hash"] = [hashlib.md5((DATA / "power" / f"{i}.csv").read_bytes()).hexdigest() for i in pts["id"]]
     summary["cells"] = {}
     for _, g in pts.groupby("hash", sort=False):
@@ -80,9 +84,14 @@ def main() -> None:
             "annual": {"year": ann.index.tolist(), **{c: ann[c].tolist() for c in ann.columns}},
             "monthly": {p: monthly_climatology(df, p) for p in PERIODS},
         }
-        rec = recommend_point(df)
+        # crop engine + planner use bias-corrected ET0 (config/et0_correction.yaml); the climate
+        # shift above keeps the raw POWER ET0 (it compares two periods of the same data)
+        corr = et0_factor(fields, district, df, appeears, et0_cfg)
+        climate["et0_correction"] = corr
+        rec = recommend_point(apply_et0(df, corr["factor"]))
+        rec["et0_correction"] = corr
         # planner inputs: 'now' climate (baseline) and the same climate warmed by HOTTER_DT
-        hot = warmed(df, lat, elev, HOTTER_DT)
+        hot = apply_et0(warmed(df, lat, elev, HOTTER_DT), corr["factor"])
         plan_in = {
             "baseline": {k: {f: rec["crops"]["now"][k][f] for f in PLANNER_KEYS} for k in CROPS},
             "hotter": {k: {f: v[f] for f in PLANNER_KEYS}
@@ -92,8 +101,8 @@ def main() -> None:
         for row in g.itertuples():
             summary["points"][row.id] = {"lat": row.lat, "lon": row.lon, **climate}
             recs["points"][row.id] = {"cell_id": cell_id, **rec}
-            planner["points"][row.id] = {"cell_id": cell_id, **plan_in}
-        print(f"{cell_id:16s} {fields} hot days {then['hot_days']:5.1f} -> {now['hot_days']:5.1f} | "
+            planner["points"][row.id] = {"cell_id": cell_id, "et0_correction": corr, **plan_in}
+        print(f"{cell_id:16s} ET0 x{corr['factor']} ({corr['method']}) {fields} hot days {then['hot_days']:5.1f} -> {now['hot_days']:5.1f} | "
               f"GDD10 {then['gdd10']} -> {now['gdd10']} | top: {rec['ranking']['now'][:3]}")
 
     (DATA / "summary.json").write_text(json.dumps(clean(summary), indent=1))

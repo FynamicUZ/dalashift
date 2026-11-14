@@ -161,6 +161,11 @@ def render(lang: str, pid: str, planner_data: dict) -> None:
         pt = planner_data["coords"][point_id]
         st.warning("🧪 " + t("pl_demo_note", lang, lat=pt[0], lon=pt[1], note=f["note"][lang]))
 
+    corr = planner_data["points"][point_id].get("et0_correction")
+    if corr:
+        st.caption("💧 " + t("pl_et0_note", lang, f=corr["factor"],
+                             label=t("pl_et0_ecostress" if corr["method"] == "ecostress" else "pl_et0_provisional", lang)))
+
     c1, c2, c3 = st.columns(3)
     budget = c1.number_input(t("pl_budget", lang), min_value=0, max_value=40000, value=int(d_budget), step=500,
                              key=f"pl_budget_{choice}")

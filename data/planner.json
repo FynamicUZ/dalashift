@@ -5,10 +5,16 @@
  "points": {
   "Nukus_field1": {
    "cell_id": "Nukus_field1",
+   "et0_correction": {
+    "factor": 0.8,
+    "method": "default",
+    "n_days": 0,
+    "label": "approximate, provisional bias correction for MERRA-2 desert bias over irrigated land"
+   },
    "baseline": {
     "cotton": {
      "fits": true,
-     "need_m3ha": 13250,
+     "need_m3ha": 10520,
      "heat_risk": "high",
      "heat_days": 32.4,
      "heat_tmax": 38.0,
@@ -22,7 +28,7 @@
     },
     "winter_wheat": {
      "fits": true,
-     "need_m3ha": 5260,
+     "need_m3ha": 4090,
      "heat_risk": "medium",
      "heat_days": 7.2,
      "heat_tmax": 32.0,
@@ -36,7 +42,7 @@
     },
     "barley": {
      "fits": true,
-     "need_m3ha": 3890,
+     "need_m3ha": 3010,
      "heat_risk": "low",
      "heat_days": 3.5,
      "heat_tmax": 32.0,
@@ -50,7 +56,7 @@
     },
     "maize": {
      "fits": true,
-     "need_m3ha": 10700,
+     "need_m3ha": 8510,
      "heat_risk": "high",
      "heat_days": 40.7,
      "heat_tmax": 35.0,
@@ -64,7 +70,7 @@
     },
     "rice": {
      "fits": true,
-     "need_m3ha": 18410,
+     "need_m3ha": 15680,
      "heat_risk": "high",
      "heat_days": 44.2,
      "heat_tmax": 35.0,
@@ -78,7 +84,7 @@
     },
     "sorghum": {
      "fits": true,
-     "need_m3ha": 8270,
+     "need_m3ha": 6590,
      "heat_risk": "medium",
      "heat_days": 13.1,
      "heat_tmax": 40.0,
@@ -92,7 +98,7 @@
     },
     "sunflower": {
      "fits": true,
-     "need_m3ha": 8720,
+     "need_m3ha": 6920,
      "heat_risk": "high",
      "heat_days": 30.3,
      "heat_tmax": 37.0,
@@ -106,7 +112,7 @@
     },
     "mung_bean": {
      "fits": true,
-     "need_m3ha": 5130,
+     "need_m3ha": 4090,
      "heat_risk": "low",
      "heat_days": 2.4,
      "heat_tmax": 40.0,
@@ -120,7 +126,7 @@
     },
     "chickpea": {
      "fits": true,
-     "need_m3ha": 5430,
+     "need_m3ha": 4260,
      "heat_risk": "medium",
      "heat_days": 10.4,
      "heat_tmax": 35.0,
@@ -134,7 +140,7 @@
     },
     "potato": {
      "fits": true,
-     "need_m3ha": 9090,
+     "need_m3ha": 7200,
      "heat_risk": "high",
      "heat_days": 37.6,
      "heat_tmax": 30.0,
@@ -148,7 +154,7 @@
     },
     "onion": {
      "fits": true,
-     "need_m3ha": 9460,
+     "need_m3ha": 7470,
      "heat_risk": "medium",
      "heat_days": 17.4,
      "heat_tmax": 35.0,
@@ -162,7 +168,7 @@
     },
     "tomato": {
      "fits": true,
-     "need_m3ha": 11100,
+     "need_m3ha": 8830,
      "heat_risk": "high",
      "heat_days": 37.1,
      "heat_tmax": 35.0,
@@ -176,7 +182,7 @@
     },
     "melon": {
      "fits": true,
-     "need_m3ha": 8590,
+     "need_m3ha": 6840,
      "heat_risk": "medium",
      "heat_days": 14.6,
      "heat_tmax": 40.0,
@@ -190,7 +196,7 @@
     },
     "alfalfa": {
      "fits": true,
-     "need_m3ha": 13340,
+     "need_m3ha": 10580,
      "heat_risk": "medium",
      "heat_days": 43.8,
      "heat_tmax": 38.0,
@@ -206,7 +212,7 @@
    "hotter": {
     "cotton": {
      "fits": true,
-     "need_m3ha": 13730,
+     "need_m3ha": 10910,
      "heat_risk": "high",
      "heat_days": 41.6,
      "heat_tmax": 38.0,
@@ -220,7 +226,7 @@
     },
     "winter_wheat": {
      "fits": true,
-     "need_m3ha": 5540,
+     "need_m3ha": 4310,
      "heat_risk": "medium",
      "heat_days": 10.6,
      "heat_tmax": 32.0,
@@ -234,7 +240,7 @@
     },
     "barley": {
      "fits": true,
-     "need_m3ha": 4120,
+     "need_m3ha": 3190,
      "heat_risk": "low",
      "heat_days": 5.3,
      "heat_tmax": 32.0,
@@ -248,7 +254,7 @@
     },
     "maize": {
      "fits": true,
-     "need_m3ha": 11070,
+     "need_m3ha": 8800,
      "heat_risk": "high",
      "heat_days": 44.3,
      "heat_tmax": 35.0,
@@ -262,7 +268,7 @@
     },
     "rice": {
      "fits": true,
-     "need_m3ha": 18690,
+     "need_m3ha": 15910,
      "heat_risk": "high",
      "heat_days": 46.4,
      "heat_tmax": 35.0,
@@ -276,7 +282,7 @@
     },
     "sorghum": {
      "fits": true,
-     "need_m3ha": 8550,
+     "need_m3ha": 6810,
      "heat_risk": "high",
      "heat_days": 19.8,
      "heat_tmax": 40.0,
@@ -290,7 +296,7 @@
     },
     "sunflower": {
      "fits": true,
-     "need_m3ha": 9020,
+     "need_m3ha": 7160,
      "heat_risk": "high",
      "heat_days": 35.1,
      "heat_tmax": 37.0,
@@ -304,7 +310,7 @@
     },
     "mung_bean": {
      "fits": true,
-     "need_m3ha": 5310,
+     "need_m3ha": 4230,
      "heat_risk": "medium",
      "heat_days": 4.8,
      "heat_tmax": 40.0,
@@ -318,7 +324,7 @@
     },
     "chickpea": {
      "fits": true,
-     "need_m3ha": 5670,
+     "need_m3ha": 4450,
      "heat_risk": "medium",
      "heat_days": 14.4,
      "heat_tmax": 35.0,
@@ -332,7 +338,7 @@
     },
     "potato": {
      "fits": true,
-     "need_m3ha": 9440,
+     "need_m3ha": 7470,
      "heat_risk": "high",
      "heat_days": 39.9,
      "heat_tmax": 30.0,
@@ -346,7 +352,7 @@
     },
     "onion": {
      "fits": true,
-     "need_m3ha": 9850,
+     "need_m3ha": 7780,
      "heat_risk": "medium",
      "heat_days": 23.0,
      "heat_tmax": 35.0,
@@ -360,7 +366,7 @@
     },
     "tomato": {
      "fits": true,
-     "need_m3ha": 11490,
+     "need_m3ha": 9140,
      "heat_risk": "high",
      "heat_days": 40.2,
      "heat_tmax": 35.0,
@@ -374,7 +380,7 @@
     },
     "melon": {
      "fits": true,
-     "need_m3ha": 8930,
+     "need_m3ha": 7100,
      "heat_risk": "high",
      "heat_days": 22.3,
      "heat_tmax": 40.0,
@@ -388,7 +394,7 @@
     },
     "alfalfa": {
      "fits": true,
-     "need_m3ha": 13610,
+     "need_m3ha": 10800,
      "heat_risk": "medium",
      "heat_days": 59.5,
      "heat_tmax": 38.0,
@@ -404,10 +410,16 @@
   },
   "Nukus_field2": {
    "cell_id": "Nukus_field2",
+   "et0_correction": {
+    "factor": 0.8,
+    "method": "default",
+    "n_days": 0,
+    "label": "approximate, provisional bias correction for MERRA-2 desert bias over irrigated land"
+   },
    "baseline": {
     "cotton": {
      "fits": false,
-     "need_m3ha": 13250,
+     "need_m3ha": 10510,
      "heat_risk": "high",
      "heat_days": 27.9,
      "heat_tmax": 38.0,
@@ -421,7 +433,7 @@
     },
     "winter_wheat": {
      "fits": true,
-     "need_m3ha": 5010,
+     "need_m3ha": 3890,
      "heat_risk": "medium",
      "heat_days": 6.0,
      "heat_tmax": 32.0,
@@ -435,7 +447,7 @@
     },
     "barley": {
      "fits": true,
-     "need_m3ha": 3680,
+     "need_m3ha": 2840,
      "heat_risk": "low",
      "heat_days": 2.7,
      "heat_tmax": 32.0,
@@ -449,7 +461,7 @@
     },
     "maize": {
      "fits": true,
-     "need_m3ha": 10740,
+     "need_m3ha": 8540,
      "heat_risk": "high",
      "heat_days": 37.3,
      "heat_tmax": 35.0,
@@ -463,7 +475,7 @@
     },
     "rice": {
      "fits": true,
-     "need_m3ha": 18430,
+     "need_m3ha": 15690,
      "heat_risk": "high",
      "heat_days": 40.2,
      "heat_tmax": 35.0,
@@ -477,7 +489,7 @@
     },
     "sorghum": {
      "fits": true,
-     "need_m3ha": 8330,
+     "need_m3ha": 6630,
      "heat_risk": "medium",
      "heat_days": 10.2,
      "heat_tmax": 40.0,
@@ -491,7 +503,7 @@
     },
     "sunflower": {
      "fits": true,
-     "need_m3ha": 8690,
+     "need_m3ha": 6900,
      "heat_risk": "high",
      "heat_days": 26.0,
      "heat_tmax": 37.0,
@@ -505,7 +517,7 @@
     },
     "mung_bean": {
      "fits": true,
-     "need_m3ha": 5190,
+     "need_m3ha": 4130,
      "heat_risk": "low",
      "heat_days": 1.6,
      "heat_tmax": 40.0,
@@ -519,7 +531,7 @@
     },
     "chickpea": {
      "fits": true,
-     "need_m3ha": 5270,
+     "need_m3ha": 4130,
      "heat_risk": "medium",
      "heat_days": 9.1,
      "heat_tmax": 35.0,
@@ -533,7 +545,7 @@
     },
     "potato": {
      "fits": false,
-     "need_m3ha": 8950,
+     "need_m3ha": 7080,
      "heat_risk": "high",
      "heat_days": 36.1,
      "heat_tmax": 30.0,
@@ -547,7 +559,7 @@
     },
     "onion": {
      "fits": true,
-     "need_m3ha": 9260,
+     "need_m3ha": 7300,
      "heat_risk": "medium",
      "heat_days": 15.2,
      "heat_tmax": 35.0,
@@ -561,7 +573,7 @@
     },
     "tomato": {
      "fits": true,
-     "need_m3ha": 11110,
+     "need_m3ha": 8830,
      "heat_risk": "high",
      "heat_days": 34.1,
      "heat_tmax": 35.0,
@@ -575,7 +587,7 @@
     },
     "melon": {
      "fits": true,
-     "need_m3ha": 8610,
+     "need_m3ha": 6850,
      "heat_risk": "medium",
      "heat_days": 11.7,
      "heat_tmax": 40.0,
@@ -589,7 +601,7 @@
     },
     "alfalfa": {
      "fits": true,
-     "need_m3ha": 13580,
+     "need_m3ha": 10760,
      "heat_risk": "medium",
      "heat_days": 37.2,
      "heat_tmax": 38.0,
@@ -605,7 +617,7 @@
    "hotter": {
     "cotton": {
      "fits": true,
-     "need_m3ha": 13580,
+     "need_m3ha": 10780,
      "heat_risk": "high",
      "heat_days": 35.8,
      "heat_tmax": 38.0,
@@ -619,7 +631,7 @@
     },
     "winter_wheat": {
      "fits": true,
-     "need_m3ha": 5290,
+     "need_m3ha": 4100,
      "heat_risk": "medium",
      "heat_days": 9.5,
      "heat_tmax": 32.0,
@@ -633,7 +645,7 @@
     },
     "barley": {
      "fits": true,
-     "need_m3ha": 3900,
+     "need_m3ha": 3010,
      "heat_risk": "low",
      "heat_days": 4.8,
      "heat_tmax": 32.0,
@@ -647,7 +659,7 @@
     },
     "maize": {
      "fits": true,
-     "need_m3ha": 11130,
+     "need_m3ha": 8850,
      "heat_risk": "high",
      "heat_days": 42.2,
      "heat_tmax": 35.0,
@@ -661,7 +673,7 @@
     },
     "rice": {
      "fits": true,
-     "need_m3ha": 18740,
+     "need_m3ha": 15940,
      "heat_risk": "high",
      "heat_days": 43.3,
      "heat_tmax": 35.0,
@@ -675,7 +687,7 @@
     },
     "sorghum": {
      "fits": true,
-     "need_m3ha": 8630,
+     "need_m3ha": 6870,
      "heat_risk": "high",
      "heat_days": 16.4,
      "heat_tmax": 40.0,
@@ -689,7 +701,7 @@
     },
     "sunflower": {
      "fits": true,
-     "need_m3ha": 9010,
+     "need_m3ha": 7150,
      "heat_risk": "high",
      "heat_days": 31.7,
      "heat_tmax": 37.0,
@@ -703,7 +715,7 @@
     },
     "mung_bean": {
      "fits": true,
-     "need_m3ha": 5380,
+     "need_m3ha": 4290,
      "heat_risk": "low",
      "heat_days": 3.7,
      "heat_tmax": 40.0,
@@ -717,7 +729,7 @@
     },
     "chickpea": {
      "fits": true,
-     "need_m3ha": 5510,
+     "need_m3ha": 4320,
      "heat_risk": "medium",
      "heat_days": 13.0,
      "heat_tmax": 35.0,
@@ -731,7 +743,7 @@
     },
     "potato": {
      "fits": true,
-     "need_m3ha": 9300,
+     "need_m3ha": 7360,
      "heat_risk": "high",
      "heat_days": 38.7,
      "heat_tmax": 30.0,
@@ -745,7 +757,7 @@
     },
     "onion": {
      "fits": true,
-     "need_m3ha": 9650,
+     "need_m3ha": 7610,
      "heat_risk": "medium",
      "heat_days": 20.9,
      "heat_tmax": 35.0,
@@ -759,7 +771,7 @@
     },
     "tomato": {
      "fits": true,
-     "need_m3ha": 11520,
+     "need_m3ha": 9150,
      "heat_risk": "high",
      "heat_days": 38.3,
      "heat_tmax": 35.0,
@@ -773,7 +785,7 @@
     },
     "melon": {
      "fits": true,
-     "need_m3ha": 8920,
+     "need_m3ha": 7100,
      "heat_risk": "high",
      "heat_days": 17.9,
      "heat_tmax": 40.0,
@@ -787,7 +799,7 @@
     },
     "alfalfa": {
      "fits": true,
-     "need_m3ha": 13540,
+     "need_m3ha": 10730,
      "heat_risk": "medium",
      "heat_days": 51.2,
      "heat_tmax": 38.0,
@@ -803,10 +815,16 @@
   },
   "Urgench_field1": {
    "cell_id": "Urgench_cell",
+   "et0_correction": {
+    "factor": 0.8,
+    "method": "default",
+    "n_days": 0,
+    "label": "approximate, provisional bias correction for MERRA-2 desert bias over irrigated land"
+   },
    "baseline": {
     "cotton": {
      "fits": true,
-     "need_m3ha": 13980,
+     "need_m3ha": 11110,
      "heat_risk": "high",
      "heat_days": 35.4,
      "heat_tmax": 38.0,
@@ -820,7 +838,7 @@
     },
     "winter_wheat": {
      "fits": true,
-     "need_m3ha": 5280,
+     "need_m3ha": 4100,
      "heat_risk": "medium",
      "heat_days": 7.2,
      "heat_tmax": 32.0,
@@ -834,7 +852,7 @@
     },
     "barley": {
      "fits": true,
-     "need_m3ha": 3880,
+     "need_m3ha": 2990,
      "heat_risk": "low",
      "heat_days": 3.1,
      "heat_tmax": 32.0,
@@ -848,7 +866,7 @@
     },
     "maize": {
      "fits": true,
-     "need_m3ha": 11320,
+     "need_m3ha": 9010,
      "heat_risk": "high",
      "heat_days": 42.2,
      "heat_tmax": 35.0,
@@ -862,7 +880,7 @@
     },
     "rice": {
      "fits": true,
-     "need_m3ha": 18940,
+     "need_m3ha": 16120,
      "heat_risk": "high",
      "heat_days": 43.2,
      "heat_tmax": 35.0,
@@ -876,7 +894,7 @@
     },
     "sorghum": {
      "fits": true,
-     "need_m3ha": 8780,
+     "need_m3ha": 7000,
      "heat_risk": "medium",
      "heat_days": 14.8,
      "heat_tmax": 40.0,
@@ -890,7 +908,7 @@
     },
     "sunflower": {
      "fits": true,
-     "need_m3ha": 9140,
+     "need_m3ha": 7250,
      "heat_risk": "high",
      "heat_days": 31.3,
      "heat_tmax": 37.0,
@@ -904,7 +922,7 @@
     },
     "mung_bean": {
      "fits": true,
-     "need_m3ha": 5480,
+     "need_m3ha": 4370,
      "heat_risk": "low",
      "heat_days": 2.2,
      "heat_tmax": 40.0,
@@ -918,7 +936,7 @@
     },
     "chickpea": {
      "fits": true,
-     "need_m3ha": 5430,
+     "need_m3ha": 4260,
      "heat_risk": "medium",
      "heat_days": 10.1,
      "heat_tmax": 35.0,
@@ -932,7 +950,7 @@
     },
     "potato": {
      "fits": true,
-     "need_m3ha": 9340,
+     "need_m3ha": 7390,
      "heat_risk": "high",
      "heat_days": 37.9,
      "heat_tmax": 30.0,
@@ -946,7 +964,7 @@
     },
     "onion": {
      "fits": true,
-     "need_m3ha": 9650,
+     "need_m3ha": 7610,
      "heat_risk": "medium",
      "heat_days": 17.7,
      "heat_tmax": 35.0,
@@ -960,7 +978,7 @@
     },
     "tomato": {
      "fits": true,
-     "need_m3ha": 11670,
+     "need_m3ha": 9290,
      "heat_risk": "high",
      "heat_days": 38.2,
      "heat_tmax": 35.0,
@@ -974,7 +992,7 @@
     },
     "melon": {
      "fits": true,
-     "need_m3ha": 9050,
+     "need_m3ha": 7210,
      "heat_risk": "high",
      "heat_days": 16.4,
      "heat_tmax": 40.0,
@@ -988,7 +1006,7 @@
     },
     "alfalfa": {
      "fits": true,
-     "need_m3ha": 14350,
+     "need_m3ha": 11390,
      "heat_risk": "medium",
      "heat_days": 46.8,
      "heat_tmax": 38.0,
@@ -1004,7 +1022,7 @@
    "hotter": {
     "cotton": {
      "fits": true,
-     "need_m3ha": 14470,
+     "need_m3ha": 11500,
      "heat_risk": "high",
      "heat_days": 43.2,
      "heat_tmax": 38.0,
@@ -1018,7 +1036,7 @@
     },
     "winter_wheat": {
      "fits": true,
-     "need_m3ha": 5560,
+     "need_m3ha": 4320,
      "heat_risk": "medium",
      "heat_days": 11.1,
      "heat_tmax": 32.0,
@@ -1032,7 +1050,7 @@
     },
     "barley": {
      "fits": true,
-     "need_m3ha": 4100,
+     "need_m3ha": 3170,
      "heat_risk": "low",
      "heat_days": 5.4,
      "heat_tmax": 32.0,
@@ -1046,7 +1064,7 @@
     },
     "maize": {
      "fits": true,
-     "need_m3ha": 11700,
+     "need_m3ha": 9320,
      "heat_risk": "high",
      "heat_days": 45.9,
      "heat_tmax": 35.0,
@@ -1060,7 +1078,7 @@
     },
     "rice": {
      "fits": true,
-     "need_m3ha": 19420,
+     "need_m3ha": 16500,
      "heat_risk": "high",
      "heat_days": 48.6,
      "heat_tmax": 35.0,
@@ -1074,7 +1092,7 @@
     },
     "sorghum": {
      "fits": true,
-     "need_m3ha": 9460,
+     "need_m3ha": 7520,
      "heat_risk": "high",
      "heat_days": 23.3,
      "heat_tmax": 40.0,
@@ -1088,7 +1106,7 @@
     },
     "sunflower": {
      "fits": true,
-     "need_m3ha": 9450,
+     "need_m3ha": 7500,
      "heat_risk": "high",
      "heat_days": 37.1,
      "heat_tmax": 37.0,
@@ -1102,7 +1120,7 @@
     },
     "mung_bean": {
      "fits": true,
-     "need_m3ha": 5670,
+     "need_m3ha": 4520,
      "heat_risk": "medium",
      "heat_days": 4.8,
      "heat_tmax": 40.0,
@@ -1116,7 +1134,7 @@
     },
     "chickpea": {
      "fits": true,
-     "need_m3ha": 5670,
+     "need_m3ha": 4450,
      "heat_risk": "medium",
      "heat_days": 14.8,
      "heat_tmax": 35.0,
@@ -1130,7 +1148,7 @@
     },
     "potato": {
      "fits": true,
-     "need_m3ha": 9680,
+     "need_m3ha": 7670,
      "heat_risk": "high",
      "heat_days": 40.4,
      "heat_tmax": 30.0,
@@ -1144,7 +1162,7 @@
     },
     "onion": {
      "fits": true,
-     "need_m3ha": 10040,
+     "need_m3ha": 7920,
      "heat_risk": "medium",
      "heat_days": 23.7,
      "heat_tmax": 35.0,
@@ -1158,7 +1176,7 @@
     },
     "tomato": {
      "fits": true,
-     "need_m3ha": 12070,
+     "need_m3ha": 9610,
      "heat_risk": "high",
      "heat_days": 41.6,
      "heat_tmax": 35.0,
@@ -1172,7 +1190,7 @@
     },
     "melon": {
      "fits": true,
-     "need_m3ha": 9340,
+     "need_m3ha": 7430,
      "heat_risk": "high",
      "heat_days": 23.3,
      "heat_tmax": 40.0,
@@ -1186,7 +1204,7 @@
     },
     "alfalfa": {
      "fits": true,
-     "need_m3ha": 14590,
+     "need_m3ha": 11590,
      "heat_risk": "medium",
      "heat_days": 62.7,
      "heat_tmax": 38.0,
@@ -1202,10 +1220,16 @@
   },
   "Urgench_field2": {
    "cell_id": "Urgench_cell",
+   "et0_correction": {
+    "factor": 0.8,
+    "method": "default",
+    "n_days": 0,
+    "label": "approximate, provisional bias correction for MERRA-2 desert bias over irrigated land"
+   },
    "baseline": {
     "cotton": {
      "fits": true,
-     "need_m3ha": 13980,
+     "need_m3ha": 11110,
      "heat_risk": "high",
      "heat_days": 35.4,
      "heat_tmax": 38.0,
@@ -1219,7 +1243,7 @@
     },
     "winter_wheat": {
      "fits": true,
-     "need_m3ha": 5280,
+     "need_m3ha": 4100,
      "heat_risk": "medium",
      "heat_days": 7.2,
      "heat_tmax": 32.0,
@@ -1233,7 +1257,7 @@
     },
     "barley": {
      "fits": true,
-     "need_m3ha": 3880,
+     "need_m3ha": 2990,
      "heat_risk": "low",
      "heat_days": 3.1,
      "heat_tmax": 32.0,
@@ -1247,7 +1271,7 @@
     },
     "maize": {
      "fits": true,
-     "need_m3ha": 11320,
+     "need_m3ha": 9010,
      "heat_risk": "high",
      "heat_days": 42.2,
      "heat_tmax": 35.0,
@@ -1261,7 +1285,7 @@
     },
     "rice": {
      "fits": true,
-     "need_m3ha": 18940,
+     "need_m3ha": 16120,
      "heat_risk": "high",
      "heat_days": 43.2,
      "heat_tmax": 35.0,
@@ -1275,7 +1299,7 @@
     },
     "sorghum": {
      "fits": true,
-     "need_m3ha": 8780,
+     "need_m3ha": 7000,
      "heat_risk": "medium",
      "heat_days": 14.8,
      "heat_tmax": 40.0,
@@ -1289,7 +1313,7 @@
     },
     "sunflower": {
      "fits": true,
-     "need_m3ha": 9140,
+     "need_m3ha": 7250,
      "heat_risk": "high",
      "heat_days": 31.3,
      "heat_tmax": 37.0,
@@ -1303,7 +1327,7 @@
     },
     "mung_bean": {
      "fits": true,
-     "need_m3ha": 5480,
+     "need_m3ha": 4370,
      "heat_risk": "low",
      "heat_days": 2.2,
      "heat_tmax": 40.0,
@@ -1317,7 +1341,7 @@
     },
     "chickpea": {
      "fits": true,
-     "need_m3ha": 5430,
+     "need_m3ha": 4260,
      "heat_risk": "medium",
      "heat_days": 10.1,
      "heat_tmax": 35.0,
@@ -1331,7 +1355,7 @@
     },
     "potato": {
      "fits": true,
-     "need_m3ha": 9340,
+     "need_m3ha": 7390,
      "heat_risk": "high",
      "heat_days": 37.9,
      "heat_tmax": 30.0,
@@ -1345,7 +1369,7 @@
     },
     "onion": {
      "fits": true,
-     "need_m3ha": 9650,
+     "need_m3ha": 7610,
      "heat_risk": "medium",
      "heat_days": 17.7,
      "heat_tmax": 35.0,
@@ -1359,7 +1383,7 @@
     },
     "tomato": {
      "fits": true,
-     "need_m3ha": 11670,
+     "need_m3ha": 9290,
      "heat_risk": "high",
      "heat_days": 38.2,
      "heat_tmax": 35.0,
@@ -1373,7 +1397,7 @@
     },
     "melon": {
      "fits": true,
-     "need_m3ha": 9050,
+     "need_m3ha": 7210,
      "heat_risk": "high",
      "heat_days": 16.4,
      "heat_tmax": 40.0,
@@ -1387,7 +1411,7 @@
     },
     "alfalfa": {
      "fits": true,
-     "need_m3ha": 14350,
+     "need_m3ha": 11390,
      "heat_risk": "medium",
      "heat_days": 46.8,
      "heat_tmax": 38.0,
@@ -1403,7 +1427,7 @@
    "hotter": {
     "cotton": {
      "fits": true,
-     "need_m3ha": 14470,
+     "need_m3ha": 11500,
      "heat_risk": "high",
      "heat_days": 43.2,
      "heat_tmax": 38.0,
@@ -1417,7 +1441,7 @@
     },
     "winter_wheat": {
      "fits": true,
-     "need_m3ha": 5560,
+     "need_m3ha": 4320,
      "heat_risk": "medium",
      "heat_days": 11.1,
      "heat_tmax": 32.0,
@@ -1431,7 +1455,7 @@
     },
     "barley": {
      "fits": true,
-     "need_m3ha": 4100,
+     "need_m3ha": 3170,
      "heat_risk": "low",
      "heat_days": 5.4,
      "heat_tmax": 32.0,
@@ -1445,7 +1469,7 @@
     },
     "maize": {
      "fits": true,
-     "need_m3ha": 11700,
+     "need_m3ha": 9320,
      "heat_risk": "high",
      "heat_days": 45.9,
      "heat_tmax": 35.0,
@@ -1459,7 +1483,7 @@
     },
     "rice": {
      "fits": true,
-     "need_m3ha": 19420,
+     "need_m3ha": 16500,
      "heat_risk": "high",
      "heat_days": 48.6,
      "heat_tmax": 35.0,
@@ -1473,7 +1497,7 @@
     },
     "sorghum": {
      "fits": true,
-     "need_m3ha": 9460,
+     "need_m3ha": 7520,
      "heat_risk": "high",
      "heat_days": 23.3,
      "heat_tmax": 40.0,
@@ -1487,7 +1511,7 @@
     },
     "sunflower": {
      "fits": true,
-     "need_m3ha": 9450,
+     "need_m3ha": 7500,
      "heat_risk": "high",
      "heat_days": 37.1,
      "heat_tmax": 37.0,
@@ -1501,7 +1525,7 @@
     },
     "mung_bean": {
      "fits": true,
-     "need_m3ha": 5670,
+     "need_m3ha": 4520,
      "heat_risk": "medium",
      "heat_days": 4.8,
      "heat_tmax": 40.0,
@@ -1515,7 +1539,7 @@
     },
     "chickpea": {
      "fits": true,
-     "need_m3ha": 5670,
+     "need_m3ha": 4450,
      "heat_risk": "medium",
      "heat_days": 14.8,
      "heat_tmax": 35.0,
@@ -1529,7 +1553,7 @@
     },
     "potato": {
      "fits": true,
-     "need_m3ha": 9680,
+     "need_m3ha": 7670,
      "heat_risk": "high",
      "heat_days": 40.4,
      "heat_tmax": 30.0,
@@ -1543,7 +1567,7 @@
     },
     "onion": {
      "fits": true,
-     "need_m3ha": 10040,
+     "need_m3ha": 7920,
      "heat_risk": "medium",
      "heat_days": 23.7,
      "heat_tmax": 35.0,
@@ -1557,7 +1581,7 @@
     },
     "tomato": {
      "fits": true,
-     "need_m3ha": 12070,
+     "need_m3ha": 9610,
      "heat_risk": "high",
      "heat_days": 41.6,
      "heat_tmax": 35.0,
@@ -1571,7 +1595,7 @@
     },
     "melon": {
      "fits": true,
-     "need_m3ha": 9340,
+     "need_m3ha": 7430,
      "heat_risk": "high",
      "heat_days": 23.3,
      "heat_tmax": 40.0,
@@ -1585,7 +1609,7 @@
     },
     "alfalfa": {
      "fits": true,
-     "need_m3ha": 14590,
+     "need_m3ha": 11590,
      "heat_risk": "medium",
      "heat_days": 62.7,
      "heat_tmax": 38.0,
@@ -1601,10 +1625,16 @@
   },
   "Gulistan_field1": {
    "cell_id": "Gulistan_cell",
+   "et0_correction": {
+    "factor": 0.8,
+    "method": "default",
+    "n_days": 0,
+    "label": "approximate, provisional bias correction for MERRA-2 desert bias over irrigated land"
+   },
    "baseline": {
     "cotton": {
      "fits": true,
-     "need_m3ha": 11880,
+     "need_m3ha": 9370,
      "heat_risk": "high",
      "heat_days": 43.4,
      "heat_tmax": 38.0,
@@ -1618,7 +1648,7 @@
     },
     "winter_wheat": {
      "fits": true,
-     "need_m3ha": 3240,
+     "need_m3ha": 2410,
      "heat_risk": "medium",
      "heat_days": 8.2,
      "heat_tmax": 32.0,
@@ -1632,7 +1662,7 @@
     },
     "barley": {
      "fits": true,
-     "need_m3ha": 2210,
+     "need_m3ha": 1610,
      "heat_risk": "low",
      "heat_days": 3.6,
      "heat_tmax": 32.0,
@@ -1646,7 +1676,7 @@
     },
     "maize": {
      "fits": true,
-     "need_m3ha": 9910,
+     "need_m3ha": 7860,
      "heat_risk": "high",
      "heat_days": 46.4,
      "heat_tmax": 35.0,
@@ -1660,7 +1690,7 @@
     },
     "rice": {
      "fits": true,
-     "need_m3ha": 17290,
+     "need_m3ha": 14750,
      "heat_risk": "high",
      "heat_days": 50.4,
      "heat_tmax": 35.0,
@@ -1674,7 +1704,7 @@
     },
     "sorghum": {
      "fits": true,
-     "need_m3ha": 7730,
+     "need_m3ha": 6090,
      "heat_risk": "high",
      "heat_days": 19.3,
      "heat_tmax": 40.0,
@@ -1688,7 +1718,7 @@
     },
     "sunflower": {
      "fits": true,
-     "need_m3ha": 7750,
+     "need_m3ha": 6100,
      "heat_risk": "high",
      "heat_days": 37.2,
      "heat_tmax": 37.0,
@@ -1702,7 +1732,7 @@
     },
     "mung_bean": {
      "fits": true,
-     "need_m3ha": 5020,
+     "need_m3ha": 4000,
      "heat_risk": "low",
      "heat_days": 3.6,
      "heat_tmax": 40.0,
@@ -1716,7 +1746,7 @@
     },
     "chickpea": {
      "fits": true,
-     "need_m3ha": 3890,
+     "need_m3ha": 2980,
      "heat_risk": "medium",
      "heat_days": 12.4,
      "heat_tmax": 35.0,
@@ -1730,7 +1760,7 @@
     },
     "potato": {
      "fits": true,
-     "need_m3ha": 7460,
+     "need_m3ha": 5840,
      "heat_risk": "high",
      "heat_days": 39.0,
      "heat_tmax": 30.0,
@@ -1744,7 +1774,7 @@
     },
     "onion": {
      "fits": true,
-     "need_m3ha": 7410,
+     "need_m3ha": 5760,
      "heat_risk": "medium",
      "heat_days": 20.9,
      "heat_tmax": 35.0,
@@ -1758,7 +1788,7 @@
     },
     "tomato": {
      "fits": true,
-     "need_m3ha": 10180,
+     "need_m3ha": 8050,
      "heat_risk": "high",
      "heat_days": 42.1,
      "heat_tmax": 35.0,
@@ -1772,7 +1802,7 @@
     },
     "melon": {
      "fits": true,
-     "need_m3ha": 7790,
+     "need_m3ha": 6140,
      "heat_risk": "high",
      "heat_days": 22.1,
      "heat_tmax": 40.0,
@@ -1786,7 +1816,7 @@
     },
     "alfalfa": {
      "fits": true,
-     "need_m3ha": 11600,
+     "need_m3ha": 9100,
      "heat_risk": "medium",
      "heat_days": 60.1,
      "heat_tmax": 38.0,
@@ -1802,7 +1832,7 @@
    "hotter": {
     "cotton": {
      "fits": true,
-     "need_m3ha": 12100,
+     "need_m3ha": 9540,
      "heat_risk": "high",
      "heat_days": 49.7,
      "heat_tmax": 38.0,
@@ -1816,7 +1846,7 @@
     },
     "winter_wheat": {
      "fits": true,
-     "need_m3ha": 3410,
+     "need_m3ha": 2540,
      "heat_risk": "medium",
      "heat_days": 11.4,
      "heat_tmax": 32.0,
@@ -1830,7 +1860,7 @@
     },
     "barley": {
      "fits": true,
-     "need_m3ha": 2350,
+     "need_m3ha": 1710,
      "heat_risk": "low",
      "heat_days": 5.9,
      "heat_tmax": 32.0,
@@ -1844,7 +1874,7 @@
     },
     "maize": {
      "fits": true,
-     "need_m3ha": 10210,
+     "need_m3ha": 8100,
      "heat_risk": "high",
      "heat_days": 48.8,
      "heat_tmax": 35.0,
@@ -1858,7 +1888,7 @@
     },
     "rice": {
      "fits": true,
-     "need_m3ha": 17680,
+     "need_m3ha": 15060,
      "heat_risk": "high",
      "heat_days": 54.6,
      "heat_tmax": 35.0,
@@ -1872,7 +1902,7 @@
     },
     "sorghum": {
      "fits": true,
-     "need_m3ha": 8160,
+     "need_m3ha": 6460,
      "heat_risk": "high",
      "heat_days": 28.5,
      "heat_tmax": 40.0,
@@ -1886,7 +1916,7 @@
     },
     "sunflower": {
      "fits": true,
-     "need_m3ha": 7990,
+     "need_m3ha": 6290,
      "heat_risk": "high",
      "heat_days": 40.9,
      "heat_tmax": 37.0,
@@ -1900,7 +1930,7 @@
     },
     "mung_bean": {
      "fits": true,
-     "need_m3ha": 5180,
+     "need_m3ha": 4120,
      "heat_risk": "medium",
      "heat_days": 8.3,
      "heat_tmax": 40.0,
@@ -1914,7 +1944,7 @@
     },
     "chickpea": {
      "fits": true,
-     "need_m3ha": 4050,
+     "need_m3ha": 3110,
      "heat_risk": "medium",
      "heat_days": 15.9,
      "heat_tmax": 35.0,
@@ -1928,7 +1958,7 @@
     },
     "potato": {
      "fits": true,
-     "need_m3ha": 7390,
+     "need_m3ha": 5780,
      "heat_risk": "high",
      "heat_days": 39.6,
      "heat_tmax": 30.0,
@@ -1942,7 +1972,7 @@
     },
     "onion": {
      "fits": true,
-     "need_m3ha": 7680,
+     "need_m3ha": 5980,
      "heat_risk": "medium",
      "heat_days": 25.8,
      "heat_tmax": 35.0,
@@ -1956,7 +1986,7 @@
     },
     "tomato": {
      "fits": true,
-     "need_m3ha": 10500,
+     "need_m3ha": 8300,
      "heat_risk": "high",
      "heat_days": 44.0,
      "heat_tmax": 35.0,
@@ -1970,7 +2000,7 @@
     },
     "melon": {
      "fits": true,
-     "need_m3ha": 8030,
+     "need_m3ha": 6330,
      "heat_risk": "high",
      "heat_days": 28.5,
      "heat_tmax": 40.0,
@@ -1984,7 +2014,7 @@
     },
     "alfalfa": {
      "fits": true,
-     "need_m3ha": 12000,
+     "need_m3ha": 9420,
      "heat_risk": "high",
      "heat_days": 77.3,
      "heat_tmax": 38.0,
@@ -2000,10 +2030,16 @@
   },
   "Gulistan_field2": {
    "cell_id": "Gulistan_cell",
+   "et0_correction": {
+    "factor": 0.8,
+    "method": "default",
+    "n_days": 0,
+    "label": "approximate, provisional bias correction for MERRA-2 desert bias over irrigated land"
+   },
    "baseline": {
     "cotton": {
      "fits": true,
-     "need_m3ha": 11880,
+     "need_m3ha": 9370,
      "heat_risk": "high",
      "heat_days": 43.4,
      "heat_tmax": 38.0,
@@ -2017,7 +2053,7 @@
     },
     "winter_wheat": {
      "fits": true,
-     "need_m3ha": 3240,
+     "need_m3ha": 2410,
      "heat_risk": "medium",
      "heat_days": 8.2,
      "heat_tmax": 32.0,
@@ -2031,7 +2067,7 @@
     },
     "barley": {
      "fits": true,
-     "need_m3ha": 2210,
+     "need_m3ha": 1610,
      "heat_risk": "low",
      "heat_days": 3.6,
      "heat_tmax": 32.0,
@@ -2045,7 +2081,7 @@
     },
     "maize": {
      "fits": true,
-     "need_m3ha": 9910,
+     "need_m3ha": 7860,
      "heat_risk": "high",
      "heat_days": 46.4,
      "heat_tmax": 35.0,
@@ -2059,7 +2095,7 @@
     },
     "rice": {
      "fits": true,
-     "need_m3ha": 17290,
+     "need_m3ha": 14750,
      "heat_risk": "high",
      "heat_days": 50.4,
      "heat_tmax": 35.0,
@@ -2073,7 +2109,7 @@
     },
     "sorghum": {
      "fits": true,
-     "need_m3ha": 7730,
+     "need_m3ha": 6090,
      "heat_risk": "high",
      "heat_days": 19.3,
      "heat_tmax": 40.0,
@@ -2087,7 +2123,7 @@
     },
     "sunflower": {
      "fits": true,
-     "need_m3ha": 7750,
+     "need_m3ha": 6100,
      "heat_risk": "high",
      "heat_days": 37.2,
      "heat_tmax": 37.0,
@@ -2101,7 +2137,7 @@
     },
     "mung_bean": {
      "fits": true,
-     "need_m3ha": 5020,
+     "need_m3ha": 4000,
      "heat_risk": "low",
      "heat_days": 3.6,
      "heat_tmax": 40.0,
@@ -2115,7 +2151,7 @@
     },
     "chickpea": {
      "fits": true,
-     "need_m3ha": 3890,
+     "need_m3ha": 2980,
      "heat_risk": "medium",
      "heat_days": 12.4,
      "heat_tmax": 35.0,
@@ -2129,7 +2165,7 @@
     },
     "potato": {
      "fits": true,
-     "need_m3ha": 7460,
+     "need_m3ha": 5840,
      "heat_risk": "high",
      "heat_days": 39.0,
      "heat_tmax": 30.0,
@@ -2143,7 +2179,7 @@
     },
     "onion": {
      "fits": true,
-     "need_m3ha": 7410,
+     "need_m3ha": 5760,
      "heat_risk": "medium",
      "heat_days": 20.9,
      "heat_tmax": 35.0,
@@ -2157,7 +2193,7 @@
     },
     "tomato": {
      "fits": true,
-     "need_m3ha": 10180,
+     "need_m3ha": 8050,
      "heat_risk": "high",
      "heat_days": 42.1,
      "heat_tmax": 35.0,
@@ -2171,7 +2207,7 @@
     },
     "melon": {
      "fits": true,
-     "need_m3ha": 7790,
+     "need_m3ha": 6140,
      "heat_risk": "high",
      "heat_days": 22.1,
      "heat_tmax": 40.0,
@@ -2185,7 +2221,7 @@
     },
     "alfalfa": {
      "fits": true,
-     "need_m3ha": 11600,
+     "need_m3ha": 9100,
      "heat_risk": "medium",
      "heat_days": 60.1,
      "heat_tmax": 38.0,
@@ -2201,7 +2237,7 @@
    "hotter": {
     "cotton": {
      "fits": true,
-     "need_m3ha": 12100,
+     "need_m3ha": 9540,
      "heat_risk": "high",
      "heat_days": 49.7,
      "heat_tmax": 38.0,
@@ -2215,7 +2251,7 @@
     },
     "winter_wheat": {
      "fits": true,
-     "need_m3ha": 3410,
+     "need_m3ha": 2540,
      "heat_risk": "medium",
      "heat_days": 11.4,
      "heat_tmax": 32.0,
@@ -2229,7 +2265,7 @@
     },
     "barley": {
      "fits": true,
-     "need_m3ha": 2350,
+     "need_m3ha": 1710,
      "heat_risk": "low",
      "heat_days": 5.9,
      "heat_tmax": 32.0,
@@ -2243,7 +2279,7 @@
     },
     "maize": {
      "fits": true,
-     "need_m3ha": 10210,
+     "need_m3ha": 8100,
      "heat_risk": "high",
      "heat_days": 48.8,
      "heat_tmax": 35.0,
@@ -2257,7 +2293,7 @@
     },
     "rice": {
      "fits": true,
-     "need_m3ha": 17680,
+     "need_m3ha": 15060,
      "heat_risk": "high",
      "heat_days": 54.6,
      "heat_tmax": 35.0,
@@ -2271,7 +2307,7 @@
     },
     "sorghum": {
      "fits": true,
-     "need_m3ha": 8160,
+     "need_m3ha": 6460,
      "heat_risk": "high",
      "heat_days": 28.5,
      "heat_tmax": 40.0,
@@ -2285,7 +2321,7 @@
     },
     "sunflower": {
      "fits": true,
-     "need_m3ha": 7990,
+     "need_m3ha": 6290,
      "heat_risk": "high",
      "heat_days": 40.9,
      "heat_tmax": 37.0,
@@ -2299,7 +2335,7 @@
     },
     "mung_bean": {
      "fits": true,
-     "need_m3ha": 5180,
+     "need_m3ha": 4120,
      "heat_risk": "medium",
      "heat_days": 8.3,
      "heat_tmax": 40.0,
@@ -2313,7 +2349,7 @@
     },
     "chickpea": {
      "fits": true,
-     "need_m3ha": 4050,
+     "need_m3ha": 3110,
      "heat_risk": "medium",
      "heat_days": 15.9,
      "heat_tmax": 35.0,
@@ -2327,7 +2363,7 @@
     },
     "potato": {
      "fits": true,
-     "need_m3ha": 7390,
+     "need_m3ha": 5780,
      "heat_risk": "high",
      "heat_days": 39.6,
      "heat_tmax": 30.0,
@@ -2341,7 +2377,7 @@
     },
     "onion": {
      "fits": true,
-     "need_m3ha": 7680,
+     "need_m3ha": 5980,
      "heat_risk": "medium",
      "heat_days": 25.8,
      "heat_tmax": 35.0,
@@ -2355,7 +2391,7 @@
     },
     "tomato": {
      "fits": true,
-     "need_m3ha": 10500,
+     "need_m3ha": 8300,
      "heat_risk": "high",
      "heat_days": 44.0,
      "heat_tmax": 35.0,
@@ -2369,7 +2405,7 @@
     },
     "melon": {
      "fits": true,
-     "need_m3ha": 8030,
+     "need_m3ha": 6330,
      "heat_risk": "high",
      "heat_days": 28.5,
      "heat_tmax": 40.0,
@@ -2383,7 +2419,7 @@
     },
     "alfalfa": {
      "fits": true,
-     "need_m3ha": 12000,
+     "need_m3ha": 9420,
      "heat_risk": "high",
      "heat_days": 77.3,
      "heat_tmax": 38.0,
@@ -2399,10 +2435,16 @@
   },
   "Fergana_field1": {
    "cell_id": "Fergana_cell",
+   "et0_correction": {
+    "factor": 0.8,
+    "method": "default",
+    "n_days": 0,
+    "label": "approximate, provisional bias correction for MERRA-2 desert bias over irrigated land"
+   },
    "baseline": {
     "cotton": {
      "fits": true,
-     "need_m3ha": 10570,
+     "need_m3ha": 8290,
      "heat_risk": "high",
      "heat_days": 26.8,
      "heat_tmax": 38.0,
@@ -2416,7 +2458,7 @@
     },
     "winter_wheat": {
      "fits": true,
-     "need_m3ha": 3940,
+     "need_m3ha": 2980,
      "heat_risk": "medium",
      "heat_days": 7.2,
      "heat_tmax": 32.0,
@@ -2430,7 +2472,7 @@
     },
     "barley": {
      "fits": true,
-     "need_m3ha": 2940,
+     "need_m3ha": 2210,
      "heat_risk": "low",
      "heat_days": 3.4,
      "heat_tmax": 32.0,
@@ -2444,7 +2486,7 @@
     },
     "maize": {
      "fits": true,
-     "need_m3ha": 9190,
+     "need_m3ha": 7240,
      "heat_risk": "high",
      "heat_days": 42.8,
      "heat_tmax": 35.0,
@@ -2458,7 +2500,7 @@
     },
     "rice": {
      "fits": true,
-     "need_m3ha": 16430,
+     "need_m3ha": 14030,
      "heat_risk": "high",
      "heat_days": 45.4,
      "heat_tmax": 35.0,
@@ -2472,7 +2514,7 @@
     },
     "sorghum": {
      "fits": true,
-     "need_m3ha": 7200,
+     "need_m3ha": 5640,
      "heat_risk": "medium",
      "heat_days": 9.4,
      "heat_tmax": 40.0,
@@ -2486,7 +2528,7 @@
     },
     "sunflower": {
      "fits": true,
-     "need_m3ha": 6780,
+     "need_m3ha": 5300,
      "heat_risk": "high",
      "heat_days": 18.9,
      "heat_tmax": 37.0,
@@ -2500,7 +2542,7 @@
     },
     "mung_bean": {
      "fits": true,
-     "need_m3ha": 4590,
+     "need_m3ha": 3630,
      "heat_risk": "low",
      "heat_days": 1.2,
      "heat_tmax": 40.0,
@@ -2514,7 +2556,7 @@
     },
     "chickpea": {
      "fits": true,
-     "need_m3ha": 4100,
+     "need_m3ha": 3150,
      "heat_risk": "medium",
      "heat_days": 7.9,
      "heat_tmax": 35.0,
@@ -2528,7 +2570,7 @@
     },
     "potato": {
      "fits": true,
-     "need_m3ha": 7080,
+     "need_m3ha": 5520,
      "heat_risk": "high",
      "heat_days": 32.8,
      "heat_tmax": 30.0,
@@ -2542,7 +2584,7 @@
     },
     "onion": {
      "fits": true,
-     "need_m3ha": 7600,
+     "need_m3ha": 5910,
      "heat_risk": "medium",
      "heat_days": 14.0,
      "heat_tmax": 35.0,
@@ -2556,7 +2598,7 @@
     },
     "tomato": {
      "fits": true,
-     "need_m3ha": 9520,
+     "need_m3ha": 7490,
      "heat_risk": "high",
      "heat_days": 39.2,
      "heat_tmax": 35.0,
@@ -2570,7 +2612,7 @@
     },
     "melon": {
      "fits": true,
-     "need_m3ha": 7190,
+     "need_m3ha": 5640,
      "heat_risk": "medium",
      "heat_days": 11.4,
      "heat_tmax": 40.0,
@@ -2584,7 +2626,7 @@
     },
     "alfalfa": {
      "fits": true,
-     "need_m3ha": 11090,
+     "need_m3ha": 8680,
      "heat_risk": "medium",
      "heat_days": 38.7,
      "heat_tmax": 38.0,
@@ -2600,7 +2642,7 @@
    "hotter": {
     "cotton": {
      "fits": true,
-     "need_m3ha": 11330,
+     "need_m3ha": 8900,
      "heat_risk": "high",
      "heat_days": 41.4,
      "heat_tmax": 38.0,
@@ -2614,7 +2656,7 @@
     },
     "winter_wheat": {
      "fits": true,
-     "need_m3ha": 4130,
+     "need_m3ha": 3120,
      "heat_risk": "medium",
      "heat_days": 9.9,
      "heat_tmax": 32.0,
@@ -2628,7 +2670,7 @@
     },
     "barley": {
      "fits": true,
-     "need_m3ha": 3090,
+     "need_m3ha": 2330,
      "heat_risk": "low",
      "heat_days": 5.2,
      "heat_tmax": 32.0,
@@ -2642,7 +2684,7 @@
     },
     "maize": {
      "fits": true,
-     "need_m3ha": 9460,
+     "need_m3ha": 7460,
      "heat_risk": "high",
      "heat_days": 46.4,
      "heat_tmax": 35.0,
@@ -2656,7 +2698,7 @@
     },
     "rice": {
      "fits": true,
-     "need_m3ha": 16780,
+     "need_m3ha": 14310,
      "heat_risk": "high",
      "heat_days": 51.2,
      "heat_tmax": 35.0,
@@ -2670,7 +2712,7 @@
     },
     "sorghum": {
      "fits": true,
-     "need_m3ha": 7430,
+     "need_m3ha": 5820,
      "heat_risk": "medium",
      "heat_days": 15.6,
      "heat_tmax": 40.0,
@@ -2684,7 +2726,7 @@
     },
     "sunflower": {
      "fits": true,
-     "need_m3ha": 7460,
+     "need_m3ha": 5850,
      "heat_risk": "high",
      "heat_days": 34.8,
      "heat_tmax": 37.0,
@@ -2698,7 +2740,7 @@
     },
     "mung_bean": {
      "fits": true,
-     "need_m3ha": 4730,
+     "need_m3ha": 3740,
      "heat_risk": "low",
      "heat_days": 3.4,
      "heat_tmax": 40.0,
@@ -2712,7 +2754,7 @@
     },
     "chickpea": {
      "fits": true,
-     "need_m3ha": 4260,
+     "need_m3ha": 3280,
      "heat_risk": "medium",
      "heat_days": 12.8,
      "heat_tmax": 35.0,
@@ -2726,7 +2768,7 @@
     },
     "potato": {
      "fits": true,
-     "need_m3ha": 7330,
+     "need_m3ha": 5720,
      "heat_risk": "high",
      "heat_days": 36.3,
      "heat_tmax": 30.0,
@@ -2740,7 +2782,7 @@
     },
     "onion": {
      "fits": true,
-     "need_m3ha": 7880,
+     "need_m3ha": 6130,
      "heat_risk": "medium",
      "heat_days": 21.1,
      "heat_tmax": 35.0,
@@ -2754,7 +2796,7 @@
     },
     "tomato": {
      "fits": true,
-     "need_m3ha": 9810,
+     "need_m3ha": 7720,
      "heat_risk": "high",
      "heat_days": 42.2,
      "heat_tmax": 35.0,
@@ -2768,7 +2810,7 @@
     },
     "melon": {
      "fits": true,
-     "need_m3ha": 7420,
+     "need_m3ha": 5820,
      "heat_risk": "high",
      "heat_days": 18.2,
      "heat_tmax": 40.0,
@@ -2782,7 +2824,7 @@
     },
     "alfalfa": {
      "fits": true,
-     "need_m3ha": 11460,
+     "need_m3ha": 8980,
      "heat_risk": "medium",
      "heat_days": 57.4,
      "heat_tmax": 38.0,
@@ -2798,10 +2840,16 @@
   },
   "Fergana_field2": {
    "cell_id": "Fergana_cell",
+   "et0_correction": {
+    "factor": 0.8,
+    "method": "default",
+    "n_days": 0,
+    "label": "approximate, provisional bias correction for MERRA-2 desert bias over irrigated land"
+   },
    "baseline": {
     "cotton": {
      "fits": true,
-     "need_m3ha": 10570,
+     "need_m3ha": 8290,
      "heat_risk": "high",
      "heat_days": 26.8,
      "heat_tmax": 38.0,
@@ -2815,7 +2863,7 @@
     },
     "winter_wheat": {
      "fits": true,
-     "need_m3ha": 3940,
+     "need_m3ha": 2980,
      "heat_risk": "medium",
      "heat_days": 7.2,
      "heat_tmax": 32.0,
@@ -2829,7 +2877,7 @@
     },
     "barley": {
      "fits": true,
-     "need_m3ha": 2940,
+     "need_m3ha": 2210,
      "heat_risk": "low",
      "heat_days": 3.4,
      "heat_tmax": 32.0,
@@ -2843,7 +2891,7 @@
     },
     "maize": {
      "fits": true,
-     "need_m3ha": 9190,
+     "need_m3ha": 7240,
      "heat_risk": "high",
      "heat_days": 42.8,
      "heat_tmax": 35.0,
@@ -2857,7 +2905,7 @@
     },
     "rice": {
      "fits": true,
-     "need_m3ha": 16430,
+     "need_m3ha": 14030,
      "heat_risk": "high",
      "heat_days": 45.4,
      "heat_tmax": 35.0,
@@ -2871,7 +2919,7 @@
     },
     "sorghum": {
      "fits": true,
-     "need_m3ha": 7200,
+     "need_m3ha": 5640,
      "heat_risk": "medium",
      "heat_days": 9.4,
      "heat_tmax": 40.0,
@@ -2885,7 +2933,7 @@
     },
     "sunflower": {
      "fits": true,
-     "need_m3ha": 6780,
+     "need_m3ha": 5300,
      "heat_risk": "high",
      "heat_days": 18.9,
      "heat_tmax": 37.0,
@@ -2899,7 +2947,7 @@
     },
     "mung_bean": {
      "fits": true,
-     "need_m3ha": 4590,
+     "need_m3ha": 3630,
      "heat_risk": "low",
      "heat_days": 1.2,
      "heat_tmax": 40.0,
@@ -2913,7 +2961,7 @@
     },
     "chickpea": {
      "fits": true,
-     "need_m3ha": 4100,
+     "need_m3ha": 3150,
      "heat_risk": "medium",
      "heat_days": 7.9,
      "heat_tmax": 35.0,
@@ -2927,7 +2975,7 @@
     },
     "potato": {
      "fits": true,
-     "need_m3ha": 7080,
+     "need_m3ha": 5520,
      "heat_risk": "high",
      "heat_days": 32.8,
      "heat_tmax": 30.0,
@@ -2941,7 +2989,7 @@
     },
     "onion": {
      "fits": true,
-     "need_m3ha": 7600,
+     "need_m3ha": 5910,
      "heat_risk": "medium",
      "heat_days": 14.0,
      "heat_tmax": 35.0,
@@ -2955,7 +3003,7 @@
     },
     "tomato": {
      "fits": true,
-     "need_m3ha": 9520,
+     "need_m3ha": 7490,
      "heat_risk": "high",
      "heat_days": 39.2,
      "heat_tmax": 35.0,
@@ -2969,7 +3017,7 @@
     },
     "melon": {
      "fits": true,
-     "need_m3ha": 7190,
+     "need_m3ha": 5640,
      "heat_risk": "medium",
      "heat_days": 11.4,
      "heat_tmax": 40.0,
@@ -2983,7 +3031,7 @@
     },
     "alfalfa": {
      "fits": true,
-     "need_m3ha": 11090,
+     "need_m3ha": 8680,
      "heat_risk": "medium",
      "heat_days": 38.7,
      "heat_tmax": 38.0,
@@ -2999,7 +3047,7 @@
    "hotter": {
     "cotton": {
      "fits": true,
-     "need_m3ha": 11330,
+     "need_m3ha": 8900,
      "heat_risk": "high",
      "heat_days": 41.4,
      "heat_tmax": 38.0,
@@ -3013,7 +3061,7 @@
     },
     "winter_wheat": {
      "fits": true,
-     "need_m3ha": 4130,
+     "need_m3ha": 3120,
      "heat_risk": "medium",
      "heat_days": 9.9,
      "heat_tmax": 32.0,
@@ -3027,7 +3075,7 @@
     },
     "barley": {
      "fits": true,
-     "need_m3ha": 3090,
+     "need_m3ha": 2330,
      "heat_risk": "low",
      "heat_days": 5.2,
      "heat_tmax": 32.0,
@@ -3041,7 +3089,7 @@
     },
     "maize": {
      "fits": true,
-     "need_m3ha": 9460,
+     "need_m3ha": 7460,
      "heat_risk": "high",
      "heat_days": 46.4,
      "heat_tmax": 35.0,
@@ -3055,7 +3103,7 @@
     },
     "rice": {
      "fits": true,
-     "need_m3ha": 16780,
+     "need_m3ha": 14310,
      "heat_risk": "high",
      "heat_days": 51.2,
      "heat_tmax": 35.0,
@@ -3069,7 +3117,7 @@
     },
     "sorghum": {
      "fits": true,
-     "need_m3ha": 7430,
+     "need_m3ha": 5820,
      "heat_risk": "medium",
      "heat_days": 15.6,
      "heat_tmax": 40.0,
@@ -3083,7 +3131,7 @@
     },
     "sunflower": {
      "fits": true,
-     "need_m3ha": 7460,
+     "need_m3ha": 5850,
      "heat_risk": "high",
      "heat_days": 34.8,
      "heat_tmax": 37.0,
@@ -3097,7 +3145,7 @@
     },
     "mung_bean": {
      "fits": true,
-     "need_m3ha": 4730,
+     "need_m3ha": 3740,
      "heat_risk": "low",
      "heat_days": 3.4,
      "heat_tmax": 40.0,
@@ -3111,7 +3159,7 @@
     },
     "chickpea": {
      "fits": true,
-     "need_m3ha": 4260,
+     "need_m3ha": 3280,
      "heat_risk": "medium",
      "heat_days": 12.8,
      "heat_tmax": 35.0,
@@ -3125,7 +3173,7 @@
     },
     "potato": {
      "fits": true,
-     "need_m3ha": 7330,
+     "need_m3ha": 5720,
      "heat_risk": "high",
      "heat_days": 36.3,
      "heat_tmax": 30.0,
@@ -3139,7 +3187,7 @@
     },
     "onion": {
      "fits": true,
-     "need_m3ha": 7880,
+     "need_m3ha": 6130,
      "heat_risk": "medium",
      "heat_days": 21.1,
      "heat_tmax": 35.0,
@@ -3153,7 +3201,7 @@
     },
     "tomato": {
      "fits": true,
-     "need_m3ha": 9810,
+     "need_m3ha": 7720,
      "heat_risk": "high",
      "heat_days": 42.2,
      "heat_tmax": 35.0,
@@ -3167,7 +3215,7 @@
     },
     "melon": {
      "fits": true,
-     "need_m3ha": 7420,
+     "need_m3ha": 5820,
      "heat_risk": "high",
      "heat_days": 18.2,
      "heat_tmax": 40.0,
@@ -3181,7 +3229,7 @@
     },
     "alfalfa": {
      "fits": true,
-     "need_m3ha": 11460,
+     "need_m3ha": 8980,
      "heat_risk": "medium",
      "heat_days": 57.4,
      "heat_tmax": 38.0,
@@ -3197,10 +3245,16 @@
   },
   "Karshi_field1": {
    "cell_id": "Karshi_cell",
+   "et0_correction": {
+    "factor": 0.8,
+    "method": "default",
+    "n_days": 0,
+    "label": "approximate, provisional bias correction for MERRA-2 desert bias over irrigated land"
+   },
    "baseline": {
     "cotton": {
      "fits": true,
-     "need_m3ha": 16260,
+     "need_m3ha": 12940,
      "heat_risk": "high",
      "heat_days": 43.2,
      "heat_tmax": 38.0,
@@ -3214,7 +3268,7 @@
     },
     "winter_wheat": {
      "fits": true,
-     "need_m3ha": 4720,
+     "need_m3ha": 3590,
      "heat_risk": "medium",
      "heat_days": 11.9,
      "heat_tmax": 32.0,
@@ -3228,7 +3282,7 @@
     },
     "barley": {
      "fits": true,
-     "need_m3ha": 3330,
+     "need_m3ha": 2490,
      "heat_risk": "medium",
      "heat_days": 6.6,
      "heat_tmax": 32.0,
@@ -3242,7 +3296,7 @@
     },
     "maize": {
      "fits": true,
-     "need_m3ha": 13840,
+     "need_m3ha": 11040,
      "heat_risk": "high",
      "heat_days": 47.4,
      "heat_tmax": 35.0,
@@ -3256,7 +3310,7 @@
     },
     "rice": {
      "fits": true,
-     "need_m3ha": 21540,
+     "need_m3ha": 18200,
      "heat_risk": "high",
      "heat_days": 51.8,
      "heat_tmax": 35.0,
@@ -3270,7 +3324,7 @@
     },
     "sorghum": {
      "fits": true,
-     "need_m3ha": 11230,
+     "need_m3ha": 8950,
      "heat_risk": "high",
      "heat_days": 23.3,
      "heat_tmax": 40.0,
@@ -3284,7 +3338,7 @@
     },
     "sunflower": {
      "fits": true,
-     "need_m3ha": 10970,
+     "need_m3ha": 8730,
      "heat_risk": "high",
      "heat_days": 39.1,
      "heat_tmax": 37.0,
@@ -3298,7 +3352,7 @@
     },
     "mung_bean": {
      "fits": true,
-     "need_m3ha": 6680,
+     "need_m3ha": 5340,
      "heat_risk": "low",
      "heat_days": 4.2,
      "heat_tmax": 40.0,
@@ -3312,7 +3366,7 @@
     },
     "chickpea": {
      "fits": true,
-     "need_m3ha": 5330,
+     "need_m3ha": 4170,
      "heat_risk": "high",
      "heat_days": 16.4,
      "heat_tmax": 35.0,
@@ -3326,7 +3380,7 @@
     },
     "potato": {
      "fits": true,
-     "need_m3ha": 10250,
+     "need_m3ha": 8120,
      "heat_risk": "high",
      "heat_days": 41.2,
      "heat_tmax": 30.0,
@@ -3340,7 +3394,7 @@
     },
     "onion": {
      "fits": true,
-     "need_m3ha": 10280,
+     "need_m3ha": 8090,
      "heat_risk": "medium",
      "heat_days": 25.9,
      "heat_tmax": 35.0,
@@ -3354,7 +3408,7 @@
     },
     "tomato": {
      "fits": true,
-     "need_m3ha": 13960,
+     "need_m3ha": 11120,
      "heat_risk": "high",
      "heat_days": 43.0,
      "heat_tmax": 35.0,
@@ -3368,7 +3422,7 @@
     },
     "melon": {
      "fits": true,
-     "need_m3ha": 10820,
+     "need_m3ha": 8610,
      "heat_risk": "high",
      "heat_days": 23.3,
      "heat_tmax": 40.0,
@@ -3382,7 +3436,7 @@
     },
     "alfalfa": {
      "fits": true,
-     "need_m3ha": 15940,
+     "need_m3ha": 12660,
      "heat_risk": "medium",
      "heat_days": 65.3,
      "heat_tmax": 38.0,
@@ -3398,7 +3452,7 @@
    "hotter": {
     "cotton": {
      "fits": true,
-     "need_m3ha": 16800,
+     "need_m3ha": 13370,
      "heat_risk": "high",
      "heat_days": 51.2,
      "heat_tmax": 38.0,
@@ -3412,7 +3466,7 @@
     },
     "winter_wheat": {
      "fits": true,
-     "need_m3ha": 4950,
+     "need_m3ha": 3770,
      "heat_risk": "medium",
      "heat_days": 15.6,
      "heat_tmax": 32.0,
@@ -3426,7 +3480,7 @@
     },
     "barley": {
      "fits": true,
-     "need_m3ha": 3510,
+     "need_m3ha": 2630,
      "heat_risk": "medium",
      "heat_days": 9.4,
      "heat_tmax": 32.0,
@@ -3440,7 +3494,7 @@
     },
     "maize": {
      "fits": true,
-     "need_m3ha": 14290,
+     "need_m3ha": 11390,
      "heat_risk": "high",
      "heat_days": 49.2,
      "heat_tmax": 35.0,
@@ -3454,7 +3508,7 @@
     },
     "rice": {
      "fits": true,
-     "need_m3ha": 22070,
+     "need_m3ha": 18630,
      "heat_risk": "high",
      "heat_days": 55.7,
      "heat_tmax": 35.0,
@@ -3468,7 +3522,7 @@
     },
     "sorghum": {
      "fits": true,
-     "need_m3ha": 11590,
+     "need_m3ha": 9230,
      "heat_risk": "high",
      "heat_days": 29.4,
      "heat_tmax": 40.0,
@@ -3482,7 +3536,7 @@
     },
     "sunflower": {
      "fits": true,
-     "need_m3ha": 11330,
+     "need_m3ha": 9010,
      "heat_risk": "high",
      "heat_days": 42.7,
      "heat_tmax": 37.0,
@@ -3496,7 +3550,7 @@
     },
     "mung_bean": {
      "fits": true,
-     "need_m3ha": 6900,
+     "need_m3ha": 5510,
      "heat_risk": "medium",
      "heat_days": 8.6,
      "heat_tmax": 40.0,
@@ -3510,7 +3564,7 @@
     },
     "chickpea": {
      "fits": true,
-     "need_m3ha": 6500,
+     "need_m3ha": 5110,
      "heat_risk": "high",
      "heat_days": 27.1,
      "heat_tmax": 35.0,
@@ -3524,7 +3578,7 @@
     },
     "potato": {
      "fits": true,
-     "need_m3ha": 9530,
+     "need_m3ha": 7530,
      "heat_risk": "high",
      "heat_days": 40.9,
      "heat_tmax": 30.0,
@@ -3538,7 +3592,7 @@
     },
     "onion": {
      "fits": true,
-     "need_m3ha": 10670,
+     "need_m3ha": 8400,
      "heat_risk": "high",
      "heat_days": 31.7,
      "heat_tmax": 35.0,
@@ -3552,7 +3606,7 @@
     },
     "tomato": {
      "fits": true,
-     "need_m3ha": 14410,
+     "need_m3ha": 11480,
      "heat_risk": "high",
      "heat_days": 44.4,
      "heat_tmax": 35.0,
@@ -3566,7 +3620,7 @@
     },
     "melon": {
      "fits": true,
-     "need_m3ha": 11170,
+     "need_m3ha": 8890,
      "heat_risk": "high",
      "heat_days": 29.4,
      "heat_tmax": 40.0,
@@ -3580,7 +3634,7 @@
     },
     "alfalfa": {
      "fits": true,
-     "need_m3ha": 16970,
+     "need_m3ha": 13470,
      "heat_risk": "high",
      "heat_days": 86.8,
      "heat_tmax": 38.0,
@@ -3596,10 +3650,16 @@
   },
   "Karshi_field2": {
    "cell_id": "Karshi_cell",
+   "et0_correction": {
+    "factor": 0.8,
+    "method": "default",
+    "n_days": 0,
+    "label": "approximate, provisional bias correction for MERRA-2 desert bias over irrigated land"
+   },
    "baseline": {
     "cotton": {
      "fits": true,
-     "need_m3ha": 16260,
+     "need_m3ha": 12940,
      "heat_risk": "high",
      "heat_days": 43.2,
      "heat_tmax": 38.0,
@@ -3613,7 +3673,7 @@
     },
     "winter_wheat": {
      "fits": true,
-     "need_m3ha": 4720,
+     "need_m3ha": 3590,
      "heat_risk": "medium",
      "heat_days": 11.9,
      "heat_tmax": 32.0,
@@ -3627,7 +3687,7 @@
     },
     "barley": {
      "fits": true,
-     "need_m3ha": 3330,
+     "need_m3ha": 2490,
      "heat_risk": "medium",
      "heat_days": 6.6,
      "heat_tmax": 32.0,
@@ -3641,7 +3701,7 @@
     },
     "maize": {
      "fits": true,
-     "need_m3ha": 13840,
+     "need_m3ha": 11040,
      "heat_risk": "high",
      "heat_days": 47.4,
      "heat_tmax": 35.0,
@@ -3655,7 +3715,7 @@
     },
     "rice": {
      "fits": true,
-     "need_m3ha": 21540,
+     "need_m3ha": 18200,
      "heat_risk": "high",
      "heat_days": 51.8,
      "heat_tmax": 35.0,
@@ -3669,7 +3729,7 @@
     },
     "sorghum": {
      "fits": true,
-     "need_m3ha": 11230,
+     "need_m3ha": 8950,
      "heat_risk": "high",
      "heat_days": 23.3,
      "heat_tmax": 40.0,
@@ -3683,7 +3743,7 @@
     },
     "sunflower": {
      "fits": true,
-     "need_m3ha": 10970,
+     "need_m3ha": 8730,
      "heat_risk": "high",
      "heat_days": 39.1,
      "heat_tmax": 37.0,
@@ -3697,7 +3757,7 @@
     },
     "mung_bean": {
      "fits": true,
-     "need_m3ha": 6680,
+     "need_m3ha": 5340,
      "heat_risk": "low",
      "heat_days": 4.2,
      "heat_tmax": 40.0,
@@ -3711,7 +3771,7 @@
     },
     "chickpea": {
      "fits": true,
-     "need_m3ha": 5330,
+     "need_m3ha": 4170,
      "heat_risk": "high",
      "heat_days": 16.4,
      "heat_tmax": 35.0,
@@ -3725,7 +3785,7 @@
     },
     "potato": {
      "fits": true,
-     "need_m3ha": 10250,
+     "need_m3ha": 8120,
      "heat_risk": "high",
      "heat_days": 41.2,
      "heat_tmax": 30.0,
@@ -3739,7 +3799,7 @@
     },
     "onion": {
      "fits": true,
-     "need_m3ha": 10280,
+     "need_m3ha": 8090,
      "heat_risk": "medium",
      "heat_days": 25.9,
      "heat_tmax": 35.0,
@@ -3753,7 +3813,7 @@
     },
     "tomato": {
      "fits": true,
-     "need_m3ha": 13960,
+     "need_m3ha": 11120,
      "heat_risk": "high",
      "heat_days": 43.0,
      "heat_tmax": 35.0,
@@ -3767,7 +3827,7 @@
     },
     "melon": {
      "fits": true,
-     "need_m3ha": 10820,
+     "need_m3ha": 8610,
      "heat_risk": "high",
      "heat_days": 23.3,
      "heat_tmax": 40.0,
@@ -3781,7 +3841,7 @@
     },
     "alfalfa": {
      "fits": true,
-     "need_m3ha": 15940,
+     "need_m3ha": 12660,
      "heat_risk": "medium",
      "heat_days": 65.3,
      "heat_tmax": 38.0,
@@ -3797,7 +3857,7 @@
    "hotter": {
     "cotton": {
      "fits": true,
-     "need_m3ha": 16800,
+     "need_m3ha": 13370,
      "heat_risk": "high",
      "heat_days": 51.2,
      "heat_tmax": 38.0,
@@ -3811,7 +3871,7 @@
     },
     "winter_wheat": {
      "fits": true,
-     "need_m3ha": 4950,
+     "need_m3ha": 3770,
      "heat_risk": "medium",
      "heat_days": 15.6,
      "heat_tmax": 32.0,
@@ -3825,7 +3885,7 @@
     },
     "barley": {
      "fits": true,
-     "need_m3ha": 3510,
+     "need_m3ha": 2630,
      "heat_risk": "medium",
      "heat_days": 9.4,
      "heat_tmax": 32.0,
@@ -3839,7 +3899,7 @@
     },
     "maize": {
      "fits": true,
-     "need_m3ha": 14290,
+     "need_m3ha": 11390,
      "heat_risk": "high",
      "heat_days": 49.2,
      "heat_tmax": 35.0,
@@ -3853,7 +3913,7 @@
     },
     "rice": {
      "fits": true,
-     "need_m3ha": 22070,
+     "need_m3ha": 18630,
      "heat_risk": "high",
      "heat_days": 55.7,
      "heat_tmax": 35.0,
@@ -3867,7 +3927,7 @@
     },
     "sorghum": {
      "fits": true,
-     "need_m3ha": 11590,
+     "need_m3ha": 9230,
      "heat_risk": "high",
      "heat_days": 29.4,
      "heat_tmax": 40.0,
@@ -3881,7 +3941,7 @@
     },
     "sunflower": {
      "fits": true,
-     "need_m3ha": 11330,
+     "need_m3ha": 9010,
      "heat_risk": "high",
      "heat_days": 42.7,
      "heat_tmax": 37.0,
@@ -3895,7 +3955,7 @@
     },
     "mung_bean": {
      "fits": true,
-     "need_m3ha": 6900,
+     "need_m3ha": 5510,
      "heat_risk": "medium",
      "heat_days": 8.6,
      "heat_tmax": 40.0,
@@ -3909,7 +3969,7 @@
     },
     "chickpea": {
      "fits": true,
-     "need_m3ha": 6500,
+     "need_m3ha": 5110,
      "heat_risk": "high",
      "heat_days": 27.1,
      "heat_tmax": 35.0,
@@ -3923,7 +3983,7 @@
     },
     "potato": {
      "fits": true,
-     "need_m3ha": 9530,
+     "need_m3ha": 7530,
      "heat_risk": "high",
      "heat_days": 40.9,
      "heat_tmax": 30.0,
@@ -3937,7 +3997,7 @@
     },
     "onion": {
      "fits": true,
-     "need_m3ha": 10670,
+     "need_m3ha": 8400,
      "heat_risk": "high",
      "heat_days": 31.7,
      "heat_tmax": 35.0,
@@ -3951,7 +4011,7 @@
     },
     "tomato": {
      "fits": true,
-     "need_m3ha": 14410,
+     "need_m3ha": 11480,
      "heat_risk": "high",
      "heat_days": 44.4,
      "heat_tmax": 35.0,
@@ -3965,7 +4025,7 @@
     },
     "melon": {
      "fits": true,
-     "need_m3ha": 11170,
+     "need_m3ha": 8890,
      "heat_risk": "high",
      "heat_days": 29.4,
      "heat_tmax": 40.0,
@@ -3979,7 +4039,7 @@
     },
     "alfalfa": {
      "fits": true,
-     "need_m3ha": 16970,
+     "need_m3ha": 13470,
      "heat_risk": "high",
      "heat_days": 86.8,
      "heat_tmax": 38.0,
@@ -3995,10 +4055,16 @@
   },
   "Navoi_field1": {
    "cell_id": "Navoi_field1",
+   "et0_correction": {
+    "factor": 0.8,
+    "method": "default",
+    "n_days": 0,
+    "label": "approximate, provisional bias correction for MERRA-2 desert bias over irrigated land"
+   },
    "baseline": {
     "cotton": {
      "fits": true,
-     "need_m3ha": 15960,
+     "need_m3ha": 12690,
      "heat_risk": "high",
      "heat_days": 31.8,
      "heat_tmax": 38.0,
@@ -4012,7 +4078,7 @@
     },
     "winter_wheat": {
      "fits": true,
-     "need_m3ha": 4440,
+     "need_m3ha": 3360,
      "heat_risk": "medium",
      "heat_days": 7.2,
      "heat_tmax": 32.0,
@@ -4026,7 +4092,7 @@
     },
     "barley": {
      "fits": true,
-     "need_m3ha": 3090,
+     "need_m3ha": 2300,
      "heat_risk": "low",
      "heat_days": 3.4,
      "heat_tmax": 32.0,
@@ -4040,7 +4106,7 @@
     },
     "maize": {
      "fits": true,
-     "need_m3ha": 13280,
+     "need_m3ha": 10580,
      "heat_risk": "high",
      "heat_days": 42.1,
      "heat_tmax": 35.0,
@@ -4054,7 +4120,7 @@
     },
     "rice": {
      "fits": true,
-     "need_m3ha": 20970,
+     "need_m3ha": 17740,
      "heat_risk": "high",
      "heat_days": 44.1,
      "heat_tmax": 35.0,
@@ -4068,7 +4134,7 @@
     },
     "sorghum": {
      "fits": true,
-     "need_m3ha": 10390,
+     "need_m3ha": 8250,
      "heat_risk": "medium",
      "heat_days": 11.5,
      "heat_tmax": 40.0,
@@ -4082,7 +4148,7 @@
     },
     "sunflower": {
      "fits": true,
-     "need_m3ha": 10390,
+     "need_m3ha": 8250,
      "heat_risk": "high",
      "heat_days": 30.2,
      "heat_tmax": 37.0,
@@ -4096,7 +4162,7 @@
     },
     "mung_bean": {
      "fits": true,
-     "need_m3ha": 6550,
+     "need_m3ha": 5240,
      "heat_risk": "low",
      "heat_days": 1.6,
      "heat_tmax": 40.0,
@@ -4110,7 +4176,7 @@
     },
     "chickpea": {
      "fits": true,
-     "need_m3ha": 5040,
+     "need_m3ha": 3930,
      "heat_risk": "medium",
      "heat_days": 10.4,
      "heat_tmax": 35.0,
@@ -4124,7 +4190,7 @@
     },
     "potato": {
      "fits": true,
-     "need_m3ha": 9700,
+     "need_m3ha": 7670,
      "heat_risk": "high",
      "heat_days": 38.3,
      "heat_tmax": 30.0,
@@ -4138,7 +4204,7 @@
     },
     "onion": {
      "fits": true,
-     "need_m3ha": 9710,
+     "need_m3ha": 7630,
      "heat_risk": "medium",
      "heat_days": 17.9,
      "heat_tmax": 35.0,
@@ -4152,7 +4218,7 @@
     },
     "tomato": {
      "fits": true,
-     "need_m3ha": 13380,
+     "need_m3ha": 10650,
      "heat_risk": "high",
      "heat_days": 38.2,
      "heat_tmax": 35.0,
@@ -4166,7 +4232,7 @@
     },
     "melon": {
      "fits": true,
-     "need_m3ha": 10470,
+     "need_m3ha": 8340,
      "heat_risk": "medium",
      "heat_days": 12.6,
      "heat_tmax": 40.0,
@@ -4180,7 +4246,7 @@
     },
     "alfalfa": {
      "fits": true,
-     "need_m3ha": 15450,
+     "need_m3ha": 12260,
      "heat_risk": "medium",
      "heat_days": 40.2,
      "heat_tmax": 38.0,
@@ -4196,7 +4262,7 @@
    "hotter": {
     "cotton": {
      "fits": true,
-     "need_m3ha": 16520,
+     "need_m3ha": 13140,
      "heat_risk": "high",
      "heat_days": 42.2,
      "heat_tmax": 38.0,
@@ -4210,7 +4276,7 @@
     },
     "winter_wheat": {
      "fits": true,
-     "need_m3ha": 4670,
+     "need_m3ha": 3550,
      "heat_risk": "medium",
      "heat_days": 10.9,
      "heat_tmax": 32.0,
@@ -4224,7 +4290,7 @@
     },
     "barley": {
      "fits": true,
-     "need_m3ha": 3280,
+     "need_m3ha": 2440,
      "heat_risk": "low",
      "heat_days": 5.6,
      "heat_tmax": 32.0,
@@ -4238,7 +4304,7 @@
     },
     "maize": {
      "fits": true,
-     "need_m3ha": 13740,
+     "need_m3ha": 10940,
      "heat_risk": "high",
      "heat_days": 46.2,
      "heat_tmax": 35.0,
@@ -4252,7 +4318,7 @@
     },
     "rice": {
      "fits": true,
-     "need_m3ha": 21520,
+     "need_m3ha": 18180,
      "heat_risk": "high",
      "heat_days": 50.2,
      "heat_tmax": 35.0,
@@ -4266,7 +4332,7 @@
     },
     "sorghum": {
      "fits": true,
-     "need_m3ha": 10850,
+     "need_m3ha": 8660,
      "heat_risk": "high",
      "heat_days": 18.6,
      "heat_tmax": 40.0,
@@ -4280,7 +4346,7 @@
     },
     "sunflower": {
      "fits": true,
-     "need_m3ha": 10750,
+     "need_m3ha": 8540,
      "heat_risk": "high",
      "heat_days": 36.2,
      "heat_tmax": 37.0,
@@ -4294,7 +4360,7 @@
     },
     "mung_bean": {
      "fits": true,
-     "need_m3ha": 6780,
+     "need_m3ha": 5420,
      "heat_risk": "low",
      "heat_days": 3.6,
      "heat_tmax": 40.0,
@@ -4308,7 +4374,7 @@
     },
     "chickpea": {
      "fits": true,
-     "need_m3ha": 5250,
+     "need_m3ha": 4100,
      "heat_risk": "medium",
      "heat_days": 15.1,
      "heat_tmax": 35.0,
@@ -4322,7 +4388,7 @@
     },
     "potato": {
      "fits": true,
-     "need_m3ha": 9600,
+     "need_m3ha": 7590,
      "heat_risk": "high",
      "heat_days": 39.5,
      "heat_tmax": 30.0,
@@ -4336,7 +4402,7 @@
     },
     "onion": {
      "fits": true,
-     "need_m3ha": 10090,
+     "need_m3ha": 7930,
      "heat_risk": "medium",
      "heat_days": 24.0,
      "heat_tmax": 35.0,
@@ -4350,7 +4416,7 @@
     },
     "tomato": {
      "fits": true,
-     "need_m3ha": 13840,
+     "need_m3ha": 11020,
      "heat_risk": "high",
      "heat_days": 41.9,
      "heat_tmax": 35.0,
@@ -4364,7 +4430,7 @@
     },
     "melon": {
      "fits": true,
-     "need_m3ha": 10620,
+     "need_m3ha": 8450,
      "heat_risk": "high",
      "heat_days": 20.2,
      "heat_tmax": 40.0,
@@ -4378,7 +4444,7 @@
     },
     "alfalfa": {
      "fits": true,
-     "need_m3ha": 16030,
+     "need_m3ha": 12720,
      "heat_risk": "medium",
      "heat_days": 60.1,
      "heat_tmax": 38.0,

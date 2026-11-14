@@ -46,6 +46,10 @@ PLANNER_T = {
                      "uz": "{f:,} ta bajariladigan reja ichida eng kam jami sugʻorish suvi (tenglikda — foyda boʻyicha)."},
     "pl_year_reason": {"en": "**{y}. {crop}** — expected margin {lo:,.0f} – {hi:,.0f} USD/ha, estimate (#{r} of {n} crops by margin), water {w:,.0f} m³/ha{extra}.",
                        "uz": "**{y}. {crop}** — kutilgan foyda {lo:,.0f} – {hi:,.0f} USD/ga, taxminiy (foyda boʻyicha {n} tadan #{r}), suv {w:,.0f} m³/ga{extra}."},
+    "pl_et0_note": {"en": "Crop water needs use ET0 × {f:.2f} ({label}).", "uz": "Ekin suv ehtiyoji ET0 × {f:.2f} bilan hisoblanadi ({label})."},
+    "pl_et0_provisional": {"en": "approximate, provisional bias correction for MERRA-2 desert bias over irrigated land",
+                           "uz": "MERRA-2 choʻl xatoligi uchun taxminiy, vaqtinchalik tuzatma"},
+    "pl_et0_ecostress": {"en": "calibrated with ECOSTRESS", "uz": "ECOSTRESS bilan kalibrlangan"},
     "pl_estimate": {"en": "estimate", "uz": "taxminiy"},
     "pl_profit_year_avg": {"en": "Profit per ha per year (avg, estimate)", "uz": "Yillik foyda, gektariga (oʻrtacha, taxminiy)"},
     "pl_profit_5y": {"en": "5-year total profit (estimate)", "uz": "5 yillik jami foyda (taxminiy)"},
@@ -115,6 +119,7 @@ PLANNER_T = {
     "pl_limits_text": {"en": """
 * **Rotation health is a rule score, not a soil model.** It counts rule-based points (repeats, legume breaks, plant-family diversity); it does **not** simulate soil carbon, nitrogen, salinity or pests.
 * **Prices and yields:** FAOSTAT Uzbekistan where available (yields 2022–24, producer prices 2023–24). Melon, chickpea and mung bean prices use labelled proxies; alfalfa yield/price and **all costs per ha are approximate placeholders**. The FAOSTAT tomato price is an annual average and probably overstates open-field farm-gate prices — see `config/crops.csv`.
+* **Water need** uses ET0 × the site's correction factor (default 0.80, approximate, provisional bias correction for MERRA-2 desert bias over irrigated land; *calibrated with ECOSTRESS* when those data are added).
 * **Expected yield** = FAOSTAT national yield × climate-risk factor × rotation effect; these factors are approximate and editable (`config/planner.yaml`, `config/rotation_rules.yaml`).
 * **Hypothetical inputs:** water budgets, the fresh-market limit and demo-farm obligations are examples, not data.
 * **Scenarios** are simple: +1.5 °C added to every day (ET0, heat, frost and GDD recomputed); −20 % water budget. No price or policy changes.
@@ -123,6 +128,7 @@ PLANNER_T = {
 """, "uz": """
 * **Almashlab ekish salomatligi — qoida bali, tuproq modeli emas.** U qoidalar boʻyicha ball beradi (takrorlar, dukkakli tanaffus, oilalar xilma-xilligi); tuproq uglerodi, azot, shoʻrlanish yoki zararkunandalarni **simulyatsiya qilmaydi**.
 * **Narx va hosil:** imkon boricha FAOSTAT Oʻzbekiston (hosil 2022–24, narxlar 2023–24). Qovun, noʻxat va mosh narxlari — belgilangan proksi; beda hosili/narxi va **barcha xarajatlar taxminiy**. FAOSTAT pomidor narxi yillik oʻrtacha va ochiq dala narxidan yuqori boʻlishi mumkin — `config/crops.csv` ga qarang.
+* **Suv ehtiyoji** ET0 × joy tuzatma koeffitsiyenti bilan hisoblanadi (standart 0,80 — MERRA-2 choʻl xatoligi uchun taxminiy, vaqtinchalik tuzatma; ECOSTRESS maʼlumotlari qoʻshilsa — *ECOSTRESS bilan kalibrlangan*).
 * **Kutilgan hosil** = FAOSTAT milliy hosildorligi × iqlim xavfi koeffitsiyenti × almashlab ekish taʼsiri; bular taxminiy va tahrirlanadi.
 * **Taxminiy (gipotetik) kiritmalar:** suv byudjetlari, bozor cheklovi va demo xoʻjalik majburiyatlari — misollar, maʼlumot emas.
 * **Ssenariylar** oddiy: har kunga +1,5 °C (ET0, issiqlik, sovuq va SHY qayta hisoblangan); suv byudjeti −20 %. Narx yoki siyosat oʻzgarmaydi.
