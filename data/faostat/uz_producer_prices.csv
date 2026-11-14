@@ -1,0 +1,37 @@
+Item,Year,Element,Unit,Value,Flag,accessed
+Barley,2022,Producer Price (USD/tonne),USD,187.0,A,2026-11-14
+Barley,2023,Producer Price (USD/tonne),USD,307.6,A,2026-11-14
+Barley,2024,Producer Price (USD/tonne),USD,288.4,A,2026-11-14
+Maize (corn),2022,Producer Price (USD/tonne),USD,263.7,A,2026-11-14
+Maize (corn),2023,Producer Price (USD/tonne),USD,304.3,A,2026-11-14
+Maize (corn),2024,Producer Price (USD/tonne),USD,288.8,A,2026-11-14
+"Onions and shallots, dry (excluding dehydrated)",2022,Producer Price (USD/tonne),USD,161.0,A,2026-11-14
+"Onions and shallots, dry (excluding dehydrated)",2023,Producer Price (USD/tonne),USD,277.0,A,2026-11-14
+"Onions and shallots, dry (excluding dehydrated)",2024,Producer Price (USD/tonne),USD,235.0,A,2026-11-14
+"Peas, dry",2022,Producer Price (USD/tonne),USD,849.6,A,2026-11-14
+"Peas, dry",2023,Producer Price (USD/tonne),USD,1335.1,A,2026-11-14
+"Peas, dry",2024,Producer Price (USD/tonne),USD,1339.0,A,2026-11-14
+Potatoes,2022,Producer Price (USD/tonne),USD,245.4,A,2026-11-14
+Potatoes,2023,Producer Price (USD/tonne),USD,256.1,A,2026-11-14
+Potatoes,2024,Producer Price (USD/tonne),USD,330.7,A,2026-11-14
+Rice,2022,Producer Price (USD/tonne),USD,464.0,A,2026-11-14
+Rice,2023,Producer Price (USD/tonne),USD,1107.8,A,2026-11-14
+Rice,2024,Producer Price (USD/tonne),USD,982.9,A,2026-11-14
+"Seed cotton, unginned",2022,Producer Price (USD/tonne),USD,917.4,A,2026-11-14
+"Seed cotton, unginned",2023,Producer Price (USD/tonne),USD,383.5,A,2026-11-14
+"Seed cotton, unginned",2024,Producer Price (USD/tonne),USD,355.7,A,2026-11-14
+Sorghum,2022,Producer Price (USD/tonne),USD,194.4,A,2026-11-14
+Sorghum,2023,Producer Price (USD/tonne),USD,230.1,A,2026-11-14
+Sorghum,2024,Producer Price (USD/tonne),USD,220.8,A,2026-11-14
+Sunflower seed,2022,Producer Price (USD/tonne),USD,458.4,A,2026-11-14
+Sunflower seed,2023,Producer Price (USD/tonne),USD,373.7,A,2026-11-14
+Sunflower seed,2024,Producer Price (USD/tonne),USD,367.1,A,2026-11-14
+Tomatoes,2022,Producer Price (USD/tonne),USD,440.8,A,2026-11-14
+Tomatoes,2023,Producer Price (USD/tonne),USD,873.5,A,2026-11-14
+Tomatoes,2024,Producer Price (USD/tonne),USD,732.2,A,2026-11-14
+Watermelons,2022,Producer Price (USD/tonne),USD,134.8,A,2026-11-14
+Watermelons,2023,Producer Price (USD/tonne),USD,173.3,A,2026-11-14
+Watermelons,2024,Producer Price (USD/tonne),USD,147.9,A,2026-11-14
+Wheat,2022,Producer Price (USD/tonne),USD,122.1,A,2026-11-14
+Wheat,2023,Producer Price (USD/tonne),USD,288.2,A,2026-11-14
+Wheat,2024,Producer Price (USD/tonne),USD,259.5,A,2026-11-14

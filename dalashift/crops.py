@@ -1,6 +1,9 @@
-"""Crop parameter table used by the DalaShift rule engine.
+"""Crop parameter table used by the DalaShift rule engine - loaded from config/crops.csv.
 
-Sources
+config/crops.csv is the single source of truth. Every value group there carries a
+`<group>_status` ("documented" / "approximate"), `<group>_source` and `<group>_date`.
+
+Sources (summary - see the CSV for each value)
 -------
 * Kc_ini / Kc_mid / Kc_end and maximum crop height h:
     FAO-56, Table 12 (Allen et al., 1998, FAO Irrigation and Drainage Paper 56).
@@ -8,22 +11,25 @@ Sources
     (wind speed u2 and minimum relative humidity RHmin), see engine.py.
 * Stage lengths L_ini / L_dev / L_mid / L_late [days]:
     FAO-56, Table 11, adapted to typical Uzbek sowing calendars.
-* GDD requirement, base temperature, heat threshold and frost behaviour are NOT from FAO-56.
-  They are approximate agronomic thresholds (general crop-physiology literature and
-  common Uzbek practice) and are kept deliberately simple and visible so judges and
-  agronomists can change them.
-
-Sowing dates are the conventional ones for irrigated lowland Uzbekistan.
+* Salinity thresholds: FAO-29 Table 4 (Ayers & Westcot, 1985) where listed.
+* Yields / producer prices: FAOSTAT (Uzbekistan) where a series exists, else labelled proxies/assumptions.
+* GDD requirement, base temperature, heat threshold, frost behaviour and costs are NOT from
+  FAO-56. They are approximate and kept deliberately visible so agronomists can change them.
 """
 from __future__ import annotations
 
 from dataclasses import dataclass
+from pathlib import Path
+
+import pandas as pd
+
+CROPS_CSV = Path(__file__).resolve().parents[1] / "config" / "crops.csv"
 
 
 @dataclass(frozen=True)
 class Crop:
     key: str
-    sow: tuple[int, int]               # (month, day); winter wheat is sown in the previous year
+    sow: tuple[int, int]               # (month, day); winter crops are sown in the previous year
     stages: tuple[int, int, int, int]  # FAO-56 Table 11: L_ini, L_dev, L_mid, L_late
     kc_ini: float                      # FAO-56 Table 12
     kc_mid: float                      # FAO-56 Table 12
@@ -39,45 +45,45 @@ class Crop:
     second_crop: bool = False          # only grown after a winter crop (not ranked alone)
     overwinter: bool = False           # sown in autumn, harvested next year
     perennial: bool = False
+    family: str = ""
+    legume: bool = False
 
     @property
     def season_days(self) -> int:
         return sum(self.stages)
 
 
-CROPS: dict[str, Crop] = {
-    # Cotton - FAO-56 T11 (30/50/60/55, Mar-Apr sowing, arid regions); T12 Kc 0.35/1.15-1.20/0.70-0.50, h 1.2-1.5 m
-    "cotton": Crop("cotton", (4, 15), (30, 50, 60, 55), 0.35, 1.18, 0.60, 1.35,
-                   gdd_base=10, min_gdd=1900, heat_tmax=38, frost_sensitive=True),
-    # Winter wheat - FAO-56 T11 (long initial stage incl. winter dormancy); T12 Kc 0.4 (frozen soil)/1.15/0.25-0.4, h 1 m
-    "winter_wheat": Crop("winter_wheat", (10, 10), (130, 50, 40, 25), 0.40, 1.15, 0.30, 1.0,
-                         gdd_base=0, min_gdd=2000, heat_tmax=32, frost_sensitive=False,
-                         # approx. lethal AIR Tmin for hardened winter wheat (risk warning only)
-                         winterkill_tmin=-25, overwinter=True, latest_harvest=(7, 10)),
-    # Maize (grain) - FAO-56 T11 (30/40/50/30); T12 Kc 0.30/1.20/0.60-0.35, h 2 m
-    "maize": Crop("maize", (4, 25), (30, 40, 50, 30), 0.30, 1.20, 0.50, 2.0,
-                  gdd_base=10, min_gdd=1500, heat_tmax=35, frost_sensitive=True),
-    # Rice (paddy) - FAO-56 T11 (30/30/60/30); T12 Kc 1.05/1.20/0.90-0.60, h 1 m
-    "rice": Crop("rice", (5, 10), (30, 30, 60, 30), 1.05, 1.20, 0.75, 1.0,
-                 gdd_base=10, min_gdd=1600, heat_tmax=35, frost_sensitive=True,
-                 extra_mm=500),  # rough paddy losses (land soaking + percolation), not FAO-56
-    # Sorghum (grain) - FAO-56 T11 (20/35/40/30); T12 Kc 0.30/1.00-1.10/0.55, h 1-2 m
-    "sorghum": Crop("sorghum", (5, 1), (20, 35, 40, 30), 0.30, 1.05, 0.55, 1.5,
-                    gdd_base=10, min_gdd=1300, heat_tmax=40, frost_sensitive=True),
-    # Sunflower - FAO-56 T11 (25/35/45/25); T12 Kc 0.35/1.0-1.15/0.35, h 2 m
-    "sunflower": Crop("sunflower", (4, 15), (25, 35, 45, 25), 0.35, 1.05, 0.35, 2.0,
-                      gdd_base=10, min_gdd=1100, heat_tmax=37, frost_sensitive=True),
-    # Mung bean (2nd crop after wheat) - FAO-56 T11 dry beans (15/25/35/20 class); T12 mung beans Kc 0.40/1.05/0.35, h 0.4 m
-    "mung_bean": Crop("mung_bean", (6, 25), (15, 25, 30, 20), 0.40, 1.05, 0.35, 0.4,
-                      gdd_base=10, min_gdd=900, heat_tmax=40, frost_sensitive=True,
-                      second_crop=True),
-    # Melon - FAO-56 T11 (25/35/40/20); T12 melons Kc 0.50/1.05/0.75, h 0.4 m
-    "melon": Crop("melon", (4, 25), (25, 35, 40, 20), 0.50, 1.05, 0.75, 0.4,
-                  gdd_base=10, min_gdd=1200, heat_tmax=40, frost_sensitive=True),
-    # Alfalfa (hay, established stand) - FAO-56 T12 "averaged cutting effects" Kc 0.40/0.95/0.90, h 0.7 m
-    "alfalfa": Crop("alfalfa", (3, 20), (10, 30, 165, 20), 0.40, 0.95, 0.90, 0.7,
-                    gdd_base=5, min_gdd=1000, heat_tmax=38, frost_sensitive=False,
-                    perennial=True),
-}
+def _bool(v) -> bool:
+    return str(v).strip().lower() in ("true", "1", "yes")
 
+
+def _opt_float(v):
+    return None if pd.isna(v) or str(v).strip() == "" else float(v)
+
+
+def load_crop_table(path: Path = CROPS_CSV) -> pd.DataFrame:
+    return pd.read_csv(path, keep_default_na=True).set_index("crop", drop=False)
+
+
+def load_crops(path: Path = CROPS_CSV) -> dict[str, Crop]:
+    crops = {}
+    for r in load_crop_table(path).itertuples(index=False):
+        lh = None
+        if isinstance(r.latest_harvest, str) and r.latest_harvest.strip():
+            m, d = r.latest_harvest.split("-")
+            lh = (int(m), int(d))
+        crops[r.crop] = Crop(
+            key=r.crop, sow=(int(r.sow_month), int(r.sow_day)),
+            stages=(int(r.l_ini), int(r.l_dev), int(r.l_mid), int(r.l_late)),
+            kc_ini=float(r.kc_ini), kc_mid=float(r.kc_mid), kc_end=float(r.kc_end), height_m=float(r.height_m),
+            gdd_base=float(r.gdd_base_c), min_gdd=float(r.min_gdd), heat_tmax=float(r.heat_tmax_c),
+            frost_sensitive=_bool(r.frost_sensitive), winterkill_tmin=_opt_float(r.winterkill_tmin_c),
+            extra_mm=float(r.extra_water_mm), latest_harvest=lh,
+            second_crop=r.role == "second_crop", overwinter=_bool(r.overwinter), perennial=r.role == "perennial",
+            family=r.family, legume=_bool(r.legume),
+        )
+    return crops
+
+
+CROPS: dict[str, Crop] = load_crops()
 BASELINE = "cotton"  # water savings are reported against cotton
