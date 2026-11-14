@@ -32,8 +32,12 @@ All rules are transparent and live in [`dalashift/`](dalashift/). No machine lea
 - Rice adds a rough 500 mm for paddy soaking and percolation.
 
 **Season fit.** A crop fits if both hold, using fixed typical sowing dates:
-- its heat requirement (GDD) is met in ≥ 80 % of years;
-- frost (or winterkill below −22 °C, for wheat) hits ≤ 20 % of years.
+- its heat requirement (GDD) is met in ≥ 80 % of years (for winter wheat, counted up to a latest harvest of 10 Jul, because cool years ripen later rather than fail);
+- in-season frost (frost-sensitive crops) hits ≤ 20 % of years.
+
+**Winterkill (winter wheat) is a risk warning, not an exclusion.** The app shows the % of winters with air Tmin below
+about −25 °C, an approximate limit for hardened winter wheat (snow cover often protects the crop). It lowers the score
+slightly but never removes wheat, which is widely grown in Karakalpakstan and Khorezm.
 
 **Heat risk.** The share of days in the flowering / grain-fill stage with Tmax above the crop's threshold: low < 15 %, medium 15–40 %, high > 40 %.
 

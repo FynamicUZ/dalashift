@@ -289,6 +289,9 @@ with tab_plant:
                         + t("heat_detail", lang, d=c["heat_days"], t=c["heat_tmax"]))
             if c["p_frost"] > 0:
                 st.markdown("❄️ " + t("frost_risk", lang, p=100 * c["p_frost"]))
+            if c.get("winterkill_tmin") is not None:
+                st.markdown(f"{'⚠️' if c['p_winterkill'] > 0 else '🟢'} " + t(
+                    "winterkill_risk", lang, p=100 * c["p_winterkill"], tk=c["winterkill_tmin"]))
             if c["p_gdd_ok"] < 1:
                 st.markdown("🌡️ " + t("gdd_short", lang, p=100 * (1 - c["p_gdd_ok"])))
             st.markdown(("✅ " + t("fits", lang)) if c["fits"] else ("⚠️ " + t("not_fits", lang)))
@@ -324,6 +327,7 @@ with tab_plant:
                 "GDD / min": f"{c['gdd']:.0f} / {c['min_gdd']:.0f} (base {c['gdd_base']:.0f})",
                 t("heat_risk", lang): f"{RISK_ICON[c['heat_risk']]} {t(c['heat_risk'], lang)} ({c['heat_days']:.0f} d > {c['heat_tmax']:.0f} °C)",
                 "Frost %": round(100 * c["p_frost"]),
+                t("winterkill_col", lang): (round(100 * c["p_winterkill"]) if c.get("winterkill_tmin") is not None else None),
                 t("score", lang): c["score"],
             })
         st.dataframe(pd.DataFrame(rows), hide_index=True, width="stretch")

@@ -33,8 +33,9 @@ class Crop:
     min_gdd: float                     # degC-days from sowing to maturity (approx.)
     heat_tmax: float                   # Tmax above which the sensitive (mid) stage is stressed
     frost_sensitive: bool              # any Tmin <= 0 degC in season = damage
-    winterkill_tmin: float | None = None   # for winter crops: lethal cold without snow cover
+    winterkill_tmin: float | None = None   # winter crops: approx. lethal air Tmin -> risk warning, not exclusion
     extra_mm: float = 0.0              # non-ET water use (rice: soaking/ponding/percolation)
+    latest_harvest: tuple[int, int] | None = None  # GDD fit is checked up to this date (cool years ripen later)
     second_crop: bool = False          # only grown after a winter crop (not ranked alone)
     overwinter: bool = False           # sown in autumn, harvested next year
     perennial: bool = False
@@ -51,7 +52,8 @@ CROPS: dict[str, Crop] = {
     # Winter wheat - FAO-56 T11 (long initial stage incl. winter dormancy); T12 Kc 0.4 (frozen soil)/1.15/0.25-0.4, h 1 m
     "winter_wheat": Crop("winter_wheat", (10, 10), (130, 50, 40, 25), 0.40, 1.15, 0.30, 1.0,
                          gdd_base=0, min_gdd=2000, heat_tmax=32, frost_sensitive=False,
-                         winterkill_tmin=-22, overwinter=True),
+                         # approx. lethal AIR Tmin for hardened winter wheat (risk warning only)
+                         winterkill_tmin=-25, overwinter=True, latest_harvest=(7, 10)),
     # Maize (grain) - FAO-56 T11 (30/40/50/30); T12 Kc 0.30/1.20/0.60-0.35, h 2 m
     "maize": Crop("maize", (4, 25), (30, 40, 50, 30), 0.30, 1.20, 0.50, 2.0,
                   gdd_base=10, min_gdd=1500, heat_tmax=35, frost_sensitive=True),

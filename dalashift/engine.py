@@ -93,12 +93,14 @@ def simulate_season(crop: Crop, df: pd.DataFrame, start: pd.Timestamp, end: pd.T
     etc = float(etc_daily.sum())
     peff, need = net_need(df, s, etc_daily)
     need += crop.extra_mm
-    gdd = float(np.maximum(s["TMEAN"] - crop.gdd_base, 0).sum())
+    gdd_end = pd.Timestamp(end.year, *crop.latest_harvest) if crop.latest_harvest else end
+    gdd = float(np.maximum(df.loc[start:gdd_end, "TMEAN"] - crop.gdd_base, 0).sum())
     frost = bool((s["T2M_MIN"] <= 0).any()) if crop.frost_sensitive else False
-    if crop.winterkill_tmin is not None:
-        frost = frost or bool((s["T2M_MIN"] < crop.winterkill_tmin).any())
+    # winterkill is a RISK warning (lowers the score), not an exclusion: snow cover and
+    # hardening often protect the crop, and air Tmin is only a proxy for crown temperature
+    winterkill = bool((s["T2M_MIN"] < crop.winterkill_tmin).any()) if crop.winterkill_tmin is not None else False
     heat = int((mid["T2M_MAX"] > crop.heat_tmax).sum())
-    return {"etc": etc, "peff": peff, "need": need, "gdd": gdd, "frost": frost,
+    return {"etc": etc, "peff": peff, "need": need, "gdd": gdd, "frost": frost, "winterkill": winterkill,
             "heat_days": heat, "kc_mid_adj": kc_mid}
 
 
@@ -112,11 +114,13 @@ def evaluate_crop(crop: Crop, df: pd.DataFrame, period: str) -> dict:
     r = pd.DataFrame(runs)
     p_gdd = float((r["gdd"] >= crop.min_gdd).mean())
     p_frost = float(r["frost"].mean())
+    p_winterkill = float(r["winterkill"].mean())
     heat_days = float(r["heat_days"].mean())
     mid_len = crop.stages[2]
     fits = p_gdd >= FIT_GDD_PROB and p_frost <= FIT_FROST_PROB
     # transparent fit score, 0-100
-    fit_score = 100 - 50 * (1 - p_gdd) - 50 * p_frost - 60 * min(heat_days / mid_len, 0.5)
+    fit_score = (100 - 50 * (1 - p_gdd) - 50 * p_frost - 25 * p_winterkill
+                 - 60 * min(heat_days / mid_len, 0.5))
     sow, end = season_window(crop, 2001)
     return {
         "crop": crop.key,
@@ -133,6 +137,8 @@ def evaluate_crop(crop: Crop, df: pd.DataFrame, period: str) -> dict:
         "gdd_base": crop.gdd_base,
         "p_gdd_ok": round(p_gdd, 2),
         "p_frost": round(p_frost, 2),
+        "p_winterkill": round(p_winterkill, 2),
+        "winterkill_tmin": crop.winterkill_tmin,
         "heat_days": round(heat_days, 1),
         "heat_tmax": crop.heat_tmax,
         "heat_risk": heat_flag(heat_days, mid_len),
