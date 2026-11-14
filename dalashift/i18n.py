@@ -1,4 +1,5 @@
 """English / Uzbek (Latin) labels."""
+import re
 
 T = {
     "title": {"en": "DalaShift — what to plant next season", "uz": "DalaShift — keyingi mavsumda nima ekish kerak"},
@@ -173,3 +174,13 @@ def profile_label(fields: list[str], lang: str) -> str:
     district = fields[0].split("_")[0]
     fs = fields_str(fields, lang)
     return f"{DISTRICTS[district][lang]} — {T['district_profile'][lang]} ({fs.lower() if lang == 'en' else fs})"
+
+
+_EN_MONTH = re.compile(r"\b(" + "|".join(MONTHS["en"]) + r")\b")
+
+
+def ldate(s: str | None, lang: str) -> str | None:
+    """Localise English month abbreviations in a date string, e.g. '10 Oct' -> '10 Okt'."""
+    if s is None or lang == "en":
+        return s
+    return _EN_MONTH.sub(lambda m: MONTHS[lang][MONTHS["en"].index(m.group(1))], s)

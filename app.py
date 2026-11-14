@@ -17,7 +17,7 @@ from streamlit_folium import st_folium
 
 from dalashift.appeears import load_appeears
 from dalashift.crops import BASELINE
-from dalashift.i18n import (CROP_NAMES, DISTRICTS, MONTHS, ROTATION_NAMES, field_label, fields_str,
+from dalashift.i18n import (CROP_NAMES, DISTRICTS, MONTHS, ROTATION_NAMES, field_label, fields_str, ldate,
                             profile_label, t)
 
 ROOT = Path(__file__).parent
@@ -78,7 +78,12 @@ if "pending_point" in st.session_state:
 
 with st.sidebar:
     lang = "uz" if st.radio(t("language", "en"), ["English", "Oʻzbekcha"], horizontal=True) == "Oʻzbekcha" else "en"
-    st.selectbox(t("field", lang), ids, key="point", format_func=lambda p: field_label(p, lang))
+    # one widget per language so option labels re-render in the chosen language;
+    # "point" stays the canonical selection and is synced in via the widget's state + on_change
+    wkey = f"field_select_{lang}"
+    st.session_state[wkey] = st.session_state.point
+    st.selectbox(t("field", lang), ids, key=wkey, format_func=lambda p: field_label(p, lang),
+                 on_change=lambda: st.session_state.update(point=st.session_state[wkey]))
     st.caption(t("credits", lang))
 
 pid = st.session_state.point
@@ -170,9 +175,9 @@ with tab_then:
     cols = st.columns(3) + st.columns(3)
     cols[0].metric(t("hot_days", lang), f"{nw['hot_days']:.0f}", f"{nw['hot_days'] - th['hot_days']:+.0f} {t('days', lang)}", delta_color="inverse")
     cols[1].metric(t("gdd10", lang), f"{nw['gdd10']:.0f}", f"{nw['gdd10'] - th['gdd10']:+.0f}")
-    cols[2].metric(t("last_frost", lang), nw["last_spring_frost_date"] or "–", frost_delta("last_spring_frost"),
+    cols[2].metric(t("last_frost", lang), ldate(nw["last_spring_frost_date"], lang) or "–", frost_delta("last_spring_frost"),
                    delta_color="off")
-    cols[3].metric(t("first_frost", lang), nw["first_autumn_frost_date"] or "–", frost_delta("first_autumn_frost"),
+    cols[3].metric(t("first_frost", lang), ldate(nw["first_autumn_frost_date"], lang) or "–", frost_delta("first_autumn_frost"),
                    delta_color="off")
     cols[4].metric(t("gs_rain", lang), f"{nw['gs_rain']:.0f} mm", f"{nw['gs_rain'] - th['gs_rain']:+.0f} mm")
     cols[5].metric(t("gs_et0", lang), f"{nw['gs_et0']:.0f} mm", f"{nw['gs_et0'] - th['gs_et0']:+.0f} mm", delta_color="inverse")
@@ -236,8 +241,8 @@ with tab_then:
                         y=sub["first_autumn_frost"] - sub["last_spring_frost"],
                         name=names[per], marker_color=colmap[per], marker_line_width=0, marker_cornerradius=4,
                         customdata=np.stack([
-                            [(base + pd.Timedelta(days=int(v) - 1)).strftime("%d %b") for v in sub["last_spring_frost"]],
-                            [(base + pd.Timedelta(days=int(v) - 1)).strftime("%d %b") for v in sub["first_autumn_frost"]],
+                            [ldate((base + pd.Timedelta(days=int(v) - 1)).strftime("%d %b"), lang) for v in sub["last_spring_frost"]],
+                            [ldate((base + pd.Timedelta(days=int(v) - 1)).strftime("%d %b"), lang) for v in sub["first_autumn_frost"]],
                             sub["frost_free_days"].astype(int)], axis=-1) if len(sub) else None,
                         hovertemplate="%{x}: %{customdata[0]} → %{customdata[1]} (%{customdata[2]} "
                                       + t("days", lang) + ")<extra></extra>")
@@ -271,11 +276,15 @@ with tab_water:
             same_month = v[v["date"].dt.month == last["date"].month]
             pct = 100 * (same_month["value"] < last["value"]).mean()
             a, b = st.columns([1, 3])
-            a.metric(f"{t('latest', lang)} ({last['date']:%d %b %Y})", f"{last['value']:.3f} {units[var]}")
+            when = ldate(last["date"].strftime("%d %b %Y"), lang)
+            a.metric(f"{t('latest', lang)} ({when})", f"{last['value']:.3f} {units[var]}")
             a.caption(t("pct_rank", lang, p=pct))
             fig = go.Figure(go.Scatter(x=v["date"], y=v["value"], mode="lines+markers",
                                        line=dict(color=C_THEN, width=2), marker=dict(size=5),
-                                       hovertemplate="%{x|%d %b %Y}: %{y:.3f}<extra></extra>"))
+                                       hovertemplate=("%{x|%d %b %Y}" if lang == "en" else "%{x|%d.%m.%Y}")
+                                       + ": %{y:.3f}<extra></extra>"))
+            if lang != "en":
+                fig.update_xaxes(tickformat="%m.%Y")
             b.plotly_chart(style(fig, t(var, lang), units[var], height=260), width="stretch")
 
 # ------------------------------------------------------------------ 4. WHAT TO PLANT
@@ -311,7 +320,7 @@ with tab_plant:
             if c["p_gdd_ok"] < 1:
                 st.markdown("🌡️ " + t("gdd_short", lang, p=100 * (1 - c["p_gdd_ok"])))
             st.markdown(("✅ " + t("fits", lang)) if c["fits"] else ("⚠️ " + t("not_fits", lang)))
-            st.caption(t("sow_harvest", lang, s=c["sow"], h=c["harvest"])
+            st.caption(t("sow_harvest", lang, s=ldate(c["sow"], lang), h=ldate(c["harvest"], lang))
                        + f" · {t('then', lang)}: #{rank_then.index(key) + 1}")
 
     # water need of all crops
@@ -362,19 +371,21 @@ with tab_plant:
     st.markdown(f"### 🌾 {t('wheat_shift', lang)}")
     ws = R["wheat_sowing"]
     best, conv, best_then = ws["now"]["best"], ws["now"]["conventional"], ws["then"]["best"]
-    st.markdown(t("wheat_shift_text", lang, best=best["sow"], conv=conv["sow"], h_conv=conv["heat_days"],
+    st.markdown(t("wheat_shift_text", lang, best=ldate(best["sow"], lang), conv=ldate(conv["sow"], lang),
+                  h_conv=conv["heat_days"],
                   h_best=best["heat_days"], pw=best["prewinter_gdd"], pw_conv=conv["prewinter_gdd"],
-                  r_conv=conv["risk"], r_best=best["risk"], best_then=best_then["sow"]))
+                  r_conv=conv["risk"], r_best=best["risk"], best_then=ldate(best_then["sow"], lang)))
     fig = go.Figure()
     for per, c in [("then", C_THEN), ("now", C_NOW)]:
         tab = pd.DataFrame(ws[per]["table"])
-        fig.add_scatter(x=tab["sow"], y=tab["risk"], name=names[per], mode="lines+markers",
+        fig.add_scatter(x=[ldate(d, lang) for d in tab["sow"]], y=tab["risk"], name=names[per], mode="lines+markers",
                         line=dict(color=c, width=2), marker=dict(size=8, line=dict(color="white", width=2)),
                         customdata=np.stack([tab["heat_days"], tab["prewinter_gdd"]], axis=-1),
                         hovertemplate="%{x}: %{y:.1f} (heat %{customdata[0]:.0f} d, pre-winter %{customdata[1]:.0f} °C·d)"
                                       "<extra>" + names[per] + "</extra>")
         b = ws[per]["best"]
-        fig.add_annotation(x=b["sow"], y=b["risk"], text="★ " + b["sow"], showarrow=True, arrowcolor=c,
+        fig.add_annotation(x=ldate(b["sow"], lang), y=b["risk"], text="★ " + ldate(b["sow"], lang),
+                           showarrow=True, arrowcolor=c,
                            ay=-30, font=dict(color=INK, size=11), bgcolor="rgba(255,255,255,0.85)")
     fig.update_xaxes(title_text=t("sowing_date", lang), title_font_color=MUTED)
     st.plotly_chart(style(fig, t("wheat_chart", lang), t("risk_score", lang)), width="stretch")
