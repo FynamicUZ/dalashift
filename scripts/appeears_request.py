@@ -5,6 +5,7 @@ kept in memory only, never printed and never written to disk):
 
     python scripts/appeears_request.py            # submit, then wait and download
     python scripts/appeears_request.py --no-wait  # only submit
+    python scripts/appeears_request.py --netrc    # use your own _netrc entry instead of typing
 
 What it does
   1. logs in to the AppEEARS API (https://appeears.earthdatacloud.nasa.gov/api/) -> temporary token
@@ -40,9 +41,13 @@ REQUESTS = {
 OLD = ["hls_green", "ecostress_stress", "smap_soil"]
 
 
-def login() -> str:
-    user = input("Earthdata username: ").strip()
-    pw = getpass.getpass("Earthdata password (not shown): ")
+def login(use_netrc: bool = False) -> str:
+    if use_netrc:   # your own ~/_netrc or ~/.netrc entry for urs.earthdata.nasa.gov (read only on your machine)
+        import netrc
+        user, _, pw = netrc.netrc().authenticators("urs.earthdata.nasa.gov")
+    else:
+        user = input("Earthdata username: ").strip()
+        pw = getpass.getpass("Earthdata password (not shown): ")
     r = requests.post(f"{API}/login", auth=(user, pw), timeout=60)
     del pw
     if r.status_code != 200:
@@ -93,8 +98,9 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--no-wait", action="store_true")
     ap.add_argument("--every", type=int, default=600, help="seconds between status checks")
+    ap.add_argument("--netrc", action="store_true", help="use your _netrc entry for urs.earthdata.nasa.gov")
     args = ap.parse_args()
-    token = login()
+    token = login(args.netrc)
     h = {"Authorization": f"Bearer {token}"}
     try:
         print("Submitting 3 small requests ...")
