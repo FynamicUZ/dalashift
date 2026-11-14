@@ -272,3 +272,25 @@ def test_fresh_market_crops_limited_to_25_percent_of_area(point):
     for plan in res["plans"].values():
         for c in ("tomato", "potato", "onion", "melon"):
             assert sum(c in k.split("+") for k in plan["sequence"]) <= 1   # 1 of 5 years = 20 % <= 25 %
+
+
+@pytest.mark.parametrize("point", POINTS)
+def test_legumes_limited_to_40_percent_of_area(point):
+    res = optimize(make_context(PLANNER["points"][point]["baseline"], 15000))
+    for plan in res["plans"].values():
+        for c in ("chickpea", "mung_bean", "alfalfa"):
+            assert sum(c in k.split("+") for k in plan["sequence"]) <= 2   # 2 of 5 years = 40 %
+
+
+def test_local_prices_override_faostat(tmp_path):
+    from dalashift.crops import CROPS_CSV
+    f = tmp_path / "local_prices.csv"
+    f.write_text("crop,price_usd_per_t,source,date\nchickpea,700,test market,2026-11-14\n")
+    t = load_crop_table(CROPS_CSV, f)
+    assert t.loc["chickpea", "price_usd_t"] == 700 and "test market" in t.loc["chickpea", "price_source"]
+    assert t.loc["cotton", "price_usd_t"] == TABLE.loc["cotton", "price_usd_t"]
+
+
+def test_local_prices_file_ships_with_headers_only():
+    lp = pd.read_csv(ROOT / "config" / "local_prices.csv")
+    assert list(lp.columns) == ["crop", "price_usd_per_t", "source", "date"]

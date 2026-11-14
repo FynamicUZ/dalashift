@@ -24,6 +24,9 @@ from pathlib import Path
 import pandas as pd
 
 CROPS_CSV = Path(__file__).resolve().parents[1] / "config" / "crops.csv"
+# Optional local price override: crop,price_usd_per_t,source,date. Rows here REPLACE the FAOSTAT
+# (or proxy) price in crops.csv. Shipped with headers only until real local prices arrive.
+LOCAL_PRICES_CSV = CROPS_CSV.parent / "local_prices.csv"
 
 
 @dataclass(frozen=True)
@@ -75,8 +78,26 @@ def _windows(v) -> tuple:
     return tuple(out)
 
 
-def load_crop_table(path: Path = CROPS_CSV) -> pd.DataFrame:
-    return pd.read_csv(path, keep_default_na=True).set_index("crop", drop=False)
+def load_crop_table(path: Path = CROPS_CSV, local_prices: Path | None = LOCAL_PRICES_CSV) -> pd.DataFrame:
+    table = pd.read_csv(path, keep_default_na=True).set_index("crop", drop=False)
+    return apply_local_prices(table, local_prices)
+
+
+def apply_local_prices(table: pd.DataFrame, path: Path | None) -> pd.DataFrame:
+    """Replace price_usd_t with local prices where config/local_prices.csv has a row for the crop."""
+    if path is None or not Path(path).exists():
+        return table
+    lp = pd.read_csv(path).dropna(subset=["crop", "price_usd_per_t"])
+    lp = lp[lp["crop"].isin(table.index)]
+    if lp.empty:
+        return table
+    table = table.copy()
+    for r in lp.itertuples(index=False):
+        table.loc[r.crop, "price_usd_t"] = float(r.price_usd_per_t)
+        table.loc[r.crop, "price_status"] = "documented"
+        table.loc[r.crop, "price_source"] = f"Local price (config/local_prices.csv): {r.source}"
+        table.loc[r.crop, "price_date"] = str(r.date)
+    return table
 
 
 def load_crops(path: Path = CROPS_CSV) -> dict[str, Crop]:

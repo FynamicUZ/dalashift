@@ -114,7 +114,9 @@ feasible           ⇔ every crop passes Climate Fit, need_t ≤ budget in EVERY
 - every profit is an **estimate range**, low = 0.7 × profit, high = 1.3 × profit (`money.profit_uncertainty` in `config/planner.yaml`);
 - each plan shows the **average profit per ha per year** next to the **5-year total** (the discounted value, used to rank plans, is in the tooltip);
 - any crop margin above **3,000 USD/ha/year** is flagged **"check this number"** (`money.margin_check_usd_ha`);
-- **max share of farm area** per crop (`max_area_share` in `config/crops.csv`): tomato, potato, onion and melon ≤ 25 %. The farm is assumed to run the plan on 5 blocks, each one year behind the next, so a crop grown k of 5 years covers k/5 of the farm every year; 25 % therefore means at most 1 year in 5 per fresh-market crop.
+- **max share of farm area** per crop (`max_area_share` in `config/crops.csv`): tomato, potato, onion and melon ≤ 25 %. The farm is assumed to run the plan on 5 blocks, each one year behind the next, so a crop grown k of 5 years covers k/5 of the farm every year; 25 % therefore means at most 1 year in 5 per fresh-market crop. **Legumes** (chickpea, mung bean, alfalfa) are provisionally capped at **40 %** (2 years in 5) because their prices are proxies.
+
+**Local prices.** [`config/local_prices.csv`](config/local_prices.csv) (`crop,price_usd_per_t,source,date`) overrides the FAOSTAT/proxy price for any crop listed. It ships with headers only.
 
 **Brute force.** The year options are every crop that passes Climate Fit and fits the water budget, plus the wheat→mung bean double crop. The planner enumerates **all** 5-year sequences of those options (at most 14⁵ = 537,824) as numpy arrays and evaluates every one; nothing is sampled.
 - **Most profit**: the highest discounted profit.

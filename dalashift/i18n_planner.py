@@ -62,7 +62,7 @@ PLANNER_T = {
     "pl_check_short": {"en": "check this number", "uz": "bu raqamni tekshiring"},
     "pl_check_plan": {"en": "This plan has a year with a margin above 3,000 USD/ha — **check this number** with local prices and costs before trusting it.",
                       "uz": "Bu rejada foydasi 3 000 USD/ga dan yuqori yil bor — ishonishdan oldin **bu raqamni** mahalliy narx va xarajatlar bilan **tekshiring**."},
-    "pl_area_tag": {"en": "🧩 max {p:.0f}% of farm area (≤ {k} year in 5)", "uz": "🧩 maydonning koʻpi bilan {p:.0f}% (5 yilda ≤ {k} yil)"},
+    "pl_area_tag": {"en": "🧩 max {p:.0f}% of farm area (≤ {k} of 5 years)", "uz": "🧩 maydonning koʻpi bilan {p:.0f}% (5 yilda ≤ {k} yil)"},
     "pl_counts_must": {"en": "counts toward the must-grow obligation", "uz": "majburiyatga hisoblanadi"},
     "pl_why_not": {"en": "Why not the other crops?", "uz": "Nega boshqa ekinlar emas?"},
     "pl_wn_climate": {"en": "fails Climate Fit here ({d})", "uz": "bu yerda iqlimga mos emas ({d})"},
@@ -124,7 +124,7 @@ PLANNER_T = {
 * **Hypothetical inputs:** water budgets, the fresh-market limit and demo-farm obligations are examples, not data.
 * **Scenarios** are simple: +1.5 °C added to every day (ET0, heat, frost and GDD recomputed); −20 % water budget. No price or policy changes.
 * Profit is per hectare and ignores subsidies, credit, labour limits and price risk. It is shown as a **±30 % estimate range**; any crop margin above 3,000 USD/ha/year is flagged **"check this number"**.
-* **Area share:** the farm is assumed to run the plan on 5 blocks, each one year behind the next, so a crop grown in k of 5 years covers k/5 of the farm each year. Tomato, potato, onion and melon are limited to 25 % of the area (= 1 year in 5); editable in `config/crops.csv`.
+* **Area share:** the farm is assumed to run the plan on 5 blocks, each one year behind the next, so a crop grown in k of 5 years covers k/5 of the farm each year. Tomato, potato, onion and melon are limited to 25 % of the area (= 1 year in 5). Legumes (chickpea, mung bean, alfalfa) are provisionally limited to 40 % (= 2 years in 5) because their prices are proxies, until real local prices are added in `config/local_prices.csv`. Editable in `config/crops.csv`.
 """, "uz": """
 * **Almashlab ekish salomatligi — qoida bali, tuproq modeli emas.** U qoidalar boʻyicha ball beradi (takrorlar, dukkakli tanaffus, oilalar xilma-xilligi); tuproq uglerodi, azot, shoʻrlanish yoki zararkunandalarni **simulyatsiya qilmaydi**.
 * **Narx va hosil:** imkon boricha FAOSTAT Oʻzbekiston (hosil 2022–24, narxlar 2023–24). Qovun, noʻxat va mosh narxlari — belgilangan proksi; beda hosili/narxi va **barcha xarajatlar taxminiy**. FAOSTAT pomidor narxi yillik oʻrtacha va ochiq dala narxidan yuqori boʻlishi mumkin — `config/crops.csv` ga qarang.
@@ -133,6 +133,6 @@ PLANNER_T = {
 * **Taxminiy (gipotetik) kiritmalar:** suv byudjetlari, bozor cheklovi va demo xoʻjalik majburiyatlari — misollar, maʼlumot emas.
 * **Ssenariylar** oddiy: har kunga +1,5 °C (ET0, issiqlik, sovuq va SHY qayta hisoblangan); suv byudjeti −20 %. Narx yoki siyosat oʻzgarmaydi.
 * Foyda gektarga hisoblangan; subsidiya, kredit, ishchi kuchi va narx xavfi hisobga olinmagan. U **±30 % taxminiy oraliq** sifatida koʻrsatiladi; 3 000 USD/ga/yildan yuqori foyda **"bu raqamni tekshiring"** deb belgilanadi.
-* **Maydon ulushi:** xoʻjalik rejani 5 ta boʻlakda, har biri bir yil orqada yuritadi deb faraz qilinadi; k yil ekilgan ekin har yili maydonning k/5 qismini egallaydi. Pomidor, kartoshka, piyoz va qovun maydonning 25 % i bilan cheklangan (= 5 yilda 1 yil).
+* **Maydon ulushi:** xoʻjalik rejani 5 ta boʻlakda, har biri bir yil orqada yuritadi deb faraz qilinadi; k yil ekilgan ekin har yili maydonning k/5 qismini egallaydi. Pomidor, kartoshka, piyoz va qovun maydonning 25 % i bilan cheklangan (= 5 yilda 1 yil). Dukkaklilar (noʻxat, mosh, beda) narxi proksi boʻlgani uchun vaqtincha 40 % (= 5 yilda 2 yil) bilan cheklangan — haqiqiy mahalliy narxlar `config/local_prices.csv` ga kiritilguncha.
 """},
 }
