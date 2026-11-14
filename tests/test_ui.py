@@ -57,3 +57,10 @@ def test_must_cotton_without_enough_water_explains_in_one_line():
 def test_barley_and_wheat_have_different_icons():
     from dalashift.i18n import CROP_NAMES
     assert CROP_NAMES["barley"]["icon"] != CROP_NAMES["winter_wheat"]["icon"]
+
+
+def test_farmer_view_has_no_emoji_and_shows_usual_rotation(at):
+    import re
+    text = " ".join(m.value for m in at.tabs[0].markdown)
+    assert not re.search("[\U0001F300-\U0001FAFF\u2600-\u27BF]", text)
+    assert "Odatiy almashlab ekishga nisbatan" in text or "Compared with your usual rotation" in text

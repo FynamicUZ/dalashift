@@ -12,15 +12,12 @@ The app is bilingual (English / Oʻzbekcha). It runs entirely on precomputed fil
 
 ## App screens
 
-The app opens on a simple **Farmer view** (Uzbek first, English toggle top-right). Everything below
-is kept in the **"Mutaxassislar / For judges & experts"** tab.
+The app opens on a simple **Farmer view** ([`dalashift/simple_ui.py`](dalashift/simple_ui.py); screenshots in [`docs/screenshots/`](docs/screenshots/)), a calm field-card + plan layout (Inter font, Lucide SVG icons, no emoji):
+1. *Dalangiz qayerda?*: district (Qarshi, Fargʻona, Urganch, Nukus, Guliston), a field card with three facts (very hot days then → now with a 35-year sparkline, season rain then → now, the farm's water), a small map, and two controls: water *Kam / Oʻrtacha / Koʻp* (6,000 / 8,000 / 12,000 m³/ha, hypothetical levels) and *must grow cotton/wheat* (2 of 5 years each; its cost is shown in soʻm).
+2. *Keyingi besh yil uchun reja*: plan choice *Daromad / Muvozanat / Suv tejash*; a 5-year timeline (crop, sowing → harvest month, water bar against the farm's water); ONE conservative income figure (the low end of the ±15 % estimate, rounded down to 0.5 mln soʻm, labelled *taxminan, ehtiyotkor hisob*); and a comparison with **your usual rotation** ([`dalashift/baseline.py`](dalashift/baseline.py): winter wheat ↔ cotton, or ↔ maize / barley where cotton / maize needs more water than the farm has): income %, water %, risk level.
+3. *Nega bu reja?*: a short plain-language paragraph built from the plan.
 
-**Farmer view** ([`dalashift/simple_ui.py`](dalashift/simple_ui.py); screenshots in [`docs/screenshots/`](docs/screenshots/)):
-1. *Dalangiz qayerda?* (where is your field?): big buttons for Qarshi, Fargʻona, Urganch, Nukus, Guliston; map optional.
-2. *Dalangizda nima oʻzgardi?* (what changed?): three cards: very hot days (+N days), frost-free season, and extra water the crops need (tonnes per hectare = m³).
-3. *5 yillik reja* (5-year plan): water as *Kam / Oʻrtacha / Koʻp* (6,000 / 8,000 / 12,000 m³/ha, hypothetical levels), a *must grow cotton/wheat* switch (2 of 5 years each) that shows its cost in soʻm, and three plan buttons: *Koʻproq daromad*, *Muvozanat*, *Kam suv*. The chosen plan shows 5 crop icons, one income range in **mln soʻm / ga / yil** (USD × the CBU rate in `config/retail_to_farmgate.yaml`, rounded), a green/amber/red water bar for the thirstiest year against the farm's water, and one plain *Nega?* (why) sentence per crop.
-
-No jargon on farmer screens (no ET0, GDD, NDVI, m³/ha or USD). Same engine and numbers as the expert view.
+No jargon on farmer screens (no ET0, GDD, NDVI, m³/ha or USD), checked by tests. Same engine and numbers as the expert view.
 
 **Expert view:**
 
@@ -124,7 +121,7 @@ feasible           ⇔ every crop passes Climate Fit, need_t ≤ budget in EVERY
 ```
 
 **Money realism.** Costs per ha are placeholders, so the app never shows a single profit number:
-- every profit is an **estimate range**, low = 0.7 × profit, high = 1.3 × profit (`money.profit_uncertainty` in `config/planner.yaml`);
+- every profit is an **estimate range**, low = 0.85 × profit, high = 1.15 × profit (`money.profit_uncertainty` in `config/planner.yaml`);
 - each plan shows the **average profit per ha per year** next to the **5-year total** (the discounted value, used to rank plans, is in the tooltip);
 - any crop margin above **3,000 USD/ha/year** is flagged **"check this number"** (`money.margin_check_usd_ha`);
 - **max share of farm area** per crop (`max_area_share` in `config/crops.csv`): tomato, potato, onion and melon ≤ 25 %. The farm is assumed to run the plan on 5 blocks, each one year behind the next, so a crop grown k of 5 years covers k/5 of the farm every year; 25 % therefore means at most 1 year in 5 per fresh-market crop. **Legumes** (chickpea, mung bean, alfalfa) are provisionally capped at **40 %** (2 years in 5) because their prices are proxies.
