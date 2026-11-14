@@ -1,38 +1,37 @@
 # DalaShift: 30-second video script
 
-Format: 30 s, 16:9, English subtitles (burned in). Voice-over in English (optionally Uzbek with the
-English lines as subtitles). Every number below comes from the app (data/summary.json and the
-planner, Karshi demo farm, "Oʻrtacha" water = 8,000 m³/ha).
+Format: 30 s, 16:9, English subtitles burned in. Voice-over in English (or Uzbek with these English
+lines as subtitles). It follows the deck's story. Every number comes from the app
+(`data/summary.json` and the planner; Karshi, water "Oʻrtacha" = 8,000 t per hectare).
 
 ## Beats and subtitles
 
 | Time | Beat | On screen | Subtitle / voice-over (English) |
 |---|---|---|---|
-| 0:00–0:02 | Team | Team name + member names over the DalaShift logo | "We are [TEAM NAME], from Karshi." |
-| 0:02–0:05 | Challenge | Text card: *Field Shift: Adapting Farms with NASA Data* · NASA Space Apps 2026 | "Our challenge: Field Shift, adapting farms with NASA data." |
-| 0:05–0:10 | Title + tagline | 🌾 DalaShift, then the tagline | "DalaShift. Don't just choose the most profitable crop for this year. Choose the best five-year future for your field." |
-| 0:10–0:13 | Demo: step 1 | Screen recording, farmer view: tap **Qarshi** | "A farmer near Karshi picks their district." |
-| 0:13–0:16 | Demo: step 2 | Scroll to the 3 cards: **+8 kun**, ≈0 kun, **+370 tonna** | "NASA data shows 8 more very hot days a year than in 1991–2005, and crops need more water." |
-| 0:16–0:20 | Demo: step 3 | Pick water **Oʻrtacha**, tap **Muvozanat**: 5 crop tiles, **5–10 mln soʻm / ga / yil**, green bar "Suvingiz yetadi" | "DalaShift checks every five-year crop plan and shows one that pays and fits the water: chickpea and wheat in rotation." |
-| 0:20–0:23 | Demo: trade-off | Switch on *Paxta / bugʻdoy ekish majburiymi?* → red line "Paxta uchun … 13 ming tonna … sizda 8 ming tonna" | "Must you grow cotton? Here it needs about 13 thousand tonnes of water per hectare. The farm has 8." |
-| 0:23–0:30 | Future | Slide 7 bullets, then logo + [REPO LINK] / [APP LINK] | "Next: Uzcosmos and national farm data, soil and salinity layers, and a Telegram bot in Uzbek. DalaShift: plan the next five years, not just the next one." |
+| 0:00–0:02 | Team | Team name over the NASA image of the Karshi oasis (deck slide 1 background) | "We are [TEAM NAME], from Karshi." |
+| 0:02–0:05 | Challenge | Text: *Field Shift: Adapting Farms with NASA Data* · NASA Space Apps 2026 | "Our challenge: Field Shift, adapting farms with NASA data." |
+| 0:05–0:10 | Title + tagline | Deck slide 1: "Every spring, a farmer near Karshi bets the family's year on one decision: what to plant." → DalaShift + tagline | "DalaShift. Don't just choose the most profitable crop for this year. Choose the best five-year future for your field." |
+| 0:10–0:13 | Demo: the field | Screen recording, Fermer tab, Qarshi selected: field card "96 → 104" hot days, rain 68 → 54 mm | "Near Karshi there are now 104 very hot days a year, up from 96, and less rain." |
+| 0:13–0:17 | Demo: the plan | Scroll to *Keyingi besh yil uchun reja*, *Muvozanat*: 5-year timeline Chickpea → Wheat → Chickpea → Wheat → Barley, "≈ 6 mln soʻm" | "DalaShift checks every five-year crop plan and picks one that fits the farm's water." |
+| 0:17–0:20 | Demo: vs usual | Hold on the comparison strip and the "Nega bu reja?" paragraph | "Compared with the usual wheat and cotton, it uses about half the water and earns more." |
+| 0:20–0:23 | Demo: trade-off | Switch on *Paxta / bugʻdoy ekish majburiymi?*: red line "Paxta uchun … 13 ming tonna … sizda 8 ming tonna" | "Must you grow cotton? It needs 13 thousand tonnes of water per hectare here. The farm has 8." |
+| 0:23–0:30 | Future | Deck slide 7 (roadmap cards appear), then logo + [REPO LINK] / [APP LINK] | "Next: Uzcosmos and national farm data, soil and salinity, and a Telegram bot in Uzbek. Every field in Uzbekistan." |
 
 ## Shot list
 
-1. **Logo card** (0:00–0:02): white background, 🌾 DalaShift, team name and members (fill the placeholders).
-2. **Challenge card** (0:02–0:05): challenge title, NASA Space Apps 2026, Karshi local event.
-3. **Title card** (0:05–0:10): slide 1 of `docs/deck/index.html` (tagline visible).
-4. **Screen recording, desktop or phone** (0:10–0:23), app on the 👨‍🌾 *Fermer* tab, Uzbek:
-   - 4a. Tap *Qarshi* (already selected; tap once for the motion).
-   - 4b. Scroll to *2. Dalangizda nima oʻzgardi?* and hold 2 s on the three cards.
-   - 4c. Scroll to *3. 5 yillik reja*, keep *Oʻrtacha*, tap *⚖️ Muvozanat*, hold on the crop tiles and the income.
-   - 4d. Switch on the cotton/wheat toggle; hold on the red explanation line.
-   - Recording tip: run `streamlit run app.py`, browser zoom 110 %, hide the mouse pointer where possible.
-5. **Future card** (0:23–0:30): slide 7 of the deck, then the logo with repo/app links.
+1. **NASA image + team** (0:00–0:02): `docs/deck/img/karshi_modis_terra_2025-08-12.jpg`, slow zoom-in, team name.
+2. **Challenge card** (0:02–0:05).
+3. **Deck slide 1** (0:05–0:10): open `docs/deck/offline.html`, press → three times to reveal the hook, then the title.
+4. **Screen recording** (0:10–0:23), app on the *Fermer* tab in Uzbek (`streamlit run app.py`, browser zoom 110 %):
+   - 4a. Qarshi field card (hot days, sparkline, rain).
+   - 4b. Scroll to the 5-year timeline, *Muvozanat* selected; hold on the income figure.
+   - 4c. Hold on the comparison strip and the *Nega bu reja?* paragraph.
+   - 4d. Switch on the cotton/wheat toggle; hold on the red line.
+5. **Deck slide 7** (0:23–0:30), then the logo with repo/app links.
 
 ## Sources for the numbers
 
-- "+8 more very hot days": Karshi, days with Tmax > 35 °C, 96 (1991–2005) → 104 (2011–2026), NASA POWER (`data/summary.json`).
-- "+370 tonnes": Karshi, April–October reference crop water use (ET0) +37 mm = +370 m³ = 370 t per ha.
-- "5–10 mln soʻm / ga / yil": Karshi balanced plan at 8,000 m³/ha, estimate range (±30 %) × CBU rate 12,014.37 soʻm/USD (14 Nov 2026).
-- "13 thousand tonnes": Karshi cotton net irrigation need ≈ 12,940 m³/ha (after the provisional ×0.80 ET0 correction).
+- 96 → 104 very hot days (Tmax > 35 °C), Karshi, 1991–2005 vs 2011–2026; rain April–October 68 → 54 mm: NASA POWER (`data/summary.json`).
+- "About half the water and earns more": Karshi balanced plan vs wheat ↔ cotton at 8,000 t/ha: water −51 %, income +44 % (`docs/deck/build_deck.py` prints these).
+- "≈ 6 mln soʻm": conservative figure, the low end of the ±15 % estimate, × CBU rate 12,014.37 soʻm/USD (14 Nov 2026).
+- "13 thousand tonnes": Karshi cotton net irrigation need ≈ 12,940 m³ (= t) per ha, after the provisional ×0.80 ET0 correction.
