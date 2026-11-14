@@ -1,0 +1,27 @@
+# DalaShift 5-year planner settings. Values marked HYPOTHETICAL are demo inputs, not data.
+
+horizon_years: 5
+discount_rate: 0.10                 # editable in the app
+default_water_budget_m3_ha: 12000   # HYPOTHETICAL default net irrigation water per ha per year, editable in the app
+
+# Market assumption (HYPOTHETICAL): fresh-market crops (local_market_tag starts with "fresh")
+# such as tomato, potato, onion and melon are perishable and local markets saturate, so a
+# farm should not rely on them every year. Editable in the app (set 5 to switch off).
+max_fresh_market_years: 2
+
+# Expected yield = FAOSTAT typical yield x climate factor x rotation effect (rotation_rules.yaml).
+# Climate factor (APPROXIMATE): FAOSTAT national-average yield is treated as the yield of a
+# low-risk season, then reduced by the field's climate risks from the FAO-56 engine.
+climate_yield_losses:
+  heat_risk: {low: 0.0, medium: 0.10, high: 0.20}
+  frost_loss_when_hit: 0.5          # x share of years with in-season frost
+  winterkill_loss_when_hit: 0.5     # x share of years below the winterkill threshold
+  gdd_shortfall_loss: 0.5           # x share of years without enough heat to mature
+
+# "Balanced" plan = best equal-weight mix of normalised profit, water saving and rotation health.
+balanced_weights: {profit: 1.0, water: 1.0, health: 1.0}
+
+scenarios:
+  baseline:   {delta_t_c: 0.0, water_factor: 1.0}   # climate 2011-2026 as observed by NASA POWER
+  hotter:     {delta_t_c: 1.5, water_factor: 1.0}   # +1.5 degC on daily Tmax/Tmin (delta method)
+  less_water: {delta_t_c: 0.0, water_factor: 0.8}   # 20 % less irrigation water available

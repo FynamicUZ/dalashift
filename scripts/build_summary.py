@@ -13,13 +13,19 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from dalashift.climate import (PERIODS, PRECIP_QC_MAX, annual_indicators, doy_to_date,  # noqa: E402
-                               load_point, monthly_climatology, period_mean)
-from dalashift.engine import recommend_point  # noqa: E402
+                               load_point, monthly_climatology, period_mean, warmed)
+from dalashift.crops import CROPS  # noqa: E402
+from dalashift.engine import evaluate_crop, recommend_point  # noqa: E402
+
+HOTTER_DT = float(yaml.safe_load((ROOT / 'config' / 'planner.yaml').read_text())['scenarios']['hotter']['delta_t_c'])
+PLANNER_KEYS = ['fits', 'need_m3ha', 'heat_risk', 'heat_days', 'heat_tmax', 'p_frost', 'p_winterkill',
+                'p_gdd_ok', 'gdd', 'min_gdd', 'sow', 'harvest']
 
 DATA = ROOT / "data"
 
@@ -46,6 +52,7 @@ def main() -> None:
                "source": "NASA POWER daily, community=AG (MERRA-2 / CERES / IMERG-corrected precip)",
                "precip_qc_max_mm_day": PRECIP_QC_MAX, "points": {}}
     recs = {"generated": date.today().isoformat(), "periods": PERIODS, "points": {}}
+    planner = {"generated": date.today().isoformat(), "period": "now", "hotter_delta_t": HOTTER_DT, "points": {}}
 
     # Fields whose POWER files are byte-identical sit in the same MERRA-2 grid cell
     # (0.5 deg x 0.625 deg). They get ONE climate profile, computed at the cells' mean location;
@@ -74,16 +81,25 @@ def main() -> None:
             "monthly": {p: monthly_climatology(df, p) for p in PERIODS},
         }
         rec = recommend_point(df)
+        # planner inputs: 'now' climate (baseline) and the same climate warmed by HOTTER_DT
+        hot = warmed(df, lat, elev, HOTTER_DT)
+        plan_in = {
+            "baseline": {k: {f: rec["crops"]["now"][k][f] for f in PLANNER_KEYS} for k in CROPS},
+            "hotter": {k: {f: v[f] for f in PLANNER_KEYS}
+                       for k, v in ((k, evaluate_crop(c, hot, "now")) for k, c in CROPS.items())},
+        }
         summary["cells"][cell_id] = {"fields": fields, "lat": lat, "lon": lon}
         for row in g.itertuples():
             summary["points"][row.id] = {"lat": row.lat, "lon": row.lon, **climate}
             recs["points"][row.id] = {"cell_id": cell_id, **rec}
+            planner["points"][row.id] = {"cell_id": cell_id, **plan_in}
         print(f"{cell_id:16s} {fields} hot days {then['hot_days']:5.1f} -> {now['hot_days']:5.1f} | "
               f"GDD10 {then['gdd10']} -> {now['gdd10']} | top: {rec['ranking']['now'][:3]}")
 
     (DATA / "summary.json").write_text(json.dumps(clean(summary), indent=1))
     (DATA / "recommendations.json").write_text(json.dumps(clean(recs), indent=1))
-    print("wrote data/summary.json and data/recommendations.json")
+    (DATA / "planner.json").write_text(json.dumps(clean(planner), indent=1))
+    print("wrote data/summary.json, data/recommendations.json and data/planner.json")
 
 
 if __name__ == "__main__":

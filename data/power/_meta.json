@@ -128,5 +128,18 @@
       "WS2M": "m/s",
       "ALLSKY_SFC_SW_DWN": "MJ/m^2/day"
     }
+  },
+  "Navoi_field1": {
+    "elevation_m": 472.88,
+    "units": {
+      "T2M_MAX": "C",
+      "T2M_MIN": "C",
+      "T2M": "C",
+      "PRECTOTCORR": "mm/day",
+      "EVPTRNS": "MJ/m^2/day",
+      "RH2M": "%",
+      "WS2M": "m/s",
+      "ALLSKY_SFC_SW_DWN": "MJ/m^2/day"
+    }
   }
 }

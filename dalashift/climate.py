@@ -30,6 +30,18 @@ def load_point(path, lat: float, elev: float) -> pd.DataFrame:
     return df
 
 
+def warmed(df: pd.DataFrame, lat: float, elev: float, delta_t: float) -> pd.DataFrame:
+    """'Hotter' scenario: shift daily Tmax/Tmin/T2M by delta_t (RH kept constant), then recompute
+    Tmean, FAO-56 ET0 and RHmin. A simple delta-change method, not a climate projection."""
+    out = df.copy()
+    for c in ("T2M_MAX", "T2M_MIN", "T2M"):
+        out[c] = out[c] + delta_t
+    out["TMEAN"] = (out["T2M_MAX"] + out["T2M_MIN"]) / 2
+    out["ET0"] = penman_monteith(out, lat, elev)
+    out["RHMIN"] = rh_min(out)
+    return out
+
+
 def _frost_dates(year_df: pd.DataFrame, complete_year: bool):
     """Last spring frost and first autumn frost as day-of-year (split at 1 July)."""
     frost = year_df["T2M_MIN"] <= FROST_TMIN

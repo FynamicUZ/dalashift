@@ -1,0 +1,16 @@
+# Demo farms for the 5-year planner. Climate comes from real NASA POWER data at the point;
+# every other input below is HYPOTHETICAL (made up for the demo) and is labelled as such in the app.
+fergana:
+  point: Fergana_field1            # existing NASA POWER point, Fergana valley
+  name: {en: "Fergana farm (demo)", uz: "Fargʻona fermer xoʻjaligi (demo)"}
+  water_budget_m3_ha: 12000        # HYPOTHETICAL: good canal water supply
+  max_fresh_market_years: 2        # HYPOTHETICAL market limit
+  must_grow_pct: {cotton: 0, winter_wheat: 0}   # HYPOTHETICAL: no state-order obligation
+  note: {en: "Good water supply, mild climate.", uz: "Suv taʼminoti yaxshi, iqlim moʻtadil."}
+navoi:
+  point: Navoi_field1              # NASA POWER point added near 40.10 N, 65.40 E
+  name: {en: "Navoi farm (demo)", uz: "Navoiy fermer xoʻjaligi (demo)"}
+  water_budget_m3_ha: 7000         # HYPOTHETICAL: low, unreliable water at the tail of the canal
+  max_fresh_market_years: 2        # HYPOTHETICAL market limit
+  must_grow_pct: {cotton: 0, winter_wheat: 0}   # HYPOTHETICAL
+  note: {en: "Dry and hot, low water budget.", uz: "Quruq va issiq, suv kam."}

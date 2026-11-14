@@ -1,0 +1,37 @@
+# DalaShift rotation rules - transparent and editable. Used by dalashift/planner.py.
+#
+# This is a RULE-BASED stand-in for soil health. It is NOT a soil-carbon, nitrogen or
+# pest-population model (see "Limits" in the app and README).
+
+# HARD rules: any 5-year plan that breaks one of them is rejected by the optimizer.
+hard_rules:
+  max_consecutive_cotton_years: 2      # "no more than 2 years of cotton in a row"
+  max_same_family_run_years: 2         # "no same botanical family 3 years running" (family from config/crops.csv)
+  family_rule_exempt: [alfalfa]        # a multi-year alfalfa stand is one crop, not repeated cropping
+  min_legume_years: 1                  # "legume break at least once in 5 years" (chickpea, mung bean, alfalfa)
+  double_crops:                        # two crops in the same year are allowed only for these pairs
+    - [winter_wheat, mung_bean]        # winter wheat harvested in June, mung bean sown right after
+  multi_year_crops:
+    alfalfa:                           # "alfalfa counts as multi-year"
+      min_years: 2                     # a stand is kept at least 2 years ...
+      max_years: 3                     # ... and at most 3 years
+      may_continue_after_horizon: true # a stand planted in the last plan year may continue after year 5
+
+# ROTATION HEALTH score, 0-10 (shown for every plan; higher = healthier rotation).
+# Feasible plans already satisfy all hard rules; the soft points below separate good from great.
+health_score:
+  start: 10
+  per_broken_hard_rule: 3              # only affects comparison plans (e.g. "repeat the most profitable crop")
+  per_same_crop_next_year: 1           # same crop (or same double crop) two years in a row; alfalfa stand exempt
+  only_one_legume_year: 1              # legume break only once in 5 years
+  fewer_than_4_families: 1             # low diversity over the 5 years ...
+  fewer_than_3_families: 1             # ... and very low diversity (cumulative)
+
+# ROTATION EFFECTS on yield (multipliers). APPROXIMATE, from the general agronomic literature on
+# rotation effects (continuous cropping -> pest/disease build-up; legumes -> nitrogen credit). Editable.
+rotation_effects:
+  same_crop_repeat_penalty_per_year: 0.10   # -10 % yield for each consecutive repeat year ...
+  same_crop_repeat_penalty_max: 0.30        # ... capped at -30 %
+  after_legume_bonus: 0.10                  # +10 % yield for a non-legume crop after a legume year
+  after_alfalfa_bonus: 0.15                 # +15 % yield for the first crop after an alfalfa stand
+  alfalfa_establishment_yield_factor: 0.5   # first (establishment) year of alfalfa yields half
