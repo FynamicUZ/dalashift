@@ -1,8 +1,8 @@
 crop,retail_uzs_per_kg,where,date
-chickpea,,"not listed in Korzinka search (https://korzinka.uz/en/catalog (site search, Tashkent region))",
-mung_bean,,"not listed in Korzinka search (https://korzinka.uz/en/catalog (site search, Tashkent region))",
+chickpea,17320,"Uzum Market: 'Nut iranskii Oila tanlovi, 2 kg' 34,640 so'm -> 17,320 so'm/kg (imported, packaged; not found at Korzinka); https://uzum.uz/ru/search?query=нут",2026-11-14
+mung_bean,23245,"Uzum Market: 'Mash Oila tanlovi, 2 kg' 46,490 so'm -> 23,245 so'm/kg (packaged; not found at Korzinka); https://uzum.uz/ru/search?query=маш",2026-11-14
 tomato,9390,"Korzinka: 'Pomidory krasnye dala Uzb, ves' loose per kg; https://korzinka.uz/en/catalog (site search, Tashkent region)",2026-11-14
 onion,3290,"Korzinka: 'Luk repchatyi fasovannyi Uzb, ves' per kg; https://korzinka.uz/en/catalog (site search, Tashkent region)",2026-11-14
 potato,6330,"Korzinka: 'Kartofel zheltyi 365 kun' 3 kg bag 18,990 so'm -> 6,330 so'm/kg; https://korzinka.uz/en/catalog (site search, Tashkent region)",2026-11-14
 carrot,7790,"Korzinka: 'Morkov zheltaya Arzon, ves' regular price per kg (promo 3,990 not used); https://korzinka.uz/en/catalog (site search, Tashkent region)",2026-11-14
-melon,,"not listed in Korzinka search, out of season (https://korzinka.uz/en/catalog (site search, Tashkent region))",
+melon,,not found: Korzinka search and Uzum Market (https://uzum.uz/ru/search?query=дыня) list no fresh melon in November (out of season),

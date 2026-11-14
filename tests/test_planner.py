@@ -310,7 +310,7 @@ def test_shipped_retail_prices_have_source_and_date_and_a_dated_rate():
     assert list(rp.columns) == ["crop", "retail_uzs_per_kg", "where", "date"]
     assert set(rp["crop"]) == {"chickpea", "mung_bean", "tomato", "onion", "potato", "carrot", "melon"}
     filled = rp.dropna(subset=["retail_uzs_per_kg"])
-    assert filled["where"].str.contains("korzinka.uz").all() and filled["date"].notna().all()
+    assert filled["where"].str.contains("https://").all() and filled["date"].notna().all()
     cfg = yaml.safe_load((ROOT / "config" / "retail_to_farmgate.yaml").read_text(encoding="utf-8"))
     assert cfg["default_farm_gate_share"] == 0.40
     assert cfg["uzs_per_usd"] is None or (cfg["uzs_per_usd"] > 1000 and cfg["uzs_per_usd_date"])
@@ -343,4 +343,4 @@ def test_retail_prices_ignored_with_warning_until_rate_is_set(tmp_path):
     rp, cfg = _retail(tmp_path, "chickpea,15000,Test bazaar,2026-11-14\n", rate="null")
     with pytest.warns(UserWarning, match="uzs_per_usd"):
         t = load_crop_table(CROPS_CSV, None, rp, cfg)
-    assert t.loc["chickpea", "price_usd_t"] == TABLE.loc["chickpea", "price_usd_t"]
+    assert t.loc["chickpea", "price_usd_t"] == pd.read_csv(CROPS_CSV).set_index("crop").loc["chickpea", "price_usd_t"]
