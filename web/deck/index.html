@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DalaShift Pitch Deck</title>
+<link rel="stylesheet" href="vendor/reset.min.css">
+<link rel="stylesheet" href="vendor/reveal.min.css">
+<link rel="stylesheet" href="vendor/theme/white.min.css">
+<style>
+:root { --green:#1f5f3f; --ok:#2e7d4f; --warn:#c98a1b; --bad:#c0442f; --ink:#1d2521; --muted:#6b716d; --line:#e4e1d8; --bg:#faf9f6; }
+.reveal { font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif; color: var(--ink); font-size: 34px; }
+.reveal-viewport { background: var(--bg); }
+.reveal h1, .reveal h2 { font-family: inherit; text-transform: none; color: var(--ink); letter-spacing: -0.01em; }
+.reveal h2 { font-size: 1.55em; font-weight: 700; margin-bottom: .6em; }
+.reveal .slide-number { font-size: 20px; background: transparent; color: var(--muted); }
+.sub { font-size: .55em; color: var(--muted); margin-top: .8em; line-height: 1.5; }
+.ph { background: #fff3c4; border: 2px dashed var(--warn); padding: 0 .3em; font-weight: 700; color: #6b4e00; }
+/* 1 hero */
+.reveal .hero, .reveal .hero h1, .reveal .hero p { color: #fff; text-align: left; }
+.hero .hook { font-size: 1.15em; font-weight: 500; max-width: 1150px; line-height: 1.35; }
+.hero .hook2 { font-size: 2.1em; font-weight: 800; margin: .1em 0 .7em; }
+.hero h1 { font-size: 2.5em; margin: 0; color: #fff; }
+.hero .tag { font-size: .8em; } .hero .meta { font-size: .5em; opacity: .9; }
+.hero .credit { font-size: .32em; opacity: .75; margin-top: 2.5em; }
+/* 2 chart */
+.big { display: flex; align-items: baseline; justify-content: center; gap: 24px; }
+.big .count { font-size: 3.2em; font-weight: 800; color: var(--bad); line-height: 1; }
+.big small { font-size: .65em; color: var(--muted); }
+.chart { width: 900px; height: 360px; display: block; margin: 10px auto 0; }
+.chart .ax { font-size: 20px; fill: var(--muted); font-weight: 600; paint-order: stroke; stroke: #faf9f6; stroke-width: 6px; }
+.chart .draw { stroke-dasharray: 3000; stroke-dashoffset: 3000; }
+.chart .mean { opacity: 0; }
+.present .chart .draw, .print .chart .draw { animation: draw 2.4s ease-out forwards; }
+.present .chart .mean, .print .chart .mean { animation: fadein .6s 2.2s forwards; }
+.print .chart .draw { animation: none; stroke-dashoffset: 0; } .print .chart .mean { animation: none; opacity: 1; }
+@keyframes draw { to { stroke-dashoffset: 0; } } @keyframes fadein { to { opacity: 1; } }
+/* 3 water bars */
+.wbars { position: relative; display: flex; gap: 40px; justify-content: center; height: 480px; align-items: flex-end; }
+.wb { width: 170px; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; }
+.wcol { width: 110px; height: 78%; display: flex; align-items: flex-end; }
+.wfill { width: 100%; height: 0; border-radius: 10px 10px 0 0; transition: height 1.2s ease-out; }
+.present .wfill, .print .wfill { height: var(--h); }
+.ok { background: var(--ok); } .bad { background: var(--bad); }
+.wl { font-size: .5em; color: var(--muted); padding-top: 8px; line-height: 1.3; height: 22%; box-sizing: border-box; } .wl b { color: var(--ink); }
+.budget { position: absolute; left: 0; right: 0; border-top: 3px dashed var(--ink); z-index: 2; }
+.budget span { position: absolute; right: 0; top: -1.7em; font-size: .45em; font-weight: 600; background: var(--bg); padding: 0 .4em; }
+.badtxt { color: var(--bad); }
+/* 4 phone */
+.phonewrap { display: flex; gap: 90px; justify-content: center; align-items: center; }
+.phone { width: 300px; height: 600px; border-radius: 42px; background: #111; padding: 14px; box-shadow: 0 30px 60px rgba(0,0,0,.25); }
+.screen { width: 100%; height: 100%; border-radius: 30px; overflow: hidden; background: #fff; }
+.reveal .screen img.scroll { width: 100%; margin: 0; max-width: none; max-height: none; border: 0; display: block; }
+.present .screen img.scroll { animation: scrollshot 16s ease-in-out .8s infinite alternate; }
+@keyframes scrollshot { 0%, 8% { transform: translateY(0); } 92%, 100% { transform: translateY(calc(-100% + 572px)); } }
+.reveal ol.steps, .reveal ol.steps li { list-style: none; }
+.steps { text-align: left; font-size: 1.1em; font-weight: 700; list-style: none; counter-reset: s; margin: 0; }
+.steps li { margin: .6em 0; counter-increment: s; }
+.steps li::before { content: counter(s); display: inline-block; width: 1.5em; height: 1.5em; line-height: 1.5em; border-radius: 50%;
+  background: var(--green); color: #fff; text-align: center; margin-right: .6em; font-size: .8em; }
+/* 5 data */
+.two { display: grid; grid-template-columns: 1.15fr 1fr; gap: 50px; align-items: center; text-align: left; }
+.src { display: grid; grid-template-columns: 220px 1fr 140px; gap: 14px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--line); font-size: .5em; }
+.src .sn { font-weight: 700; } .src .sd { color: var(--muted); }
+.src .st { font-weight: 700; text-align: center; border-radius: 999px; padding: 4px 8px; }
+.src .st.used { color: var(--ok); border: 2px solid var(--ok); } .src .st.integrating { color: var(--warn); border: 2px solid var(--warn); }
+.say { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 16px 22px; margin: 16px 0; font-size: .62em;
+       box-shadow: 0 4px 16px rgba(20,30,25,.05); }
+/* 6 comparison */
+.plan { font-size: .62em; font-weight: 600; color: var(--green); }
+.cmp { max-width: 1250px; margin: 30px auto 0; }
+.cb { display: grid; grid-template-columns: 170px 1fr 360px; gap: 22px; align-items: center; margin: 24px 0; }
+.cl { font-size: .75em; font-weight: 700; text-align: right; }
+.ct { height: 36px; background: #efece4; border-radius: 18px; overflow: hidden; }
+.cf { height: 100%; width: 0; border-radius: 18px; transition: width 1.3s ease-out; }
+.present .cf, .print .cf { width: var(--w); }
+.cv { font-size: .95em; font-weight: 800; text-align: left; }
+/* 7 roadmap */
+.road { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; margin: 30px 0; }
+.rs { background: #fff; border: 1px solid var(--line); border-top: 6px solid var(--green); border-radius: 14px; padding: 22px; text-align: left; }
+.rs b { display: block; font-size: .78em; } .rs span { font-size: .52em; color: var(--muted); }
+.team { font-size: .55em; }
+
+@media print { .reveal .slides .pdf-page:last-of-type { page-break-after: avoid !important; break-after: avoid !important; } }
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="hero" data-background-image="img/karshi_modis_terra_2025-08-12.jpg" data-background-size="cover"
+         data-background-opacity="0.42" data-background-color="#0f1a14">
+  <p class="hook fragment fade-up">Every spring, a farmer near Karshi bets the family's year on one decision:</p>
+  <p class="hook2 fragment fade-up">what to plant.</p>
+  <div class="fragment fade-up">
+    <h1>DalaShift</h1>
+    <p class="tag">Don't just choose the most profitable crop for this year.<br>Choose the best five-year future for your field.</p>
+    <p class="meta">Field Shift: Adapting Farms with NASA Data · NASA Space Apps 2026 · Karshi · <b>KarPS</b></p>
+  </div>
+  <p class="credit">Karshi oasis from space: NASA MODIS Terra, 12 Aug 2025 (Worldview). The farmer is an illustrative persona.</p>
+</section>
+
+<section>
+  <h2>The rules changed.</h2>
+  <div class="big"><span class="count" data-from="96" data-to="104">104</span> <small>very hot days a year in Karshi, up from 96</small></div>
+  <svg class='chart' viewBox='0 0 900 360' width='900' height='360'><line x1='40' x2='860' y1='320' y2='320' stroke='#d9d4c7'/><polyline class='draw' points='40.0,148.0 63.4,272.0 86.9,184.0 110.3,176.0 133.7,176.0 157.1,192.0 180.6,180.0 204.0,212.0 227.4,160.0 250.9,68.0 274.3,112.0 297.7,172.0 321.1,196.0 344.6,184.0 368.0,192.0 391.4,124.0 414.9,88.0 438.3,88.0 461.7,232.0 485.1,168.0 508.6,108.0 532.0,172.0 555.4,124.0 578.9,116.0 602.3,176.0 625.7,88.0 649.1,124.0 672.6,204.0 696.0,220.0 719.4,216.0 742.9,76.0 766.3,152.0 789.7,148.0 813.1,180.0 836.6,76.0 860.0,96.0' fill='none' stroke='#c0442f' stroke-width='3' stroke-linejoin='round'/><line class='mean' x1='40.0' x2='368.0' y1='174.8' y2='174.8' stroke='#6b716d' stroke-width='4' stroke-dasharray='8 6'/><line class='mean' x1='508.57142857142856' x2='860.0' y1='142.39999999999998' y2='142.39999999999998' stroke='#c0442f' stroke-width='4' stroke-dasharray='8 6'/><text x='40.0' y='350' class='ax'>1991</text><text x='820.0' y='350' class='ax'>2026</text><text x='40.0' y='204.8' class='ax mean'>avg 96</text><text x='508.57142857142856' y='128.39999999999998' class='ax mean' style='fill:#c0442f'>avg 104</text></svg>
+  <p class="sub">Days above 35 °C, 1991–2026 · season rain 68 → 54 mm · NASA POWER</p>
+</section>
+
+<section>
+  <h2>But fields are still planned one year at a time.</h2>
+  <div class='wbars'><div class='budget' style='bottom:calc(22% + 78% * 0.5714)'><span>water the farm gets: 8,000 t / ha</span></div><div class='wb'><div class='wcol'><div class='wfill ok' style='--h:25.6%'></div></div><div class='wl'>Year 1<br><b>Wheat</b><br><span>3,590 t</span></div></div><div class='wb'><div class='wcol'><div class='wfill bad' style='--h:92.4%'></div></div><div class='wl'>Year 2<br><b>Cotton</b><br><span>12,940 t</span></div></div><div class='wb'><div class='wcol'><div class='wfill ok' style='--h:25.6%'></div></div><div class='wl'>Year 3<br><b>Wheat</b><br><span>3,590 t</span></div></div><div class='wb'><div class='wcol'><div class='wfill bad' style='--h:92.4%'></div></div><div class='wl'>Year 4<br><b>Cotton</b><br><span>12,940 t</span></div></div><div class='wb'><div class='wcol'><div class='wfill ok' style='--h:25.6%'></div></div><div class='wl'>Year 5<br><b>Wheat</b><br><span>3,590 t</span></div></div></div>
+  <p class="sub">The usual wheat ↔ cotton rotation: cotton years need <b class="badtxt">62 % more water</b> than the farm gets.</p>
+</section>
+
+<section>
+  <h2>DalaShift plans five years ahead.</h2>
+  <div class="phonewrap">
+    <div class="phone"><div class="screen"><img class="scroll" src="../screenshots/farmer_full_phone.png" alt="DalaShift on a phone"></div></div>
+    <ol class="steps">
+      <li class="fragment fade-left">Pick your field.</li>
+      <li class="fragment fade-left">See what changed.</li>
+      <li class="fragment fade-left">Get a five-year plan.</li>
+    </ol>
+  </div>
+  <p class="sub">Uzbek first · income in soʻm · one plain reason for every choice</p>
+</section>
+
+<section>
+  <h2>NASA satellites, explained like a neighbour.</h2>
+  <div class="two">
+    <div><div class='src'><div class='sn'>NASA POWER</div><div class='sd'>35 years of daily weather: heat, frost, rain, crop water demand</div><div class='st used'>used</div></div><div class='src'><div class='sn'>NASA SMAP</div><div class='sd'>How dry is the soil under the field?</div><div class='st integrating'>integrating</div></div><div class='src'><div class='sn'>NASA ECOSTRESS</div><div class='sd'>Are the crops thirsty right now?</div><div class='st integrating'>integrating</div></div><div class='src'><div class='sn'>NASA / USGS HLS</div><div class='sd'>How green is each field?</div><div class='st integrating'>integrating</div></div></div>
+    <div class="sees">
+      <div class="say fragment fade-up">“8 more very hot days a year than in the 1990s.”</div>
+      <div class="say fragment fade-up">“14 mm less rain in the growing season.”</div>
+      <div class="say fragment fade-up">“Each hectare needs ~370 more tonnes of water a year.”</div>
+    </div>
+  </div>
+  <p class="sub">Also used, non-NASA: FAO-56 crop water method · FAOSTAT yields · Korzinka and Uzum retail prices</p>
+</section>
+
+<section>
+  <h2>What it changes in Karshi.</h2>
+  <p class="plan">Chickpea → Wheat → Chickpea → Wheat → Barley</p>
+  <div class="cmp">
+    <div class='cb'><div class='cl'>Water used</div><div class='ct'><div class='cf ok' style='--w:85%'></div></div><div class='cv' style='color:var(--ok)'>-51 %</div></div>
+    <div class='cb'><div class='cl'>Income</div><div class='ct'><div class='cf ok' style='--w:33%'></div></div><div class='cv' style='color:var(--ok)'>+20 %</div></div>
+    <div class="cb"><div class="cl">Risk</div><div class="cv" style="grid-column: 2 / 4; color:var(--muted)">same: medium</div></div>
+  </div>
+  <p class="sub">Balanced plan vs the usual wheat ↔ cotton, same farm, 8,000 t of water per ha · about 6 mln soʻm / ha / year, conservative.<br>
+  Must grow cotton? It needs 12,940 t / ha here: DalaShift says so, then shows the closest plan.</p>
+</section>
+
+<section>
+  <h2>Next: every field in Uzbekistan.</h2>
+  <div class="road">
+    <div class="rs fragment fade-up"><b>Uzcosmos</b><span>and national farm data</span></div>
+    <div class="rs fragment fade-up"><b>Soil &amp; salinity</b><span>per field: SMAP, ECOSTRESS, HLS</span></div>
+    <div class="rs fragment fade-up"><b>Telegram bot</b><span>in Uzbek</span></div>
+    <div class="rs fragment fade-up"><b>More crops</b><span>melon varieties, real costs</span></div>
+  </div>
+  <p class="team"><b>KarPS</b> · Ahmedov Zuhriddin · Alisherov Azimbek · Shermaxmatov Ozodbek · Botirxonov Faxriyor · Boyqulov Afzalbek</p>
+  <p class="sub">229 automated tests · up to 248,832 five-year plans checked per farm · Repo <span class="ph">[REPO LINK]</span> · App <span class="ph">[APP LINK]</span></p>
+</section>
+
+</div></div>
+<script src="vendor/reveal.min.js"></script>
+<script>
+Reveal.initialize({ hash: true, controls: false, progress: true, slideNumber: 'c/t', width: 1600, height: 900,
+  margin: 0.04, transition: 'slide', backgroundTransition: 'fade', pdfSeparateFragments: false, pdfMaxPagesPerSlide: 1 });
+
+function countUp(slide) {
+  slide.querySelectorAll('.count').forEach(function (el) {
+    var a = +el.dataset.from, b = +el.dataset.to, t0 = null;
+    function step(t) { if (!t0) t0 = t; var p = Math.min((t - t0) / 1600, 1);
+      el.textContent = Math.round(a + (b - a) * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(step); }
+    requestAnimationFrame(step);
+  });
+}
+if (/print-pdf/.test(location.search)) { document.documentElement.classList.add('print'); }
+else { Reveal.on('ready', function (e) { countUp(e.currentSlide); });
+       Reveal.on('slidechanged', function (e) { countUp(e.currentSlide); }); }
+
+</script>
+</body>
+</html>

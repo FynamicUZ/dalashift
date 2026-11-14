@@ -203,6 +203,20 @@ python scripts/fetch_faostat.py    # FAOSTAT Uzbekistan extracts (prices, yields
 python scripts/build_summary.py    # STEPS 2-4  climate shift, crop engine, planner inputs
 ```
 
+## Static website (Netlify, no server)
+
+`web/` is a fully static version of the farmer view, an expert tab and the pitch deck (`web/deck/`).
+Every farmer choice (5 districts × 3 water levels × must-grow on/off × 3 plans) is precomputed by
+`scripts/export_static.py` with the same engine and formatting as the Streamlit app; a test
+(`tests/test_static.py`) checks that `web/data.json` matches the engine.
+
+```bash
+python scripts/export_static.py      # after any data / config change
+python -m http.server -d web 8601    # preview at http://localhost:8601
+```
+
+To publish: open https://app.netlify.com/drop and drag the `web/` folder onto the page.
+
 ## Deploy on Streamlit Community Cloud
 
 1. Push this folder to a **public GitHub repo**, including `data/` and `config/`.
