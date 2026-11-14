@@ -8,7 +8,6 @@ hard_rules:
   max_consecutive_cotton_years: 2      # "no more than 2 years of cotton in a row"
   max_same_family_run_years: 2         # "no same botanical family 3 years running" (family from config/crops.csv)
   family_rule_exempt: [alfalfa]        # a multi-year alfalfa stand is one crop, not repeated cropping
-  min_legume_years: 1                  # "legume break at least once in 5 years" (chickpea, mung bean, alfalfa)
   double_crops:                        # two crops in the same year are allowed only for these pairs
     - [winter_wheat, mung_bean]        # winter wheat harvested in June, mung bean sown right after
   multi_year_crops:
@@ -17,12 +16,20 @@ hard_rules:
       max_years: 3                     # ... and at most 3 years
       may_continue_after_horizon: true # a stand planted in the last plan year may continue after year 5
 
+# SOFT rules: breaking one costs rotation-health points (below) but never rejects a plan.
+soft_rules:
+  min_legume_years: 1                  # "legume break at least once in 5 years" (chickpea, mung bean, alfalfa)
+
+# If NO plan meets every hard rule, the planner shows the least-harmful plan (fewest broken hard
+# rules, then least water over budget, then most profit) and lists the rules it breaks.
+
 # ROTATION HEALTH score, 0-10 (shown for every plan; higher = healthier rotation).
 # Feasible plans already satisfy all hard rules; the soft points below separate good from great.
 health_score:
   start: 10
   per_broken_hard_rule: 3              # only affects comparison plans (e.g. "repeat the most profitable crop")
   per_same_crop_next_year: 1           # same crop (or same double crop) two years in a row; alfalfa stand exempt
+  no_legume_year: 3                    # SOFT rule broken: no legume at all in 5 years
   only_one_legume_year: 1              # legume break only once in 5 years
   fewer_than_4_families: 1             # low diversity over the 5 years ...
   fewer_than_3_families: 1             # ... and very low diversity (cumulative)

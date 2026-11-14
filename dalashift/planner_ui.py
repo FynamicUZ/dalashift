@@ -13,7 +13,8 @@ from .i18n import CROP_NAMES, field_label, t
 from .planner import CONFIG, load_planner_config, plan_farm
 
 # validated categorical slots 1-3 (blue, orange, aqua); comparison plan in neutral gray
-PLAN_COLORS = {"profit": "#2a78d6", "balanced": "#eb6834", "water": "#1baf7a", "repeat_best": "#c3c2b7"}
+PLAN_COLORS = {"profit": "#2a78d6", "balanced": "#eb6834", "water": "#1baf7a", "repeat_best": "#c3c2b7",
+               "least_harm": "#898781"}
 PLAN_KEYS = ["profit", "balanced", "water"]
 RISK_ICON = {"low": "🟢", "medium": "🟠", "high": "🔴"}
 INK, INK2, MUTED, GRID, AXIS = "#0b0b0b", "#52514e", "#898781", "#e1e0d9", "#c3c2b7"
@@ -134,6 +135,11 @@ def _plan_metrics(plan: dict, rb: dict | None, lang: str, rate: float) -> None:
         st.warning("⚠️ " + t("pl_check_plan", lang))
 
 
+def _soft_note(plan: dict, lang: str) -> None:
+    if "legume" in plan.get("soft_broken", []):
+        st.info("🌱 " + t("pl_soft_legume", lang))
+
+
 def render(lang: str, pid: str, planner_data: dict) -> None:
     cfg = load_planner_config()
     farms = _demo_farms()
@@ -175,9 +181,22 @@ def render(lang: str, pid: str, planner_data: dict) -> None:
     out = res["result"]
     opt_by_key = {o["key"]: o for o in res["options"]}
 
-    # ------------------------------------------------------------ no feasible plan
+    # ------------------------------------------------------------ no plan meets every rule
     if out["status"] != "ok":
         st.error(t("pl_infeasible", lang))
+        lh = out["plans"].get("least_harm")
+        if lh:
+            st.markdown(f"#### {t('pl_plan_least_harm', lang)}")
+            st.warning("⚠️ " + t("pl_least_harm_breaks", lang, rules=_fail_reason(lh, budget, lang)))
+            for y in lh["years"]:
+                y["fresh"] = opt_by_key[y["option"]]["fresh"]
+                y["area_cap"] = opt_by_key[y["option"]]["area_cap"]
+            cols = st.columns(5)
+            for col, y in zip(cols, lh["years"]):
+                with col.container(border=True):
+                    _year_card(y, lang, opt_by_key)
+            _plan_metrics(lh, None, lang, rate)
+            _soft_note(lh, lang)
         ok_crops = [option_name(o["key"], lang) for o in res["options"] if o["fits"] and o["water"] <= budget]
         st.markdown(t("pl_inf_crops", lang, crops=", ".join(ok_crops) or t("pl_none", lang)))
         if out.get("blocking"):
@@ -205,6 +224,7 @@ def render(lang: str, pid: str, planner_data: dict) -> None:
 
     rb = res.get("repeat_best")
     _plan_metrics(plan, rb, lang, rate)
+    _soft_note(plan, lang)
 
     # comparison
     st.markdown(f"#### {t('pl_compare', lang)}")
@@ -280,7 +300,7 @@ def _scenarios(res: dict, lang: str, budget: float) -> None:
     plans = res["result"]["plans"]
     if plans:
         rows = []
-        for k in PLAN_KEYS:
+        for k in [k for k in PLAN_KEYS + ["least_harm"] if k in plans]:
             row = {t("pl_plan", lang): plan_name(k, lang)}
             for s, sc in scen.items():
                 c = sc["checks"][k]
@@ -294,6 +314,13 @@ def _scenarios(res: dict, lang: str, budget: float) -> None:
             st.markdown(f"**{names[s]}** — {sc['budget']:,.0f} {t('pl_m3_ha', lang)}")
             if r["status"] != "ok":
                 st.markdown("- " + t("pl_infeasible", lang))
+                lh = r["plans"].get("least_harm")
+                if lh:
+                    st.markdown(f"- {plan_name('least_harm', lang)}: "
+                                + " → ".join(option_name(x, lang, False) for x in lh["sequence"])
+                                + f" · {money_range(lh['profit_total_range'], lang)}"
+                                + f" · {lh['water_total']:,.0f} {t('pl_m3_ha', lang)} · "
+                                + t("pl_breaks", lang, rules=_fail_reason(lh, sc["budget"], lang)))
                 continue
             for k in PLAN_KEYS:
                 p = r["plans"][k]

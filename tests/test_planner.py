@@ -61,8 +61,6 @@ def check_plan(seq: list[str], metrics: dict, budget: float, fresh_cap: int, mus
         if set.intersection(*fams[i:i + k]):
             broken.append("family_run")
             break
-    if sum(any(bool(TABLE.loc[c, "legume"]) for c in crops) for crops in years) < hr["min_legume_years"]:
-        broken.append("legume")
     stand = hr["multi_year_crops"]["alfalfa"]
     alf = [crops == ["alfalfa"] for crops in years]
     i = 0
@@ -101,7 +99,7 @@ def test_every_returned_plan_obeys_all_rules_and_budget(point, budget, must):
     metrics = PLANNER["points"][point]["baseline"]
     res = optimize(make_context(metrics, budget, must_years=must))
     if res["status"] != "ok":
-        assert res["plans"] == {}
+        _assert_least_harm(res, metrics, budget, must)
         return
     assert set(res["plans"]) == {"profit", "balanced", "water"}
     for plan in res["plans"].values():
@@ -127,25 +125,42 @@ def test_plans_are_optimal_for_their_objective(point, budget, must):
     assert res["plans"]["water"]["water_total"] == pytest.approx(ev["water"][f].min())
 
 
-# ------------------------------------------------------------------ "no feasible plan" instead of a wrong one
-def test_no_water_reports_no_feasible_plan():
-    res = optimize(make_context(PLANNER["points"]["Fergana_field1"]["baseline"], budget=100))
-    assert res["status"] == "infeasible" and res["plans"] == {}
+# ------------------------------------------------------------------ no feasible plan -> least-harmful plan, clearly marked
+def _assert_least_harm(res, metrics, budget, must):
+    assert res["status"] == "relaxed" and set(res["plans"]) == {"least_harm"}
+    plan = res["plans"]["least_harm"]
+    assert plan["feasible"] is False and plan["broken_rules"]
+    assert sorted(plan["broken_rules"]) == sorted(check_plan(plan["sequence"], metrics, budget,
+                                                             CFG["max_fresh_market_years"], must))
+    return plan
 
 
-def test_navoi_less_water_reports_no_feasible_plan():
-    """Navoi, 4,800 m3/ha: only cereals fit the budget (no legume possible) -> must say infeasible."""
-    metrics = PLANNER["points"]["Navoi_field1"]["baseline"]
-    budget = 4800
-    res = optimize(make_context(metrics, budget))
-    assert res["status"] == "infeasible" and res["plans"] == {}
-    assert "legume" in res["blocking"]
+def test_no_water_gives_least_harmful_plan():
+    metrics = PLANNER["points"]["Fergana_field1"]["baseline"]
+    res = optimize(make_context(metrics, budget=100))
+    plan = _assert_least_harm(res, metrics, 100, {})
+    assert plan["broken_rules"] == ["water"]        # only the budget is broken, every rotation rule still holds
 
 
-def test_impossible_obligation_reports_no_feasible_plan():
+def test_legume_is_a_soft_rule():
+    """No legume can be grown (all legumes made climate-unfit here). That is a soft penalty: a feasible
+    plan is still returned, with lower rotation health and the rule listed."""
+    metrics = {k: dict(v) for k, v in PLANNER["points"]["Fergana_field1"]["baseline"].items()}
+    for c in ("chickpea", "mung_bean", "alfalfa"):
+        metrics[c]["fits"] = False
+    res = optimize(make_context(metrics, 12000))
+    assert res["status"] == "ok"
+    for plan in res["plans"].values():
+        assert "legume" in plan["soft_broken"] and "legume" not in plan["broken_rules"]
+        assert plan["health"] <= 10 - RULES["health_score"]["no_legume_year"]
+
+
+def test_impossible_obligation_gives_least_harmful_plan():
     """Cotton in 5 of 5 years contradicts 'max 2 cotton years in a row'."""
-    res = optimize(make_context(PLANNER["points"]["Fergana_field1"]["baseline"], 20000, must_years={"cotton": 5}))
-    assert res["status"] == "infeasible" and res["plans"] == {}
+    metrics = PLANNER["points"]["Fergana_field1"]["baseline"]
+    res = optimize(make_context(metrics, 20000, must_years={"cotton": 5}))
+    plan = _assert_least_harm(res, metrics, 20000, {"cotton": 5})
+    assert len(plan["broken_rules"]) == 1           # breaks exactly one rule (the run limit or the obligation)
     assert "cotton_run" in res["relax"] or "must_cotton" in res["relax"]
 
 

@@ -7,7 +7,8 @@ How it works
 2. ALL 5-year sequences of those options are enumerated (at most 14^5 = 537,824), as numpy arrays.
 3. A sequence is FEASIBLE only if it obeys every hard rule (config/rotation_rules.yaml), the water
    budget in every year, the fresh-market limit, each crop's maximum share of farm area and any
-   "must grow" minimum.
+   "must grow" minimum. "Legume at least once in 5 years" is a SOFT rule: missing it costs rotation-
+   health points (and the after-legume yield bonus) but never rejects a plan.
 4. Each feasible sequence gets:
      discounted profit  NPV = sum_t profit_t / (1 + r)^t,  t = 1..5
      profit_t           = yield x climate factor x rotation effect x price - cost      (USD/ha)
@@ -15,7 +16,8 @@ How it works
      rotation health    = 0-10 points from the rules
 5. Three plans are returned: "Most profit" (max NPV), "Least water" (min water, then max NPV) and
    "Balanced" (max of normalised NPV + normalised water saving + health/10, equal weights).
-If no sequence is feasible the planner says so and lists which constraint blocks it.
+If no sequence is feasible the planner returns the LEAST-HARMFUL plan instead (fewest broken hard
+rules, then least water over budget, then most profit), clearly marked, with the rules it breaks.
 
 Area share: the farm is assumed to run the 5-year plan on 5 equal blocks, each one year behind the
 next (standard rotation practice), so a crop grown k of 5 years covers k/5 of the farm every year.
@@ -37,9 +39,10 @@ ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "config"
 T = 5  # horizon (years)
 
-RULE_KEYS = ["climate", "water", "cotton_run", "family_run", "legume", "alfalfa_stand",
-             "market", "area", "must_cotton", "must_wheat"]
-AGRONOMIC_RULES = ["cotton_run", "family_run", "legume", "alfalfa_stand"]
+RULE_KEYS = ["climate", "water", "cotton_run", "family_run", "alfalfa_stand",
+             "market", "area", "must_cotton", "must_wheat"]          # HARD rules
+SOFT_RULES = ["legume"]                                             # health penalty only
+AGRONOMIC_RULES = ["cotton_run", "family_run", "alfalfa_stand"]
 
 
 def load_rules(path: Path = CONFIG / "rotation_rules.yaml") -> dict:
@@ -199,7 +202,6 @@ def evaluate(seq: np.ndarray, ctx: Context) -> dict:
     for j in range(1, k):
         win &= fam[:, j:t - k + 1 + j]
     v["family_run"] = (win != 0).any(1)
-    v["legume"] = leg.sum(1) < hr["min_legume_years"]
     stand = hr["multi_year_crops"]["alfalfa"]
     run = _run_lengths(alf)
     ends = alf & np.concatenate([~alf[:, 1:], np.ones((n, 1), bool)], axis=1)
@@ -214,6 +216,8 @@ def evaluate(seq: np.ndarray, ctx: Context) -> dict:
     v["must_cotton"] = cot.sum(1) < ctx.must_years.get("cotton", 0)
     v["must_wheat"] = a["wheat"][seq].sum(1) < ctx.must_years.get("winter_wheat", 0)
     feasible = ~np.any(np.stack([v[r] for r in RULE_KEYS]), axis=0)
+    no_legume = leg.sum(1) < ctx.rules["soft_rules"]["min_legume_years"]
+    v["legume"] = no_legume            # SOFT: reported and penalised, never makes a plan infeasible
 
     # rotation effects on yield
     same = np.zeros((n, t), bool)
@@ -236,10 +240,12 @@ def evaluate(seq: np.ndarray, ctx: Context) -> dict:
     n_fam = np.bitwise_count(np.bitwise_or.reduce(a["fam"][seq], axis=1))
     broken = sum(v[r].astype(int) for r in AGRONOMIC_RULES)
     health = (h["start"] - h["per_same_crop_next_year"] * same.sum(1)
-              - h["only_one_legume_year"] * (leg.sum(1) == 1)
+              - h["only_one_legume_year"] * (leg.sum(1) == 1) - h["no_legume_year"] * no_legume
               - h["fewer_than_4_families"] * (n_fam < 4) - h["fewer_than_3_families"] * (n_fam < 3)
               - h["per_broken_hard_rule"] * broken)
-    return {"violations": v, "feasible": feasible, "npv": npv, "profit_y": profit_y,
+    n_broken = np.sum(np.stack([v[r] for r in RULE_KEYS]), axis=0)
+    excess = np.maximum(water_y - ctx.budget, 0).sum(1)
+    return {"violations": v, "feasible": feasible, "n_broken": n_broken, "water_excess": excess, "npv": npv, "profit_y": profit_y,
             "water_y": water_y, "water": water_y.sum(1), "health": np.clip(health, 0, 10),
             "yield_factor": factor, "n_families": n_fam}
 
@@ -256,6 +262,7 @@ def _plan_dict(i: int, seq: np.ndarray, ev: dict, ctx: Context, kind: str) -> di
                       "p_frost": o.p_frost, "p_winterkill": o.p_winterkill, "legume": o.legume,
                       "climate_factor": o.climate_factor})
     broken = [r for r in RULE_KEYS if ev["violations"][r][i]]
+    soft = [r for r in SOFT_RULES if ev["violations"][r][i]]
     money = ctx.cfg["money"]
     for y in years:
         y.update(profit_low_high(y["profit"], money["profit_uncertainty"]))
@@ -267,6 +274,7 @@ def _plan_dict(i: int, seq: np.ndarray, ev: dict, ctx: Context, kind: str) -> di
             "profit_per_year": total / T, "profit_per_year_range": profit_low_high(total / T, money["profit_uncertainty"]),
             "water_total": float(ev["water"][i]), "water_per_year": float(ev["water"][i]) / T,
             "health": float(ev["health"][i]), "feasible": bool(ev["feasible"][i]), "broken_rules": broken,
+            "soft_broken": soft, "water_excess": float(ev["water_excess"][i]),
             "check_number": any(y["check_number"] for y in years)}
 
 
@@ -286,21 +294,13 @@ def optimize(ctx: Context) -> dict:
     """Brute force over all 5-year sequences of climate-fit, within-budget options."""
     cands = [i for i, o in enumerate(ctx.options) if o.fits and o.water <= ctx.budget + 1e-6]
     if not cands:
-        return {"status": "infeasible", "n_sequences": 0, "n_feasible": 0,
-                "blocking": {"water": 1.0}, "relax": ["water"], "plans": {}}
+        return {"n_options": 0, "n_sequences": 0, "n_feasible": 0, **least_harmful(ctx)}
     seq = enumerate_sequences(cands)
     ev = evaluate(seq, ctx)
     feas = np.flatnonzero(ev["feasible"])
     out = {"n_options": len(cands), "n_sequences": int(len(seq)), "n_feasible": int(len(feas))}
     if len(feas) == 0:
-        v = ev["violations"]
-        out["status"] = "infeasible"
-        out["blocking"] = {r: float(v[r].mean()) for r in RULE_KEYS if v[r].any()}
-        # which single rule, if relaxed, would make some plan feasible?
-        out["relax"] = [r for r in RULE_KEYS
-                        if (~np.any(np.stack([v[q] for q in RULE_KEYS if q != r]), axis=0)).any()]
-        out["plans"] = {}
-        return out
+        return {**out, **least_harmful(ctx)}
     npv, water, health = ev["npv"][feas], ev["water"][feas], ev["health"][feas]
     i_profit = feas[np.lexsort((water, -npv))[0]]
     i_water = feas[np.lexsort((-npv, water))[0]]
@@ -314,6 +314,27 @@ def optimize(ctx: Context) -> dict:
                     "balanced": _plan_dict(i_bal, seq, ev, ctx, "balanced"),
                     "water": _plan_dict(i_water, seq, ev, ctx, "water")}
     return out
+
+
+def least_harmful(ctx: Context) -> dict:
+    """No plan meets every hard rule. Search ALL sequences of climate-fit options (even ones over
+    the water budget) and return the one that breaks the fewest hard rules, then needs the least
+    water over budget, then earns the most. Status 'relaxed': the plan is shown with the list of
+    rules it breaks and is never labelled feasible."""
+    cands = [i for i, o in enumerate(ctx.options) if o.fits]
+    if not cands:
+        return {"status": "infeasible", "blocking": {"climate": 1.0}, "relax": [], "plans": {}}
+    seq = enumerate_sequences(cands)
+    ev = evaluate(seq, ctx)
+    v = ev["violations"]
+    within = (ev["water_y"] <= ctx.budget + 1e-6).all(1)
+    blocking = ({r: float(v[r][within].mean()) for r in RULE_KEYS if v[r][within].any()} if within.any()
+                else {"water": 1.0})
+    # which single rule, if relaxed, would make some plan feasible?
+    relax = [r for r in RULE_KEYS if (~np.any(np.stack([v[q] for q in RULE_KEYS if q != r]), axis=0)).any()]
+    i = np.lexsort((-ev["npv"], ev["water_excess"], ev["n_broken"]))[0]
+    return {"status": "relaxed", "blocking": blocking, "relax": relax,
+            "plans": {"least_harm": _plan_dict(i, seq, ev, ctx, "least_harm")}}
 
 
 def evaluate_plan(keys: list[str], ctx: Context, kind: str = "check") -> dict:
@@ -400,7 +421,8 @@ def plan_farm(point: dict, budget: float, discount_rate: float, max_fresh_years:
                         "check_number": o.revenue - o.cost > cfg["money"]["margin_check_usd_ha"]}
                        for o in base_ctx.options]}
     plans = res["result"]["plans"]
-    res["why_not"] = {k: why_not(p, base_ctx, k) for k, p in plans.items()}
+    res["why_not"] = ({k: why_not(p, base_ctx, k) for k, p in plans.items()}
+                      if res["result"]["status"] == "ok" else {})
 
     # cost of the "must grow" constraint: same optimizer without it
     res["constraint_cost"] = None

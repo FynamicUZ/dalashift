@@ -85,11 +85,13 @@ FAOSTAT extracts are saved in [`data/faostat/`](data/faostat/) and are reproduce
 Hard rules (a plan that breaks one is rejected):
 - no more than **2 years of cotton in a row**;
 - no **same botanical family 3 years running** (a multi-year alfalfa stand is exempt);
-- a **legume break** (chickpea, mung bean or alfalfa) at least once in 5 years;
 - **winter wheat → mung bean** double crop allowed in the same year;
 - **alfalfa is multi-year**: a stand lasts 2–3 years (a stand started in year 5 may continue after the plan).
 
-**Rotation health (0–10)** = 10 − 1 per same crop in consecutive years − 1 if only one legume year − 1 if < 4 plant families − 1 more if < 3 families
+Soft rule (a plan that breaks it is allowed but scores lower):
+- a **legume break** (chickpea, mung bean or alfalfa) at least once in 5 years: −3 rotation-health points if missing (and no after-legume yield bonus).
+
+**Rotation health (0–10)** = 10 − 3 if no legume year − 1 per same crop in consecutive years − 1 if only one legume year − 1 if < 4 plant families − 1 more if < 3 families
 (− 3 per broken hard rule, which only affects the comparison plan). This is a **rule score instead of a soil-carbon model**.
 
 **Rotation effects on yield** (approximate, editable): −10 % per consecutive repeat of the same crop (max −30 %); +10 % after a legume; +15 % after alfalfa; the alfalfa establishment year yields half.
@@ -119,7 +121,7 @@ feasible           ⇔ every crop passes Climate Fit, need_t ≤ budget in EVERY
 - **Least water**: the lowest total water; ties are broken by profit.
 - **Balanced**: the highest equal-weight sum of normalised profit + normalised water saving + health/10.
 
-**No feasible plan.** The app says so and does not show a rule-breaking plan. It lists the crops that pass Climate Fit and the budget, the share of sequences each rule breaks, and which single rule (if any) would need relaxing.
+**No plan meets every rule.** The app says so and shows the **least-harmful plan**: from all sequences of climate-fit crops (even ones over budget) it picks the one that breaks the fewest hard rules, then needs the least water over budget, then earns the most, and lists exactly which rules it breaks. It also lists the crops that pass Climate Fit and the budget, the share of sequences each rule breaks, and which single rule (if any) would need relaxing.
 
 **Must grow cotton / wheat.** A minimum % of years is turned into a minimum number of years. The planner is re-run without the obligation, and the difference is shown as the cost of the constraint (lost profit, extra water).
 
