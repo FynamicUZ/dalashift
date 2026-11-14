@@ -42,9 +42,25 @@ OLD = ["hls_green", "ecostress_stress", "smap_soil"]
 
 
 def login(use_netrc: bool = False) -> str:
-    if use_netrc:   # your own ~/_netrc or ~/.netrc entry for urs.earthdata.nasa.gov (read only on your machine)
+    creds = None
+    if use_netrc:   # your own _netrc / .netrc entry for urs.earthdata.nasa.gov (read only on your machine)
         import netrc
-        user, _, pw = netrc.netrc().authenticators("urs.earthdata.nasa.gov")
+        import os
+        home = Path(os.environ.get("USERPROFILE") or Path.home())
+        for f in [os.environ.get("NETRC"), home / "_netrc", home / ".netrc", Path.home() / "_netrc", Path.home() / ".netrc"]:
+            if f and Path(f).is_file():
+                try:
+                    creds = netrc.netrc(str(f)).authenticators("urs.earthdata.nasa.gov")
+                except netrc.NetrcParseError as e:
+                    print(f"Could not read {f}: {e.msg} (line {e.lineno})")
+                if creds:
+                    print(f"Using the urs.earthdata.nasa.gov entry in {f}")
+                    break
+        if not creds:
+            print("No netrc entry for urs.earthdata.nasa.gov found in", home / "_netrc", "or", home / ".netrc",
+                  "- type your login instead.")
+    if creds:
+        user, _, pw = creds
     else:
         user = input("Earthdata username: ").strip()
         pw = getpass.getpass("Earthdata password (not shown): ")
