@@ -418,6 +418,7 @@ def plan_farm(point: dict, budget: float, discount_rate: float, max_fresh_years:
            "options": [{"key": o.key, "fits": o.fits, "water": o.water, "unfit_reason": o.unfit_reason,
                         "profit_1y": o.revenue - o.cost, "fresh": o.fresh, "legume": o.legume,
                         "area_cap": o.area_cap,
+                        "area_share": {c: float(table.loc[c, "max_area_share"]) for c in o.area_cap},
                         "check_number": o.revenue - o.cost > cfg["money"]["margin_check_usd_ha"]}
                        for o in base_ctx.options]}
     plans = res["result"]["plans"]

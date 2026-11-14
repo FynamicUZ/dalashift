@@ -55,8 +55,9 @@ def _fail_reason(check: dict, budget: float, lang: str) -> str:
     parts = []
     for r in check["broken_rules"]:
         if r == "water":
-            y = next(y for y in check["years"] if y["water"] > budget + 1e-6)
-            parts.append(t("pl_fail_water", lang, y=y["year"], n=y["water"], b=budget))
+            over = [y for y in check["years"] if y["water"] > budget + 1e-6]
+            parts.append(t("pl_fail_water", lang, y=", ".join(str(y["year"]) for y in over),
+                           n=max(y["water"] for y in over), b=budget))
         else:
             parts.append(t(f"rule_{r}", lang))
     return "; ".join(parts)
@@ -112,7 +113,7 @@ def _year_card(y: dict, lang: str, rot: dict) -> None:
     if y.get("fresh"):
         notes.append(t("pl_fresh_tag", lang))
     for c, cap in (y.get("area_cap") or {}).items():
-        notes.append(t("pl_area_tag", lang, p=100 * cap / 5))
+        notes.append(t("pl_area_tag", lang, p=100 * y["area_share"][c], k=cap))
     if notes:
         st.caption(" · ".join(notes))
 
@@ -191,6 +192,7 @@ def render(lang: str, pid: str, planner_data: dict) -> None:
             for y in lh["years"]:
                 y["fresh"] = opt_by_key[y["option"]]["fresh"]
                 y["area_cap"] = opt_by_key[y["option"]]["area_cap"]
+                y["area_share"] = opt_by_key[y["option"]]["area_share"]
             cols = st.columns(5)
             for col, y in zip(cols, lh["years"]):
                 with col.container(border=True):
@@ -215,6 +217,7 @@ def render(lang: str, pid: str, planner_data: dict) -> None:
     for y in plan["years"]:
         y["fresh"] = opt_by_key[y["option"]]["fresh"]
         y["area_cap"] = opt_by_key[y["option"]]["area_cap"]
+        y["area_share"] = opt_by_key[y["option"]]["area_share"]
 
     # timeline
     cols = st.columns(5)
