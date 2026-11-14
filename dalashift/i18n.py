@@ -3,8 +3,8 @@ import re
 
 T = {
     "title": {"en": "DalaShift — what to plant next season", "uz": "DalaShift — keyingi mavsumda nima ekish kerak"},
-    "tagline": {"en": "Your field's climate has shifted since the 1990s. NASA data shows how — and which crops fit now.",
-                "uz": "1990-yillardan beri dalangiz iqlimi oʻzgardi. NASA maʼlumotlari buni va hozir qaysi ekinlar mos kelishini koʻrsatadi."},
+    "tagline": {"en": "Don't just choose the most profitable crop for this year. Choose the best five-year future for your field.",
+                "uz": "Faqat shu yilning eng daromadli ekinini tanlamang. Dalangiz uchun eng yaxshi besh yillik kelajakni tanlang."},
     "language": {"en": "Language / Til", "uz": "Til / Language"},
     "field": {"en": "Field", "uz": "Dala"},
     "tab_map": {"en": "1 · Map", "uz": "1 · Xarita"},
@@ -190,3 +190,8 @@ def ldate(s: str | None, lang: str) -> str | None:
     if s is None or lang == "en":
         return s
     return _EN_MONTH.sub(lambda m: MONTHS[lang][MONTHS["en"].index(m.group(1))], s)
+
+
+from .i18n_planner import PLANNER_T  # noqa: E402
+
+T.update(PLANNER_T)

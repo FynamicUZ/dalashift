@@ -15,6 +15,7 @@ import plotly.graph_objects as go
 import streamlit as st
 from streamlit_folium import st_folium
 
+from dalashift import planner_ui
 from dalashift.appeears import load_appeears
 from dalashift.crops import BASELINE
 from dalashift.i18n import (CROP_NAMES, DISTRICTS, MONTHS, ROTATION_NAMES, field_label, fields_str, ldate,
@@ -48,6 +49,8 @@ def load_water() -> pd.DataFrame:
 
 
 summary, recs, points = load_json("summary.json"), load_json("recommendations.json"), load_points()
+planner_data = {"points": load_json("planner.json")["points"],
+                "coords": {r.id: (r.lat, r.lon) for r in points.itertuples()}}
 ids = points["id"].tolist()
 
 
@@ -96,8 +99,9 @@ climate_title = profile_label(cell_fields, lang)
 st.title("🌾 " + t("title", lang))
 st.caption(t("tagline", lang))
 
-tab_map, tab_then, tab_water, tab_plant = st.tabs(
-    [t("tab_map", lang), t("tab_then_now", lang), t("tab_water", lang), t("tab_plant", lang)])
+tab_map, tab_then, tab_water, tab_plant, tab_planner = st.tabs(
+    [t("tab_map", lang), t("tab_then_now", lang), t("tab_water", lang), t("tab_plant", lang),
+     t("tab_planner", lang)])
 
 # ------------------------------------------------------------------ 1. MAP
 with tab_map:
@@ -392,3 +396,7 @@ with tab_plant:
 
     with st.expander("⚠️ " + t("limits", lang), expanded=True):
         st.markdown(t("limits_text", lang))
+
+# ------------------------------------------------------------------ 5. FIVE-YEAR PLANNER
+with tab_planner:
+    planner_ui.render(lang, pid, planner_data)

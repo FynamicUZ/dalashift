@@ -66,6 +66,7 @@ class Option:
     p_winterkill: float
     climate_factor: float
     unfit_reason: str = ""
+    unfit: list = field(default_factory=list)   # structured: [{crop, gdd_short, frost}] for the UI
 
 
 def climate_factor(m: dict, losses: dict) -> float:
@@ -116,6 +117,8 @@ def build_options(metrics: dict, table: pd.DataFrame, rules: dict, cfg: dict) ->
             p_frost=max(m["p_frost"] for m in ms), p_winterkill=max((m.get("p_winterkill") or 0) for m in ms),
             climate_factor=float(np.prod(cf)),
             unfit_reason="; ".join(f"{c}: {unfit_reason(m)}" for c, m in zip(crops, ms) if not m["fits"]),
+            unfit=[{"crop": c, "gdd_short": 1 - m["p_gdd_ok"], "frost": m["p_frost"]}
+                   for c, m in zip(crops, ms) if not m["fits"]],
         ))
     return opts
 
@@ -318,7 +321,7 @@ def why_not(plan: dict, ctx: Context, objective: str) -> list[dict]:
         if o.key in used:
             continue
         if not o.fits:
-            out.append({"option": o.key, "reason": "climate", "detail": o.unfit_reason})
+            out.append({"option": o.key, "reason": "climate", "detail": o.unfit_reason, "unfit": o.unfit})
             continue
         if o.water > ctx.budget + 1e-6:
             out.append({"option": o.key, "reason": "water", "need": o.water, "budget": ctx.budget})
