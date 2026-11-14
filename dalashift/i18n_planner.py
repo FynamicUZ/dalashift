@@ -44,8 +44,21 @@ PLANNER_T = {
                         "uz": "{f:,} ta bajariladigan reja ichida foyda, suv tejash va almashlab ekish salomatligining eng yaxshi teng aralashmasi."},
     "pl_why_water": {"en": "Lowest total irrigation water among {f:,} feasible plans (ties broken by profit).",
                      "uz": "{f:,} ta bajariladigan reja ichida eng kam jami sugʻorish suvi (tenglikda — foyda boʻyicha)."},
-    "pl_year_reason": {"en": "**{y}. {crop}** — expected margin {p:,.0f} USD/ha (#{r} of {n} crops by margin), water {w:,.0f} m³/ha{extra}.",
-                       "uz": "**{y}. {crop}** — kutilgan foyda {p:,.0f} USD/ga (foyda boʻyicha {n} tadan #{r}), suv {w:,.0f} m³/ga{extra}."},
+    "pl_year_reason": {"en": "**{y}. {crop}** — expected margin {lo:,.0f} – {hi:,.0f} USD/ha, estimate (#{r} of {n} crops by margin), water {w:,.0f} m³/ha{extra}.",
+                       "uz": "**{y}. {crop}** — kutilgan foyda {lo:,.0f} – {hi:,.0f} USD/ga, taxminiy (foyda boʻyicha {n} tadan #{r}), suv {w:,.0f} m³/ga{extra}."},
+    "pl_estimate": {"en": "estimate", "uz": "taxminiy"},
+    "pl_profit_year_avg": {"en": "Profit per ha per year (avg, estimate)", "uz": "Yillik foyda, gektariga (oʻrtacha, taxminiy)"},
+    "pl_profit_5y": {"en": "5-year total profit (estimate)", "uz": "5 yillik jami foyda (taxminiy)"},
+    "pl_npv_help": {"en": "Mid estimate discounted at {r:.0f}% a year: {v:,.0f} USD/ha (used to rank plans).",
+                    "uz": "Yiliga {r:.0f}% diskontlangan oʻrtacha baho: {v:,.0f} USD/ga (rejalarni tartiblash uchun)."},
+    "pl_water_per_year": {"en": "{w:,.0f} m³/ha per year on average", "uz": "yiliga oʻrtacha {w:,.0f} m³/ga"},
+    "pl_money_note": {"en": "Profit is shown as a low–high range (±30 %) because the costs per ha are placeholders, not a published farm budget.",
+                      "uz": "Foyda past–yuqori oraliq (±30 %) sifatida koʻrsatilgan, chunki gektar xarajatlari taxminiy, nashr qilingan xoʻjalik byudjeti emas."},
+    "pl_check_number": {"en": "check this number: margin above 3,000 USD/ha/year", "uz": "bu raqamni tekshiring: foyda 3 000 USD/ga/yildan yuqori"},
+    "pl_check_short": {"en": "check this number", "uz": "bu raqamni tekshiring"},
+    "pl_check_plan": {"en": "This plan has a year with a margin above 3,000 USD/ha — **check this number** with local prices and costs before trusting it.",
+                      "uz": "Bu rejada foydasi 3 000 USD/ga dan yuqori yil bor — ishonishdan oldin **bu raqamni** mahalliy narx va xarajatlar bilan **tekshiring**."},
+    "pl_area_tag": {"en": "🧩 max {p:.0f}% of farm area", "uz": "🧩 maydonning koʻpi bilan {p:.0f}%"},
     "pl_counts_must": {"en": "counts toward the must-grow obligation", "uz": "majburiyatga hisoblanadi"},
     "pl_why_not": {"en": "Why not the other crops?", "uz": "Nega boshqa ekinlar emas?"},
     "pl_wn_climate": {"en": "fails Climate Fit here ({d})", "uz": "bu yerda iqlimga mos emas ({d})"},
@@ -65,6 +78,7 @@ PLANNER_T = {
     "rule_legume": {"en": "a legume at least once in 5 years", "uz": "5 yilda kamida bir marta dukkakli"},
     "rule_alfalfa_stand": {"en": "alfalfa stand of 2–3 years", "uz": "beda 2–3 yil turadi"},
     "rule_market": {"en": "fresh-market limit", "uz": "yangi bozor cheklovi"},
+    "rule_area": {"en": "max share of farm area (fresh-market crops ≤ 25 %)", "uz": "maydon ulushi cheklovi (yangi bozor ekinlari ≤ 25 %)"},
     "rule_must_cotton": {"en": "must-grow cotton", "uz": "majburiy paxta"},
     "rule_must_wheat": {"en": "must-grow wheat", "uz": "majburiy bugʻdoy"},
     "pl_infeasible": {"en": "❌ **No feasible 5-year plan** for these inputs — DalaShift will not show a plan that breaks the rules or the water budget.",
@@ -98,13 +112,15 @@ PLANNER_T = {
 * **Expected yield** = FAOSTAT national yield × climate-risk factor × rotation effect; these factors are approximate and editable (`config/planner.yaml`, `config/rotation_rules.yaml`).
 * **Hypothetical inputs:** water budgets, the fresh-market limit and demo-farm obligations are examples, not data.
 * **Scenarios** are simple: +1.5 °C added to every day (ET0, heat, frost and GDD recomputed); −20 % water budget. No price or policy changes.
-* Profit is per hectare and ignores subsidies, credit, labour limits and price risk.
+* Profit is per hectare and ignores subsidies, credit, labour limits and price risk. It is shown as a **±30 % estimate range**; any crop margin above 3,000 USD/ha/year is flagged **"check this number"**.
+* **Area share:** the farm is assumed to run the plan on 5 blocks, each one year behind the next, so a crop grown in k of 5 years covers k/5 of the farm each year. Tomato, potato, onion and melon are limited to 25 % of the area (= 1 year in 5); editable in `config/crops.csv`.
 """, "uz": """
 * **Almashlab ekish salomatligi — qoida bali, tuproq modeli emas.** U qoidalar boʻyicha ball beradi (takrorlar, dukkakli tanaffus, oilalar xilma-xilligi); tuproq uglerodi, azot, shoʻrlanish yoki zararkunandalarni **simulyatsiya qilmaydi**.
 * **Narx va hosil:** imkon boricha FAOSTAT Oʻzbekiston (hosil 2022–24, narxlar 2023–24). Qovun, noʻxat va mosh narxlari — belgilangan proksi; beda hosili/narxi va **barcha xarajatlar taxminiy**. FAOSTAT pomidor narxi yillik oʻrtacha va ochiq dala narxidan yuqori boʻlishi mumkin — `config/crops.csv` ga qarang.
 * **Kutilgan hosil** = FAOSTAT milliy hosildorligi × iqlim xavfi koeffitsiyenti × almashlab ekish taʼsiri; bular taxminiy va tahrirlanadi.
 * **Taxminiy (gipotetik) kiritmalar:** suv byudjetlari, bozor cheklovi va demo xoʻjalik majburiyatlari — misollar, maʼlumot emas.
 * **Ssenariylar** oddiy: har kunga +1,5 °C (ET0, issiqlik, sovuq va SHY qayta hisoblangan); suv byudjeti −20 %. Narx yoki siyosat oʻzgarmaydi.
-* Foyda gektarga hisoblangan; subsidiya, kredit, ishchi kuchi va narx xavfi hisobga olinmagan.
+* Foyda gektarga hisoblangan; subsidiya, kredit, ishchi kuchi va narx xavfi hisobga olinmagan. U **±30 % taxminiy oraliq** sifatida koʻrsatiladi; 3 000 USD/ga/yildan yuqori foyda **"bu raqamni tekshiring"** deb belgilanadi.
+* **Maydon ulushi:** xoʻjalik rejani 5 ta boʻlakda, har biri bir yil orqada yuritadi deb faraz qilinadi; k yil ekilgan ekin har yili maydonning k/5 qismini egallaydi. Pomidor, kartoshka, piyoz va qovun maydonning 25 % i bilan cheklangan (= 5 yilda 1 yil).
 """},
 }

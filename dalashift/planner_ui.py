@@ -41,6 +41,11 @@ def plan_name(kind: str, lang: str, res: dict | None = None) -> str:
     return t(f"pl_plan_{kind}", lang)
 
 
+def money_range(r: dict, lang: str) -> str:
+    """'1,200 – 2,300 USD/ha' (estimate range; costs are placeholders)."""
+    return f"{r['low']:,.0f} – {r['high']:,.0f} {t('pl_usd_ha', lang)}"
+
+
 def _rules_text(rules, lang) -> str:
     return ", ".join(t(f"rule_{r}", lang) for r in rules) or t("pl_none", lang)
 
@@ -85,8 +90,10 @@ def _comparison_chart(res: dict, lang: str) -> go.Figure:
 def _year_card(y: dict, lang: str, rot: dict) -> None:
     st.markdown(f"**{t('pl_year', lang, y=y['year'])}**")
     st.markdown(f"#### {option_name(y['option'], lang)}")
-    st.markdown(f"{t('pl_profit_y', lang).capitalize()}: **{y['profit']:,.0f}** {t('pl_usd_ha', lang)}  \n"
-                f"💧 {y['water']:,.0f} {t('pl_m3_ha', lang)}")
+    st.markdown(f"{t('pl_profit_y', lang).capitalize()} ({t('pl_estimate', lang)}): **{y['low']:,.0f} – {y['high']:,.0f}** "
+                f"{t('pl_usd_ha', lang)}  \n💧 {y['water']:,.0f} {t('pl_m3_ha', lang)}")
+    if y.get("check_number"):
+        st.caption("⚠️ " + t("pl_check_number", lang))
     risk = f"{RISK_ICON[y['heat_risk']]} {t('heat_risk', lang)}: {t(y['heat_risk'], lang)}"
     if y["p_frost"] > 0 or y["p_winterkill"] > 0:
         risk += f" · ❄️ {100 * max(y['p_frost'], y['p_winterkill']):.0f}%"
@@ -103,8 +110,28 @@ def _year_card(y: dict, lang: str, rot: dict) -> None:
         notes.append(t("pl_legume_tag", lang))
     if y.get("fresh"):
         notes.append(t("pl_fresh_tag", lang))
+    for c, cap in (y.get("area_cap") or {}).items():
+        notes.append(t("pl_area_tag", lang, p=100 * cap / 5))
     if notes:
         st.caption(" · ".join(notes))
+
+
+def _plan_metrics(plan: dict, rb: dict | None, lang: str, rate: float) -> None:
+    """Profit as an estimate RANGE (per year and 5-year total), water, health."""
+    m1, m2, m3, m4 = st.columns(4)
+    m1.metric(t("pl_profit_year_avg", lang), money_range(plan["profit_per_year_range"], lang))
+    m2.metric(t("pl_profit_5y", lang), money_range(plan["profit_total_range"], lang),
+              f"{plan['profit_total'] - rb['profit_total']:+,.0f} "
+              f"{t('pl_vs_repeat', lang, crop=option_name(rb['sequence'][0], lang, False))}" if rb else None,
+              help=t("pl_npv_help", lang, r=100 * rate, v=plan["npv"]))
+    m3.metric(t("pl_total_water", lang), f"{plan['water_total']:,.0f} {t('pl_m3_ha', lang)}",
+              f"{plan['water_total'] - rb['water_total']:+,.0f}" if rb else None, delta_color="inverse",
+              help=t("pl_water_per_year", lang, w=plan["water_per_year"]))
+    m4.metric(t("pl_health", lang), f"{plan['health']:.0f} / 10",
+              f"{plan['health'] - rb['health']:+.0f}" if rb else None)
+    st.caption("💵 " + t("pl_money_note", lang))
+    if plan.get("check_number"):
+        st.warning("⚠️ " + t("pl_check_plan", lang))
 
 
 def render(lang: str, pid: str, planner_data: dict) -> None:
@@ -168,6 +195,7 @@ def render(lang: str, pid: str, planner_data: dict) -> None:
     plan = plans[kind]
     for y in plan["years"]:
         y["fresh"] = opt_by_key[y["option"]]["fresh"]
+        y["area_cap"] = opt_by_key[y["option"]]["area_cap"]
 
     # timeline
     cols = st.columns(5)
@@ -176,14 +204,7 @@ def render(lang: str, pid: str, planner_data: dict) -> None:
             _year_card(y, lang, opt_by_key)
 
     rb = res.get("repeat_best")
-    m1, m2, m3 = st.columns(3)
-    m1.metric(t("pl_npv", lang), f"{plan['npv']:,.0f} {t('pl_usd_ha', lang)}",
-              f"{plan['npv'] - rb['npv']:+,.0f} {t('pl_vs_repeat', lang, crop=option_name(rb['sequence'][0], lang, False))}"
-              if rb else None)
-    m2.metric(t("pl_total_water", lang), f"{plan['water_total']:,.0f} {t('pl_m3_ha', lang)}",
-              f"{plan['water_total'] - rb['water_total']:+,.0f}" if rb else None, delta_color="inverse")
-    m3.metric(t("pl_health", lang), f"{plan['health']:.0f} / 10",
-              f"{plan['health'] - rb['health']:+.0f}" if rb else None)
+    _plan_metrics(plan, rb, lang, rate)
 
     # comparison
     st.markdown(f"#### {t('pl_compare', lang)}")
@@ -211,8 +232,10 @@ def render(lang: str, pid: str, planner_data: dict) -> None:
                 extra.append(t("pl_penalty", lang, p=100 * (1 - f)))
             if (must.get("cotton") and "cotton" in y["crops"]) or (must.get("winter_wheat") and "winter_wheat" in y["crops"]):
                 extra.append(t("pl_counts_must", lang))
+            if y.get("check_number"):
+                extra.append("⚠️ " + t("pl_check_short", lang))
             st.markdown("- " + t("pl_year_reason", lang, y=y["year"], crop=option_name(y["option"], lang),
-                                 p=y["profit"], r=rank.get(y["option"], "–"), n=len(cands), w=y["water"],
+                                 lo=y["low"], hi=y["high"], r=rank.get(y["option"], "–"), n=len(cands), w=y["water"],
                                  extra=("; " + "; ".join(extra)) if extra else ""))
     with right:
         st.markdown(f"#### {t('pl_why_not', lang)}")
@@ -261,7 +284,7 @@ def _scenarios(res: dict, lang: str, budget: float) -> None:
             row = {t("pl_plan", lang): plan_name(k, lang)}
             for s, sc in scen.items():
                 c = sc["checks"][k]
-                row[names[s]] = (f"{t('pl_ok', lang)} · {c['npv']:,.0f} {t('pl_usd_ha', lang)}" if c["feasible"]
+                row[names[s]] = (f"{t('pl_ok', lang)} · {money_range(c['profit_total_range'], lang)}" if c["feasible"]
                                  else f"{t('pl_fail', lang)}: {_fail_reason(c, sc['budget'], lang)}")
             rows.append(row)
         st.dataframe(pd.DataFrame(rows), hide_index=True, width="stretch")
@@ -275,7 +298,7 @@ def _scenarios(res: dict, lang: str, budget: float) -> None:
             for k in PLAN_KEYS:
                 p = r["plans"][k]
                 st.markdown(f"- {plan_name(k, lang)}: " + " → ".join(option_name(x, lang, False) for x in p["sequence"])
-                            + f" · {p['npv']:,.0f} {t('pl_usd_ha', lang)} · {p['water_total']:,.0f} {t('pl_m3_ha', lang)}"
+                            + f" · {money_range(p['profit_total_range'], lang)} · {p['water_total']:,.0f} {t('pl_m3_ha', lang)}"
                             + f" · {p['health']:.0f}/10")
     with st.expander("⚠️ " + t("limits", lang)):
         st.markdown(t("pl_limits_text", lang))

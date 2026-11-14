@@ -80,6 +80,11 @@ def check_plan(seq: list[str], metrics: dict, budget: float, fresh_cap: int, mus
     fresh = sum(any(str(TABLE.loc[c, "local_market_tag"]).startswith("fresh") for c in crops) for crops in years)
     if fresh > fresh_cap:
         broken.append("market")
+    for c in TABLE.index:
+        cap = math.floor(float(TABLE.loc[c, "max_area_share"]) * 5 + 1e-9)
+        if sum(c in crops for crops in years) > cap:
+            broken.append("area")
+            break
     if sum("cotton" in crops for crops in years) < must.get("cotton", 0):
         broken.append("must_cotton")
     if sum("winter_wheat" in crops for crops in years) < must.get("winter_wheat", 0):
@@ -229,3 +234,26 @@ def test_crop_database_labels_and_faostat_values():
         if r.yield_status == "documented":
             item = re.search(r"\d{4}-\d{4} \((.*)\); accessed", r.yield_source).group(1)
             assert math.isclose(r.yield_t_ha, y[item], abs_tol=0.006), r.crop
+
+
+# ------------------------------------------------------------------ money realism
+def test_profit_is_a_range_with_per_year_value_and_check_flag():
+    f = FARMS["fergana"]
+    res = plan_farm(PLANNER["points"][f["point"]], f["water_budget_m3_ha"], 0.1, 2, {})
+    u, check = CFG["money"]["profit_uncertainty"], CFG["money"]["margin_check_usd_ha"]
+    for plan in res["result"]["plans"].values():
+        r = plan["profit_total_range"]
+        assert r["low"] == pytest.approx(plan["profit_total"] * (1 - u))
+        assert r["high"] == pytest.approx(plan["profit_total"] * (1 + u))
+        assert plan["profit_per_year"] == pytest.approx(plan["profit_total"] / 5)
+        for y in plan["years"]:
+            assert y["low"] <= y["profit"] <= y["high"]
+            assert y["check_number"] == (y["profit"] > check)
+
+
+@pytest.mark.parametrize("point", POINTS)
+def test_fresh_market_crops_limited_to_25_percent_of_area(point):
+    res = optimize(make_context(PLANNER["points"][point]["baseline"], 15000, max_fresh_years=5))
+    for plan in res["plans"].values():
+        for c in ("tomato", "potato", "onion", "melon"):
+            assert sum(c in k.split("+") for k in plan["sequence"]) <= 1   # 1 of 5 years = 20 % <= 25 %

@@ -104,8 +104,15 @@ profit_t           = Σ crops in year t (expected yield × price) − Σ costs  
 discounted profit  = Σ_{t=1..5} profit_t / (1 + r)^t          r = 10 % (editable)
 water              = Σ_{t=1..5} net irrigation need_t                                    [m³/ha]
 feasible           ⇔ every crop passes Climate Fit, need_t ≤ budget in EVERY year, all hard rules hold,
-                     fresh-market crops ≤ limit, and "must grow" minimums are met
+                     fresh-market crops ≤ limit, each crop ≤ its max share of farm area,
+                     and "must grow" minimums are met
 ```
+
+**Money realism.** Costs per ha are placeholders, so the app never shows a single profit number:
+- every profit is an **estimate range**, low = 0.7 × profit, high = 1.3 × profit (`money.profit_uncertainty` in `config/planner.yaml`);
+- each plan shows the **average profit per ha per year** next to the **5-year total** (the discounted value, used to rank plans, is in the tooltip);
+- any crop margin above **3,000 USD/ha/year** is flagged **"check this number"** (`money.margin_check_usd_ha`);
+- **max share of farm area** per crop (`max_area_share` in `config/crops.csv`): tomato, potato, onion and melon ≤ 25 %. The farm is assumed to run the plan on 5 blocks, each one year behind the next, so a crop grown k of 5 years covers k/5 of the farm every year; 25 % therefore means at most 1 year in 5 per fresh-market crop.
 
 **Brute force.** The year options are every crop that passes Climate Fit and fits the water budget, plus the wheat→mung bean double crop. The planner enumerates **all** 5-year sequences of those options (at most 14⁵ = 537,824) as numpy arrays and evaluates every one; nothing is sampled.
 - **Most profit**: the highest discounted profit.

@@ -9,6 +9,13 @@ default_water_budget_m3_ha: 12000   # HYPOTHETICAL default net irrigation water 
 # farm should not rely on them every year. Editable in the app (set 5 to switch off).
 max_fresh_market_years: 2
 
+# Money realism. Costs are placeholders, so every profit is shown as an ESTIMATE range
+# profit x (1 - u) ... profit x (1 + u), and any crop margin above the check level is flagged
+# "check this number" in the app (it usually means the price or cost needs local data).
+money:
+  profit_uncertainty: 0.30          # +/- 30 %
+  margin_check_usd_ha: 3000         # USD/ha/year
+
 # Expected yield = FAOSTAT typical yield x climate factor x rotation effect (rotation_rules.yaml).
 # Climate factor (APPROXIMATE): FAOSTAT national-average yield is treated as the yield of a
 # low-risk season, then reduced by the field's climate risks from the FAO-56 engine.

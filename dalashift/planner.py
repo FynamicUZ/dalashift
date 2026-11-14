@@ -6,7 +6,8 @@ How it works
    window, FAO-56 engine) plus allowed double crops (winter wheat -> mung bean).
 2. ALL 5-year sequences of those options are enumerated (at most 14^5 = 537,824), as numpy arrays.
 3. A sequence is FEASIBLE only if it obeys every hard rule (config/rotation_rules.yaml), the water
-   budget in every year, the fresh-market limit and any "must grow" minimum.
+   budget in every year, the fresh-market limit, each crop's maximum share of farm area and any
+   "must grow" minimum.
 4. Each feasible sequence gets:
      discounted profit  NPV = sum_t profit_t / (1 + r)^t,  t = 1..5
      profit_t           = yield x climate factor x rotation effect x price - cost      (USD/ha)
@@ -15,6 +16,11 @@ How it works
 5. Three plans are returned: "Most profit" (max NPV), "Least water" (min water, then max NPV) and
    "Balanced" (max of normalised NPV + normalised water saving + health/10, equal weights).
 If no sequence is feasible the planner says so and lists which constraint blocks it.
+
+Area share: the farm is assumed to run the 5-year plan on 5 equal blocks, each one year behind the
+next (standard rotation practice), so a crop grown k of 5 years covers k/5 of the farm every year.
+A crop with max_area_share s may therefore appear at most floor(5 s) years (25 % -> 1 year).
+Money: costs are placeholders, so profits are reported as an estimate range (config/planner.yaml).
 """
 from __future__ import annotations
 
@@ -32,7 +38,7 @@ CONFIG = ROOT / "config"
 T = 5  # horizon (years)
 
 RULE_KEYS = ["climate", "water", "cotton_run", "family_run", "legume", "alfalfa_stand",
-             "market", "must_cotton", "must_wheat"]
+             "market", "area", "must_cotton", "must_wheat"]
 AGRONOMIC_RULES = ["cotton_run", "family_run", "legume", "alfalfa_stand"]
 
 
@@ -65,6 +71,7 @@ class Option:
     p_frost: float
     p_winterkill: float
     climate_factor: float
+    area_cap: dict = field(default_factory=dict)  # {crop: max years of 5} for crops with max_area_share < 1
     unfit_reason: str = ""
     unfit: list = field(default_factory=list)   # structured: [{crop, gdd_short, frost}] for the UI
 
@@ -116,6 +123,8 @@ def build_options(metrics: dict, table: pd.DataFrame, rules: dict, cfg: dict) ->
             heat_risk=max((m["heat_risk"] for m in ms), key=risk_order.index),
             p_frost=max(m["p_frost"] for m in ms), p_winterkill=max((m.get("p_winterkill") or 0) for m in ms),
             climate_factor=float(np.prod(cf)),
+            area_cap={c: int(np.floor(float(r["max_area_share"]) * T + 1e-9)) for c, r in zip(crops, rows)
+                      if float(r["max_area_share"]) < 1},
             unfit_reason="; ".join(f"{c}: {unfit_reason(m)}" for c, m in zip(crops, ms) if not m["fits"]),
             unfit=[{"crop": c, "gdd_short": 1 - m["p_gdd_ok"], "frost": m["p_frost"]}
                    for c, m in zip(crops, ms) if not m["fits"]],
@@ -147,6 +156,8 @@ class Context:
             "alfalfa": np.array([x.alfalfa for x in o]), "fresh": np.array([x.fresh for x in o]),
         }
         self.index = {x.key: i for i, x in enumerate(o)}
+        self.area_caps = {c: cap for x in o for c, cap in x.area_cap.items()}
+        self.arr["area"] = {c: np.array([c in x.crops for x in o]) for c in self.area_caps}
 
 
 def make_context(metrics: dict, budget: float, discount_rate: float | None = None,
@@ -197,6 +208,9 @@ def evaluate(seq: np.ndarray, ctx: Context) -> dict:
     short = ends & (run < stand["min_years"]) & ~last_col
     v["alfalfa_stand"] = short.any(1) | (run.max(1) > stand["max_years"])
     v["market"] = a["fresh"][seq].sum(1) > ctx.max_fresh_years
+    v["area"] = np.zeros(n, bool)
+    for c, cap in ctx.area_caps.items():
+        v["area"] |= a["area"][c][seq].sum(1) > cap
     v["must_cotton"] = cot.sum(1) < ctx.must_years.get("cotton", 0)
     v["must_wheat"] = a["wheat"][seq].sum(1) < ctx.must_years.get("winter_wheat", 0)
     feasible = ~np.any(np.stack([v[r] for r in RULE_KEYS]), axis=0)
@@ -242,9 +256,24 @@ def _plan_dict(i: int, seq: np.ndarray, ev: dict, ctx: Context, kind: str) -> di
                       "p_frost": o.p_frost, "p_winterkill": o.p_winterkill, "legume": o.legume,
                       "climate_factor": o.climate_factor})
     broken = [r for r in RULE_KEYS if ev["violations"][r][i]]
+    money = ctx.cfg["money"]
+    for y in years:
+        y.update(profit_low_high(y["profit"], money["profit_uncertainty"]))
+        y["check_number"] = y["profit"] > money["margin_check_usd_ha"]
+    total = float(ev["profit_y"][i].sum())
     return {"kind": kind, "sequence": keys, "years": years, "npv": float(ev["npv"][i]),
-            "profit_total": float(ev["profit_y"][i].sum()), "water_total": float(ev["water"][i]),
-            "health": float(ev["health"][i]), "feasible": bool(ev["feasible"][i]), "broken_rules": broken}
+            "npv_range": profit_low_high(float(ev["npv"][i]), money["profit_uncertainty"]),
+            "profit_total": total, "profit_total_range": profit_low_high(total, money["profit_uncertainty"]),
+            "profit_per_year": total / T, "profit_per_year_range": profit_low_high(total / T, money["profit_uncertainty"]),
+            "water_total": float(ev["water"][i]), "water_per_year": float(ev["water"][i]) / T,
+            "health": float(ev["health"][i]), "feasible": bool(ev["feasible"][i]), "broken_rules": broken,
+            "check_number": any(y["check_number"] for y in years)}
+
+
+def profit_low_high(x: float, u: float) -> dict:
+    """Costs are placeholders, so a profit is shown as an ESTIMATE range x (1 -/+ u)."""
+    lo, hi = sorted((x * (1 - u), x * (1 + u)))
+    return {"low": lo, "high": hi}
 
 
 def enumerate_sequences(cands: list[int]) -> np.ndarray:
@@ -301,7 +330,7 @@ def repeat_best_crop(ctx: Context) -> dict | None:
     for i, o in enumerate(ctx.options):
         if len(o.crops) != 1 or not o.fits or o.water > ctx.budget + 1e-6:
             continue
-        if o.fresh and ctx.max_fresh_years < T:
+        if (o.fresh and ctx.max_fresh_years < T) or o.area_cap:
             continue
         p = o.revenue * (ctx.rules["rotation_effects"]["alfalfa_establishment_yield_factor"] if o.alfalfa else 1) - o.cost
         if p > best_p:
@@ -366,7 +395,9 @@ def plan_farm(point: dict, budget: float, discount_rate: float, max_fresh_years:
     res = {"budget": budget, "must_years": must_years, "result": optimize(base_ctx),
            "repeat_best": repeat_best_crop(base_ctx),
            "options": [{"key": o.key, "fits": o.fits, "water": o.water, "unfit_reason": o.unfit_reason,
-                        "profit_1y": o.revenue - o.cost, "fresh": o.fresh, "legume": o.legume}
+                        "profit_1y": o.revenue - o.cost, "fresh": o.fresh, "legume": o.legume,
+                        "area_cap": o.area_cap,
+                        "check_number": o.revenue - o.cost > cfg["money"]["margin_check_usd_ha"]}
                        for o in base_ctx.options]}
     plans = res["result"]["plans"]
     res["why_not"] = {k: why_not(p, base_ctx, k) for k, p in plans.items()}
