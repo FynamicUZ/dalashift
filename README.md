@@ -22,7 +22,7 @@ The app is bilingual (English / Oʻzbekcha). It runs entirely on precomputed fil
    - plain-language reasons why each crop was chosen and why the others were rejected;
    - the cost of a "must grow cotton / wheat" obligation;
    - a stress test under "Hotter (+1.5 °C)" and "Less water (−20 %)".
-   - It also has two demo farms, **Fergana** (good water) and **Navoi** (dry, hot, low water). Their inputs are hypothetical and clearly labelled.
+   - It also has two demo farms, **Karshi** (Kashkadarya: hot cotton-and-wheat district, ~8,000 m³/ha) and **Fergana** (good water). Their inputs are hypothetical, clearly labelled and editable in the app.
 
 ## Method
 
@@ -129,10 +129,10 @@ The three baseline plans are re-checked under each scenario (feasible or not, an
 
 | Farm | NASA POWER point | Water budget | Inputs |
 |---|---|---|---|
-| Fergana farm | Fergana_field1 (40.49 N, 71.63 E) | 12,000 m³/ha | **hypothetical** |
-| Navoi farm | Navoi_field1 (40.10 N, 65.40 E), added for the planner | 7,000 m³/ha | **hypothetical** |
+| Karshi farm | Karshi_field1 (38.92 N, 65.62 E), Kashkadarya | 8,000 m³/ha (editable) | **hypothetical** |
+| Fergana farm | Fergana_field1 (40.49 N, 71.63 E) | 12,000 m³/ha (editable) | **hypothetical** |
 
-The engine is the same for both farms, but they get different plans. With 20 % less water, the Navoi farm has **no feasible plan**: only cereals fit 5,600 m³/ha, so the legume rule cannot be met. The app explains this.
+The engine is the same for both farms, but they get different plans: Fergana's water lets it grow high-value crops, while at Karshi the budget rules out cotton (its modelled net need is far above 8,000 m³/ha — see *Desert bias* under Limits).
 
 ### Main references
 - Allen, R.G., Pereira, L.S., Raes, D., Smith, M. (1998). *Crop evapotranspiration — Guidelines for computing crop water requirements.* **FAO Irrigation and Drainage Paper 56.** FAO, Rome.

@@ -146,7 +146,7 @@ def test_impossible_obligation_reports_no_feasible_plan():
 
 def test_brute_force_matches_naive_enumeration():
     """Small case: compare against a naive itertools enumeration + the independent rule checker."""
-    farm = FARMS["navoi"]
+    farm = FARMS["karshi"]
     metrics = PLANNER["points"][farm["point"]]["baseline"]
     budget = farm["water_budget_m3_ha"]
     ctx = make_context(metrics, budget)
@@ -192,7 +192,13 @@ def test_demo_farms_run_and_scenarios_recheck_baseline_plans(farm):
 def test_demo_farms_get_different_plans():
     seqs = {k: plan_farm(PLANNER["points"][f["point"]], f["water_budget_m3_ha"], 0.1, 2, {})["result"]["plans"]["profit"]["sequence"]
             for k, f in FARMS.items()}
-    assert seqs["fergana"] != seqs["navoi"]
+    assert seqs["fergana"] != seqs["karshi"]
+
+
+def test_demo_is_karshi_vs_fergana():
+    assert set(FARMS) == {"karshi", "fergana"}
+    assert FARMS["karshi"]["point"] == "Karshi_field1"
+    assert 7000 <= FARMS["karshi"]["water_budget_m3_ha"] <= 9000
 
 
 def test_must_grow_cost_is_reported_and_non_negative_for_profit_plan():
