@@ -47,7 +47,8 @@ def login(use_netrc: bool = False) -> str:
         import netrc
         import os
         home = Path(os.environ.get("USERPROFILE") or Path.home())
-        for f in [os.environ.get("NETRC"), home / "_netrc", home / ".netrc", Path.home() / "_netrc", Path.home() / ".netrc"]:
+        for f in [os.environ.get("NETRC"), home / ".netrc", home / "_netrc", home / "_netrc.txt", home / ".netrc.txt",
+                  Path.home() / "_netrc", Path.home() / ".netrc"]:
             if f and Path(f).is_file():
                 try:
                     creds = netrc.netrc(str(f)).authenticators("urs.earthdata.nasa.gov")
@@ -57,8 +58,8 @@ def login(use_netrc: bool = False) -> str:
                     print(f"Using the urs.earthdata.nasa.gov entry in {f}")
                     break
         if not creds:
-            print("No netrc entry for urs.earthdata.nasa.gov found in", home / "_netrc", "or", home / ".netrc",
-                  "- type your login instead.")
+            print(f"No netrc entry for urs.earthdata.nasa.gov found (looked for .netrc, _netrc and _netrc.txt in {home})"
+                  " - type your login instead.")
     if creds:
         user, _, pw = creds
     else:
