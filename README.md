@@ -1,29 +1,42 @@
-# 🌾 DalaShift — what should I plant next season?
+# 🌾 DalaShift — a 5-year crop rotation planner for Uzbek fields
 
 **NASA Space Apps Challenge 2026 · Challenge: _Field Shift_**
 
+> *Don't just choose the most profitable crop for this year. Choose the best five-year future for your field.*
+
 *Dala* means "field" in Uzbek. DalaShift shows a farmer in Uzbekistan how the climate of **their field**
-has shifted between **1991–2005** and **2011–2026**. It then recommends crops and rotations that fit the
-climate *now* and use less irrigation water than cotton.
+has shifted between **1991–2005** and **2011–2026** (NASA POWER). It then builds a **5-year crop rotation plan**
+that fits the climate *now*, stays within the farm's irrigation water, and follows simple rotation rules.
 
 The app is bilingual (English / Oʻzbekcha). It runs entirely on precomputed files and never calls a NASA API live.
 
 ## App screens
 
-1. **Map**: click a field or district (Nukus, Urgench, Gulistan, Fergana, Karshi).
+1. **Map**: click a field or district (Nukus, Urgench, Gulistan, Fergana, Karshi, Navoi). Dashed boxes show the NASA POWER grid cells.
 2. **Your field then vs now**: hot days, heat sum (growing degree days, GDD), frost dates, growing-season rain and water demand (ET0).
 3. **Water stress now**: satellite layers from NASA SMAP root-zone soil moisture, ECOSTRESS Evaporative Stress Index (ESI) and HLS NDVI, via AppEEARS. Shows "coming soon" until the files are added.
 4. **What to plant**: top-3 crop cards showing irrigation need (m³/ha), water saved vs cotton, and heat/frost risk flags. Also covers rotations, a shifted wheat sowing date, and the limits of the method.
+5. **5-Year Planner**:
+   - a Year 1–5 timeline of crop cards showing profit, water and risk;
+   - a comparison of three plans ("Most profit", "Balanced", "Least water") against simply repeating the most profitable crop;
+   - plain-language reasons why each crop was chosen and why the others were rejected;
+   - the cost of a "must grow cotton / wheat" obligation;
+   - a stress test under "Hotter (+1.5 °C)" and "Less water (−20 %)".
+   - It also has two demo farms, **Fergana** (good water) and **Navoi** (dry, hot, low water). Their inputs are hypothetical and clearly labelled.
 
 ## Method
 
-All rules are transparent and live in [`dalashift/`](dalashift/). No machine learning is used.
+All rules are transparent and live in [`dalashift/`](dalashift/) and [`config/`](config/). No machine learning is used.
 
 | Step | What | Where |
 |---|---|---|
 | 1 | NASA POWER daily point data, `community=AG`, 1991-01-01 → 2026-10-31: `T2M_MAX, T2M_MIN, T2M, PRECTOTCORR, EVPTRNS, RH2M, WS2M, ALLSKY_SFC_SW_DWN` | `scripts/fetch_power.py` → `data/power/*.csv` |
 | 2 | Climate shift per point, 1991–2005 vs 2011–2026: hot days (Tmax > 35 °C), GDD (base 10 °C), last spring / first autumn frost (Tmin ≤ 0 °C), Apr–Oct rain, **FAO-56 Penman-Monteith ET0** | `dalashift/et0.py`, `dalashift/climate.py` → `data/summary.json` |
-| 3 | Crop engine for cotton, winter wheat, maize, rice, sorghum, sunflower, mung bean (2nd crop after wheat), melon and alfalfa | `dalashift/crops.py`, `dalashift/engine.py` → `data/recommendations.json` |
+| 3 | Crop engine (Climate Fit, water need, heat risk) for 14 approved crops | `config/crops.csv`, `dalashift/engine.py` → `data/recommendations.json` |
+| 4 | Planner inputs: crop metrics under baseline climate and +1.5 °C | `scripts/build_summary.py` → `data/planner.json` |
+| 5 | 5-year rotation optimizer | `config/rotation_rules.yaml`, `config/planner.yaml`, `dalashift/planner.py` |
+
+### Crop engine (unchanged scoring)
 
 **Crop water need.** Net irrigation need = Σ(Kc × ET0) − effective rain, reported in m³/ha (1 mm = 10 m³/ha).
 - Kc values follow the FAO-56 Table 12 curve (Kc_ini → Kc_mid → Kc_end), with stage lengths adapted from Table 11.
@@ -31,38 +44,109 @@ All rules are transparent and live in [`dalashift/`](dalashift/). No machine lea
 - Effective rain uses the USDA-SCS monthly method (the FAO CROPWAT 8 default) and is capped at each month's crop water use.
 - Rice adds a rough 500 mm for paddy soaking and percolation.
 
-**Season fit.** A crop fits if both hold, using fixed typical sowing dates:
-- its heat requirement (GDD) is met in ≥ 80 % of years (for winter wheat, counted up to a latest harvest of 10 Jul, because cool years ripen later rather than fail);
+**Climate Fit.** A crop fits if both hold, using fixed typical sowing dates:
+- its heat requirement (GDD) is met in ≥ 80 % of years (winter cereals are counted up to a latest harvest date, because cool years ripen later rather than fail);
 - in-season frost (frost-sensitive crops) hits ≤ 20 % of years.
 
-**Winterkill (winter wheat) is a risk warning, not an exclusion.** The app shows the % of winters with air Tmin below
-about −25 °C, an approximate limit for hardened winter wheat (snow cover often protects the crop). It lowers the score
-slightly but never removes wheat, which is widely grown in Karakalpakstan and Khorezm.
+**Winterkill (winter wheat, barley) is a risk warning, not an exclusion.** The app shows the % of winters with air Tmin below
+an approximate limit (−25 °C for hardened winter wheat). This lowers the score slightly but never removes wheat,
+which is widely grown in Karakalpakstan and Khorezm.
 
 **Heat risk.** The share of days in the flowering / grain-fill stage with Tmax above the crop's threshold: low < 15 %, medium 15–40 %, high > 40 %.
 
-**Ranking.** Crops that fit come first, then they are ordered by `0.6 × fit score + 0.4 × water score`. The water score is 100 for no irrigation and 0 for the thirstiest crop.
+**Ranking (screen 4).** Crops that fit come first, then they are ordered by `0.6 × fit score + 0.4 × water score`.
 
-**Rotations.**
-- Winter wheat → mung bean: two harvests a year.
-- Cotton → wheat + mung bean: the classic two-year order.
-- Alfalfa (2 years) → cotton: restores soil.
+### Crop database — [`config/crops.csv`](config/crops.csv)
 
-**Shifted wheat sowing.** The engine tests sowing dates from 15 Sep to 15 Nov with GDD-driven phenology (base 0 °C; flowering at about 1800 °C·days, maturity at about 2550). The risk score adds:
-- days above 32 °C during grain fill;
-- frost near flowering;
-- a penalty when warmth before winter falls outside 400–700 °C·days.
+There are 14 approved crops: cotton, winter wheat, barley, maize, rice, sorghum, sunflower, mung bean (only as a 2nd crop after wheat), chickpea, potato, onion, tomato, melon and alfalfa.
 
-### Main reference
-Allen, R.G., Pereira, L.S., Raes, D., Smith, M. (1998). *Crop evapotranspiration — Guidelines for computing crop water requirements.* **FAO Irrigation and Drainage Paper 56.** FAO, Rome.
+Each crop has: family, season window (sowing date + FAO-56 stage lengths), GDD needed, heat tolerance, frost sensitivity, winterkill,
+salinity tolerance, FAO-56 Kc values, typical yield, price, cost and `local_market_tag`.
+**Every value group carries `_status` (`documented` or `approximate`), `_source` and `_date`.**
+
+| Value | Source | Status |
+|---|---|---|
+| Kc, crop height | FAO-56 Table 12 (1998) | documented |
+| Stage lengths | FAO-56 Table 11, adapted to Uzbek calendar | approximate |
+| Salinity threshold ECe | FAO-29 Table 4 (Ayers & Westcot 1985); Maas (1990) for sunflower / mung bean | documented / approximate |
+| Yield (t/ha) | FAOSTAT QCL, Uzbekistan, mean 2022–2024 (11 crops) | documented |
+| Producer price (USD/t) | FAOSTAT PP, Uzbekistan, mean 2023–2024 (10 crops; 2022 excluded because of a series break) | documented |
+| Melon, chickpea, mung bean prices | proxies: FAOSTAT "Watermelons" / "Peas, dry" | approximate |
+| Mung bean (2nd crop) and alfalfa yield; alfalfa price | DalaShift assumptions | approximate |
+| **Costs per ha** | DalaShift placeholders — **no published farm budget used** | approximate |
+| GDD, heat, frost thresholds, sowing dates | general agronomic literature / Uzbek practice | approximate |
+
+FAOSTAT extracts are saved in [`data/faostat/`](data/faostat/) and are reproduced by `scripts/fetch_faostat.py`. A test checks that every documented value in `crops.csv` matches them.
+
+### Rotation rules — [`config/rotation_rules.yaml`](config/rotation_rules.yaml)
+
+Hard rules (a plan that breaks one is rejected):
+- no more than **2 years of cotton in a row**;
+- no **same botanical family 3 years running** (a multi-year alfalfa stand is exempt);
+- a **legume break** (chickpea, mung bean or alfalfa) at least once in 5 years;
+- **winter wheat → mung bean** double crop allowed in the same year;
+- **alfalfa is multi-year**: a stand lasts 2–3 years (a stand started in year 5 may continue after the plan).
+
+**Rotation health (0–10)** = 10 − 1 per same crop in consecutive years − 1 if only one legume year − 1 if < 4 plant families − 1 more if < 3 families
+(− 3 per broken hard rule, which only affects the comparison plan). This is a **rule score instead of a soil-carbon model**.
+
+**Rotation effects on yield** (approximate, editable): −10 % per consecutive repeat of the same crop (max −30 %); +10 % after a legume; +15 % after alfalfa; the alfalfa establishment year yields half.
+
+### Water budget, economics and the optimizer — [`dalashift/planner.py`](dalashift/planner.py)
+
+```
+expected yield_t   = FAOSTAT yield × climate factor × rotation effect_t
+climate factor     = (1 − heat loss[low 0 | medium 0.10 | high 0.20])
+                     × (1 − 0.5 × P(frost)) × (1 − 0.5 × P(winterkill)) × (1 − 0.5 × P(GDD short))
+profit_t           = Σ crops in year t (expected yield × price) − Σ costs                [USD/ha]
+discounted profit  = Σ_{t=1..5} profit_t / (1 + r)^t          r = 10 % (editable)
+water              = Σ_{t=1..5} net irrigation need_t                                    [m³/ha]
+feasible           ⇔ every crop passes Climate Fit, need_t ≤ budget in EVERY year, all hard rules hold,
+                     fresh-market crops ≤ limit, and "must grow" minimums are met
+```
+
+**Brute force.** The year options are every crop that passes Climate Fit and fits the water budget, plus the wheat→mung bean double crop. The planner enumerates **all** 5-year sequences of those options (at most 14⁵ = 537,824) as numpy arrays and evaluates every one; nothing is sampled.
+- **Most profit**: the highest discounted profit.
+- **Least water**: the lowest total water; ties are broken by profit.
+- **Balanced**: the highest equal-weight sum of normalised profit + normalised water saving + health/10.
+
+**No feasible plan.** The app says so and does not show a rule-breaking plan. It lists the crops that pass Climate Fit and the budget, the share of sequences each rule breaks, and which single rule (if any) would need relaxing.
+
+**Must grow cotton / wheat.** A minimum % of years is turned into a minimum number of years. The planner is re-run without the obligation, and the difference is shown as the cost of the constraint (lost profit, extra water).
+
+**Comparison: "repeat the most profitable crop".** This is the single crop with the highest one-year margin that the farm could actually repeat (Climate Fit, water budget, fresh-market limit), grown for 5 years with no rotation. Its broken rules and health score are shown next to the three plans.
+
+**Scenarios.**
+- *Baseline*: 2011–2026 climate.
+- *Hotter*: +1.5 °C on every daily Tmax/Tmin, with ET0, heat days, frost and GDD recomputed (a delta method, not a climate projection).
+- *Less water*: −20 % budget.
+
+The three baseline plans are re-checked under each scenario (feasible or not, and why), and the planner is also re-optimised per scenario.
+
+### Demo farms — [`config/demo_farms.yaml`](config/demo_farms.yaml)
+
+| Farm | NASA POWER point | Water budget | Inputs |
+|---|---|---|---|
+| Fergana farm | Fergana_field1 (40.49 N, 71.63 E) | 12,000 m³/ha | **hypothetical** |
+| Navoi farm | Navoi_field1 (40.10 N, 65.40 E), added for the planner | 7,000 m³/ha | **hypothetical** |
+
+The engine is the same for both farms, but they get different plans. With 20 % less water, the Navoi farm has **no feasible plan**: only cereals fit 5,600 m³/ha, so the legume rule cannot be met. The app explains this.
+
+### Main references
+- Allen, R.G., Pereira, L.S., Raes, D., Smith, M. (1998). *Crop evapotranspiration — Guidelines for computing crop water requirements.* **FAO Irrigation and Drainage Paper 56.** FAO, Rome.
+- Ayers, R.S., Westcot, D.W. (1985). *Water quality for agriculture.* **FAO Irrigation and Drainage Paper 29** Rev. 1. FAO, Rome.
+- FAOSTAT (2026). Crops and livestock products (QCL); Producer Prices (PP). FAO, Rome. Bulk download, accessed 2026-11-14.
 
 ## Limits (also shown in the app)
 
-- **Coarse grid.** NASA POWER weather is about 50 km (MERRA-2, 0.5° × 0.625°). Field pairs at Urgench, Gulistan, Fergana and Karshi fall in the same grid cell, so they have identical climate.
-- **Desert bias.** The reanalysis has no irrigation, so Tmax and ET0 over irrigated oases are likely 10–20 % too high. The modelled actual ET (`EVPTRNS`) is close to zero there, so it is stored but not used for crop water. Treat the m³/ha values as a tool for **comparing crops**.
+- **Coarse grid.** NASA POWER weather is about 50 km (MERRA-2, 0.5° × 0.625°). Field pairs at Urgench, Gulistan, Fergana and Karshi fall in the same grid cell, so they share one district climate profile. Field-level differences come from the satellite layers (SMAP, ECOSTRESS, HLS).
+- **Desert bias.** The reanalysis has no irrigation, so Tmax and ET0 over irrigated oases are likely 10–20 % too high. The modelled actual ET (`EVPTRNS`) is close to zero there, so it is stored but not used. Treat the m³/ha values as a tool for **comparing crops**.
 - **Net need only.** Values are net crop water need. Gross field delivery is higher: furrow irrigation efficiency is about 50–60 %, and salt leaching needs extra water.
+- **Rotation health is a rule score, not a soil model.** It does not simulate soil carbon, nitrogen, salinity or pests.
+- **Prices and costs.** FAOSTAT national averages and annual prices; the tomato price probably overstates open-field farm-gate prices. **All costs are placeholders.** Profit ignores subsidies, credit, labour limits and price risk.
+- **Hypothetical inputs.** Water budgets, the fresh-market limit (2 of 5 years) and demo-farm obligations are examples, not data.
+- **Frost check.** It counts any frost after the fixed sowing date, including before emergence, which is conservative for early spring crops such as potato.
 - **Rain QC.** A few implausible `PRECTOTCORR` spikes above 80 mm/day were removed (0–3 days per point).
-- **No yield or market model.** GDD, heat-tolerance and frost thresholds are approximate, editable values in `crops.py`.
 
 ## Run locally
 
@@ -71,16 +155,24 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-To rebuild the data (needs internet, about 2 minutes):
+Tests (rules, budget, "no feasible plan", optimality, beating "repeat the best crop", data provenance):
 
 ```bash
-python scripts/fetch_power.py      # STEP 1  (add --force to re-download)
-python scripts/build_summary.py    # STEPS 2 + 3
+pip install -r requirements-dev.txt
+python -m pytest -q
+```
+
+To rebuild the data (needs internet):
+
+```bash
+python scripts/fetch_power.py      # STEP 1  NASA POWER (add --force to re-download)
+python scripts/fetch_faostat.py    # FAOSTAT Uzbekistan extracts (prices, yields)
+python scripts/build_summary.py    # STEPS 2-4  climate shift, crop engine, planner inputs
 ```
 
 ## Deploy on Streamlit Community Cloud
 
-1. Push this folder to a **public GitHub repo**, including `data/`. The app reads only `data/summary.json`, `data/recommendations.json`, `data/points.csv` and the optional `data/appeears/*.csv`.
+1. Push this folder to a **public GitHub repo**, including `data/` and `config/`.
 2. On [share.streamlit.io](https://share.streamlit.io), click **New app**, choose the repo and branch, and set the main file to `app.py`.
 3. No secrets or API keys are needed.
 
@@ -101,6 +193,7 @@ python scripts/build_summary.py    # STEPS 2 + 3
 - **NASA ECOSTRESS** Evaporative Stress Index, LP DAAC.
 - **NASA/USGS Harmonized Landsat Sentinel-2 (HLS)**, LP DAAC.
 - **NASA AppEEARS** (Application for Extracting and Exploring Analysis Ready Samples), LP DAAC.
+- **FAOSTAT**, Food and Agriculture Organization of the United Nations: crop yields (QCL) and producer prices (PP) for Uzbekistan.
 - Basemaps: © OpenStreetMap contributors; Esri World Imagery.
 
-*DalaShift is a decision-support prototype. Check recommendations with a local agronomist or water user association.*
+*DalaShift is a decision-support prototype. Check plans with a local agronomist or water user association before changing crops.*
