@@ -47,6 +47,8 @@ c_wc, c_fb = compare(bal, wc), compare(bal, fallback)
 bal_low = to_mln(bal["profit_per_year_range"]["low"])
 n_seq = max(plan_farm(P[p], b, 0.1, 2, {})["result"]["n_sequences"] for p, b in
             [("Karshi_field1", 8000), ("Fergana_field1", 12000)])
+TEAM_MEMBERS = ["Ahmedov Zuhriddin", "Alisherov Azimbek", "Shermaxmatov Ozodbek", "Botirxonov Faxriyor", "Boyqulov Afzalbek"]
+TEAM = " · ".join(TEAM_MEMBERS)
 NAMES = {"winter_wheat": "Wheat", "chickpea": "Chickpea", "barley": "Barley", "cotton": "Cotton"}
 bal_names = [" + ".join(NAMES.get(c, c.title()) for c in y["crops"]) for y in bal["years"]]
 
@@ -173,8 +175,7 @@ SLIDES = f"""
     <div class="rs fragment fade-up"><b>Telegram bot</b><span>in Uzbek</span></div>
     <div class="rs fragment fade-up"><b>More crops</b><span>melon varieties, real costs</span></div>
   </div>
-  <p class="team"><span class="ph">[TEAM NAME]</span> · <span class="ph">[MEMBER 1]</span> <span class="ph">[MEMBER 2]</span>
-     <span class="ph">[MEMBER 3]</span> <span class="ph">[MEMBER 4]</span> <span class="ph">[MEMBER 5]</span> <span class="ph">[MEMBER 6]</span></p>
+  <p class="team"><span class="ph">[TEAM NAME]</span> · {TEAM}</p>
   <p class="sub">{tests_txt}up to {n_seq:,} five-year plans checked per farm · Repo <span class="ph">[REPO LINK]</span> · App <span class="ph">[APP LINK]</span></p>
 </section>
 """

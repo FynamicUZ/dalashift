@@ -8,7 +8,7 @@ lines as subtitles). It follows the deck's story. Every number comes from the ap
 
 | Time | Beat | On screen | Subtitle / voice-over (English) |
 |---|---|---|---|
-| 0:00–0:02 | Team | Team name over the NASA image of the Karshi oasis (deck slide 1 background) | "We are [TEAM NAME], from Karshi." |
+| 0:00–0:02 | Team | Team name and members (Ahmedov Zuhriddin, Alisherov Azimbek, Shermaxmatov Ozodbek, Botirxonov Faxriyor, Boyqulov Afzalbek) over the NASA image of the Karshi oasis | "We are [TEAM NAME], from Karshi." |
 | 0:02–0:05 | Challenge | Text: *Field Shift: Adapting Farms with NASA Data* · NASA Space Apps 2026 | "Our challenge: Field Shift, adapting farms with NASA data." |
 | 0:05–0:10 | Title + tagline | Deck slide 1: "Every spring, a farmer near Karshi bets the family's year on one decision: what to plant." → DalaShift + tagline | "DalaShift. Don't just choose the most profitable crop for this year. Choose the best five-year future for your field." |
 | 0:10–0:13 | Demo: the field | Screen recording, Fermer tab, Qarshi selected: field card "96 → 104" hot days, rain 68 → 54 mm | "Near Karshi there are now 104 very hot days a year, up from 96, and less rain." |
@@ -32,6 +32,6 @@ lines as subtitles). It follows the deck's story. Every number comes from the ap
 ## Sources for the numbers
 
 - 96 → 104 very hot days (Tmax > 35 °C), Karshi, 1991–2005 vs 2011–2026; rain April–October 68 → 54 mm: NASA POWER (`data/summary.json`).
-- "About half the water and earns more": Karshi balanced plan vs wheat ↔ cotton at 8,000 t/ha: water −51 %, income +44 % (`docs/deck/build_deck.py` prints these).
+- "About half the water and earns more": Karshi balanced plan vs wheat ↔ cotton at 8,000 t/ha: water −51 %, income +20 % (`docs/deck/build_deck.py` prints these).
 - "≈ 6 mln soʻm": conservative figure, the low end of the ±15 % estimate, × CBU rate 12,014.37 soʻm/USD (14 Nov 2026).
 - "13 thousand tonnes": Karshi cotton net irrigation need ≈ 12,940 m³ (= t) per ha, after the provisional ×0.80 ET0 correction.
