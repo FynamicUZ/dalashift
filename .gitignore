@@ -5,3 +5,12 @@ venv/
 .env
 .DS_Store
 .streamlit/secrets.toml
+
+# never commit credentials
+.netrc
+_netrc
+_netrc.txt
+*.netrc
+.env.*
+# local caches
+.pytest_cache/
