@@ -4,6 +4,8 @@
 
 > *Don't just choose the most profitable crop for this year. Choose the best five-year future for your field.*
 
+**Live app:** https://dalashift.netlify.app · **Pitch deck:** https://dalashift.netlify.app/deck/ · **Code:** https://github.com/FynamicUZ/dalashift
+
 *Dala* means "field" in Uzbek. DalaShift shows a farmer in Uzbekistan how the climate of **their field**
 has shifted between **1991–2005** and **2011–2026** (NASA POWER). It then builds a **5-year crop rotation plan**
 that fits the climate *now*, stays within the farm's irrigation water, and follows simple rotation rules.
