@@ -6,7 +6,7 @@ Pace: about 140 words a minute. Every number is on the slide or comes from our o
 | # | Slide | Speaker | Time | Words | Clock at end |
 |---|---|---|---|---|---|
 | 1 | The climate has shifted. Farm plans haven't. | Speaker 1 | 0:30 | ~70 | 0:30 |
-| 2 | The problem: farms plan for a climate that no longer exists. | Speaker 1 | 0:45 | ~105 | 1:15 |
+| 2 | The problem: farms plan for a climate that's gone. | Speaker 1 | 0:45 | ~105 | 1:15 |
 | 3 | But fields are still planned one year at a time. | Speaker 2 | 0:35 | ~80 | 1:50 |
 | 4 | DalaShift plans five years ahead. | Speaker 2 | 0:45 | ~105 | 2:35 |
 | 5 | NASA satellites, explained like a neighbour. | Speaker 3 | 0:40 | ~95 | 3:15 |
