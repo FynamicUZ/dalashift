@@ -360,7 +360,7 @@
     document.getElementById('expert').hidden = S.tab !== 'expert';
     if (S.tab === 'farmer') { renderFarmer(); } else { renderExpert(); }
     document.getElementById('foot').innerHTML = esc(D.credits[S.lang]) + ' · Team KarPS · NASA Space Apps 2026' +
-      " · <a href='https://t.me/dalashiftbot' rel='noopener'>Telegram: @dalashiftbot</a>";
+      " · <a href='https://t.me/dalashiftbot' rel='noopener'>Telegram: @dalashiftbot</a> · <a href='video/'>Video</a>";
     save();
   }
   function planChanged() { calc = null; render(); if (S.tab === 'farmer') { startCalc(); } }

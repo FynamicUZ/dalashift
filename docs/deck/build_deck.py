@@ -250,6 +250,7 @@ SLIDES = f"""
     <figure><img src="img/qr_bot.png" alt="QR: t.me/dalashiftbot"><figcaption>Telegram: @dalashiftbot</figcaption></figure>
   </div>
   <p class="team"><b>KarPS</b> · {TEAM}</p>
+  <p class="sub"><a href="https://dalashift.netlify.app/video/" style="color:var(--green);font-weight:700">▶ Watch the 30-second video: dalashift.netlify.app/video</a></p>
   <p class="sub">{tests_txt}up to {n_seq:,} five-year plans checked per farm · Repo <b>github.com/FynamicUZ/dalashift</b> · App <b>dalashift.netlify.app</b></p>
 </section>
 """
@@ -358,7 +359,8 @@ CSS = """
 .qrs figure { margin: 0; } .reveal .qrs img { width: 170px; height: 170px; margin: 0; background: #fff; padding: 8px; border: 1px solid var(--line); border-radius: 12px; }
 .qrs figcaption { font-size: .45em; color: var(--muted); margin-top: 4px; }
 .road { margin: 18px 0 !important; }
-.reveal img.corner { position: absolute; top: -10px; left: 0; width: 64px; height: 64px; margin: 0; }
+.reveal img.corner { position: absolute; top: 0; left: 0; width: 56px; height: 56px; margin: 0; }
+.reveal .slides section:not(.hero) > h2 { padding: 0 96px; }
 .reveal .hero h1 img.logo { height: 1.4em; width: auto; margin: 0; display: block; }
 """
 
