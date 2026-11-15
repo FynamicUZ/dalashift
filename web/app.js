@@ -308,10 +308,14 @@
       '</div></div>';
     var rows = [[uz ? 'Jazirama kunlar (>35 °C), kun/yil' : 'Days > 35 °C, per year', fc.hot_then, fc.hot_now, 'NASA POWER'],
       [uz ? 'Mavsumdagi yomgʻir (apr–okt), mm' : 'Season rain (Apr–Oct), mm', fc.rain_then, fc.rain_now, 'NASA POWER']];
+    var noSat = function (label, src) {   // satellite rows stay visible for districts outside the pilot
+      return '<tr><td>' + label + "<div style='font-size:.78em;color:#8a8f8b'>" + (uz ? 'Sunʼiy yoʻldosh maʼlumoti hozircha faqat Qarshi va Fargʻona (pilot) uchun' : 'Satellite data so far only for the Karshi and Fergana pilot') +
+        "</div></td><td class='num' style='color:#8a8f8b'>—</td><td class='num' style='color:#8a8f8b'>—</td><td>" + src + '</td></tr>';
+    };
     h += "<section class='xcard'><h3>" + (uz ? 'Asosiy koʻrsatkichlar' : 'Key numbers') + "</h3><div class='tablewrap'><table class='xt'><tr><th></th><th class='num'>1991–2005</th><th class='num'>2011–2026</th><th>" + (uz ? 'Manba' : 'Source') + '</th></tr>' +
       rows.map(function (r) { return '<tr><td>' + r[0] + "</td><td class='num'>" + r[1] + "</td><td class='num'>" + r[2] + '</td><td>' + r[3] + '</td></tr>'; }).join('') +
-      (dist.smap ? '<tr><td>' + (uz ? 'Ildiz qatlami namligi, bahor → yoz, m³/m³' : 'Root-zone soil moisture, spring → summer, m³/m³') + "</td><td class='num'>" + dist.smap.spring + "</td><td class='num'>" + dist.smap.summer + ' (−' + dist.smap.drop_pct + ' %, ' + dist.smap.year + ')</td><td>NASA SMAP L4</td></tr>' : '') +
-      (dist.hls ? '<tr><td>' + (uz ? 'NDVI choʻqqisi' : 'NDVI peak') + "</td><td class='num'>–</td><td class='num'>" + dist.hls.peak + ' (' + dist.hls.peak_date + ')</td><td>NASA/USGS HLS</td></tr>' : '') +
+      (dist.smap ? '<tr><td>' + (uz ? 'Ildiz qatlami namligi, bahor → yoz, m³/m³' : 'Root-zone soil moisture, spring → summer, m³/m³') + "</td><td class='num'>" + dist.smap.spring + "</td><td class='num'>" + dist.smap.summer + ' (−' + dist.smap.drop_pct + ' %, ' + dist.smap.year + ')</td><td>NASA SMAP L4</td></tr>' : noSat(uz ? 'Ildiz qatlami namligi, bahor → yoz, m³/m³' : 'Root-zone soil moisture, spring → summer, m³/m³', 'NASA SMAP L4')) +
+      (dist.hls ? '<tr><td>' + (uz ? 'NDVI choʻqqisi' : 'NDVI peak') + "</td><td class='num'>–</td><td class='num'>" + dist.hls.peak + ' (' + dist.hls.peak_date + ')</td><td>NASA/USGS HLS</td></tr>' : noSat(uz ? 'NDVI choʻqqisi' : 'NDVI peak', 'NASA/USGS HLS')) +
       (dist.et0_correction ? '<tr><td>' + x('et0') + "</td><td class='num'>–</td><td class='num'>× " + dist.et0_correction.factor + '</td><td>' + esc(dist.et0_correction.label) + '</td></tr>' : '') +
       (sc.n_sequences ? '<tr><td>' + (uz ? 'Tekshirilgan 5 yillik rejalar' : '5-year plans checked') + "</td><td class='num'>–</td><td class='num'>" + thousands(sc.n_sequences) + '</td><td>DalaShift</td></tr>' : '') +
       '</table></div></section>';
