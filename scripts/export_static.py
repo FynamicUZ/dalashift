@@ -29,6 +29,7 @@ from dalashift.i18n import CROP_NAMES, DISTRICTS, T  # noqa: E402
 from dalashift.planner import load_planner_config, plan_farm  # noqa: E402
 
 LANGS = ("uz", "en")
+BUDGETS = list(range(4000, 16001, 500))   # water slider: every 500 m3/ha (Kam/O'rtacha/Ko'p = 6,000 / 8,000 / 12,000)
 WEB = ROOT / "web"
 UI_KEYS = ["step1", "eyebrow1", "eyebrow2", "plan_h", "since", "hot", "rain", "budget", "mm", "k_tonnes", "q_water",
            "w_little", "w_normal", "w_plenty", "q_must", "must_help", "q_goal", "plan_profit", "plan_balanced",
@@ -111,7 +112,7 @@ def build() -> dict:
     pts = pd.read_csv(ROOT / "data/points.csv").set_index("id")
     water = load_appeears(ROOT / "data/appeears", pts.reset_index())
     out = {"ui": {k: {lang: su.FT[k][lang] for lang in LANGS} for k in UI_KEYS},
-           "water_levels": su.WATER_LEVELS, "plans": su.PLANS, "uzs_per_usd": su.uzs_per_usd(),
+           "water_levels": su.WATER_LEVELS, "budgets": BUDGETS, "plans": su.PLANS, "uzs_per_usd": su.uzs_per_usd(),
            "limits": {lang: md_to_html(T["limits_text"][lang]) + md_to_html(T["pl_limits_text"][lang]) for lang in LANGS},
            "credits": {lang: T["credits"][lang] for lang in LANGS},
            "smap_note": {lang: T["smap_note"][lang] for lang in LANGS},
@@ -141,19 +142,20 @@ def build() -> dict:
             "scenarios": {},
         }
         cotton_need = point["baseline"]["cotton"]["need_m3ha"]
-        for lvl, budget in su.WATER_LEVELS.items():
+        for budget in BUDGETS:
             usual = evaluate_usual(point["baseline"], float(budget), rate, fresh)
             for must in (False, True):
                 k = 2 if must else 0
                 res = plan_farm(point, float(budget), rate, fresh, {"cotton": k, "winter_wheat": k})
                 status = res["result"]["status"]
-                sc = {"status": status, "error": None, "plans": {}}
+                sc = {"status": status, "error": None, "plans": {},
+                      "n_sequences": int(res["result"].get("n_sequences") or 0), "n_options": int(res["result"].get("n_options") or 0)}
                 if status != "ok":
                     sc["error"] = {lang: (su.ft("cotton_short", lang, n=round(cotton_need / 1000), b=round(budget / 1000))
                                           if must and cotton_need > budget else su.ft("no_plan", lang)) for lang in LANGS}
                 for kind, plan in res["result"]["plans"].items():
                     sc["plans"][kind] = plan_entry(plan, kind, res, usual, point, float(budget), must)
-                dist["scenarios"][f"{lvl}|{int(must)}"] = sc
+                dist["scenarios"][f"{budget}|{int(must)}"] = sc
         out["districts"][d] = dist
         print(d, "done")
     return out

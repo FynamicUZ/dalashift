@@ -28,7 +28,8 @@ def test_static_site_files_exist_and_paths_are_relative():
 def test_every_farmer_choice_is_exported():
     assert set(WEB["districts"]) == set(FARMER_DISTRICTS)
     for d in WEB["districts"].values():
-        assert set(d["scenarios"]) == {f"{w}|{m}" for w in WATER_LEVELS for m in (0, 1)}
+        assert set(d["scenarios"]) == {f"{b}|{m}" for b in WEB["budgets"] for m in (0, 1)}
+    assert set(WATER_LEVELS.values()) <= set(WEB["budgets"])          # Kam / O'rtacha / Ko'p chips map onto slider steps
 
 
 @pytest.mark.parametrize("district,water,must", [("Karshi", "normal", 0), ("Fergana", "plenty", 0),
@@ -38,7 +39,7 @@ def test_static_numbers_match_the_engine(district, water, must):
     rate, fresh = float(CFG["discount_rate"]), int(CFG["max_fresh_market_years"])
     res = plan_farm(point, budget, rate, fresh, {"cotton": 2 * must, "winter_wheat": 2 * must})
     usual = evaluate_usual(point["baseline"], budget, rate, fresh)
-    sc = WEB["districts"][district]["scenarios"][f"{water}|{must}"]
+    sc = WEB["districts"][district]["scenarios"][f"{WATER_LEVELS[water]}|{must}"]
     assert sc["status"] == res["result"]["status"]
     for kind, plan in res["result"]["plans"].items():
         w = sc["plans"][kind]
