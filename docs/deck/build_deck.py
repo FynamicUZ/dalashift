@@ -118,13 +118,45 @@ def five(plan):
             "legume": sum(bool(y["legume"]) for y in plan["years"]), "health": int(plan["health"])}
 
 
+# BACKCAST: each plan's crops placed on the real years 2021-2025 (NASA POWER daily weather, same
+# ET0 correction and sowing dates as the engine) -> real net irrigation need per year
+from dalashift.climate import load_point  # noqa: E402
+from dalashift.crops import CROPS as _CROPS  # noqa: E402
+from dalashift.engine import season_window, simulate_season  # noqa: E402
+from dalashift.et0_correction import apply as _apply  # noqa: E402
+
+_pts = pd.read_csv(ROOT / "data/points.csv").set_index("id")
+_meta = json.loads((ROOT / "data/power/_meta.json").read_text())
+_df = _apply(load_point(ROOT / "data/power/Karshi_field1.csv", _pts.loc["Karshi_field1", "lat"],
+                        _meta["Karshi_field1"]["elevation_m"]), P["Karshi_field1"]["et0_correction"]["factor"])
+YEARS = list(range(2021, 2026))
+
+
+def backcast(plan):
+    rows = []
+    for y, yr in zip(plan["years"], YEARS):
+        need = 0.0
+        for c in y["crops"]:
+            sow = pd.Timestamp(f"2001 {kb[c]['sow']}")
+            a, b = season_window(_CROPS[c], yr, (sow.month, sow.day))
+            need += simulate_season(_CROPS[c], _df, a, b)["need"] * 10
+        rows.append((yr, " + ".join(NAMES5.get(c, c) for c in y["crops"]), round(need, -1)))
+    return rows
+
+
 U5, D5 = five(wc), five(bal)
+U5["years"], D5["years"] = backcast(wc), backcast(bal)
+for d in (U5, D5):
+    d["short"] = sum(w > BUDGET for _, _, w in d["years"])
+    d["deficit"] = sum(max(w - BUDGET, 0) for _, _, w in d["years"])
 
 
 def col(title, d, cls):
-    chips = "".join(f"<span class='yc'>{c}</span>" for c in d["crops"])
-    water = (f"short of water in <b>{d['short']} of 5</b> years" if d["short"] else "fits the water <b>every year</b>")
-    return (f"<div class='vcol {cls}'><h3>{title}</h3><div class='ychips'>{chips}</div>"
+    chips = "".join(f"<div class='yr{' over' if w > BUDGET else ''}'><span>{yr}</span><span>{c}</span>"
+                    f"<span class='bar'><i style='width:{min(w / 13000, 1) * 100:.0f}%'></i></span><span>{w:,.0f} m³</span></div>"
+                    for yr, c, w in d["years"])
+    water = (f"short in <b>{d['short']} of 5</b> years (−{d['deficit']:,.0f} m³/ha)" if d["short"] else "fits the water <b>every year</b>")
+    return (f"<div class='vcol {cls}'><h3>{title}</h3><div class='yrs'>{chips}</div>"
             f"<div class='vrow'><span>Income, 5 years</span><b>≈ {d['income5']:g} mln soʻm/ha</b></div>"
             f"<div class='vrow'><span>Water</span><b>{water}</b></div>"
             f"<div class='vrow'><span>Soil: legume years</span><b>{d['legume']} of 5</b></div>"
@@ -194,15 +226,14 @@ SLIDES = f"""
 
 <section>
   <img class="corner" src="img/dalashift_mark.png" alt="">
-  <h2>Same field, five years: the usual plan vs DalaShift.</h2>
+  <h2>The last five years, replayed: usual plan vs DalaShift.</h2>
   <div class="vs">
     {col("Usual: wheat ↔ cotton", U5, "bad5")}
     <div class="vmid">vs</div>
     {col("DalaShift: balanced plan", D5, "good5")}
   </div>
-  <p class="sub">Karshi, {BUDGET:,} m³ of water per ha a year · model estimate with 2011–2026 NASA POWER climate (not a replay of each past year) ·
-  income = cautious low end · rotation health is a rule score (repeats, legume breaks, crop diversity), not a soil measurement.<br>
-  Water use −{abs(c_wc['water_pct']):.0f} %, income +{c_wc['income_pct']:.0f} % vs the usual plan.</p>
+  <p class="sub">Karshi field, {BUDGET:,} m³/ha of water a year. Red = more than that. Water: backcast with real NASA POWER weather 2021–2025.
+  Income: estimate, prices and costs are estimates. Rotation health is a rule score (repeats, legume breaks, crop diversity), not a soil measurement.</p>
 </section>
 
 <section>
@@ -309,6 +340,12 @@ CSS = """
 .vrow { display: flex; justify-content: space-between; gap: 12px; font-size: .5em; padding: 7px 0; border-top: 1px solid var(--line); }
 .vrow span { color: var(--muted); }
 .bad5 .vrow b { color: var(--bad); } .good5 .vrow b { color: var(--ok); }
+.yrs { margin-bottom: 10px; }
+.yr { display: grid; grid-template-columns: 48px 140px 1fr 90px; gap: 8px; align-items: center; font-size: .42em; padding: 2px 0; }
+.yr .bar { height: 10px; background: #efece4; border-radius: 5px; position: relative; overflow: hidden; }
+.yr .bar i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--ok); border-radius: 5px; }
+.yr.over .bar i { background: var(--bad); } .yr.over span:last-child { color: var(--bad); font-weight: 700; }
+.yr span:last-child { text-align: right; font-variant-numeric: tabular-nums; }
 .vmid { align-self: center; text-align: center; font-weight: 800; color: var(--muted); font-size: .8em; }
 .probs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin: 10px 0 24px; text-align: left; }
 .pb { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 20px 22px; }

@@ -93,6 +93,12 @@
 .vrow { display: flex; justify-content: space-between; gap: 12px; font-size: .5em; padding: 7px 0; border-top: 1px solid var(--line); }
 .vrow span { color: var(--muted); }
 .bad5 .vrow b { color: var(--bad); } .good5 .vrow b { color: var(--ok); }
+.yrs { margin-bottom: 10px; }
+.yr { display: grid; grid-template-columns: 48px 140px 1fr 90px; gap: 8px; align-items: center; font-size: .42em; padding: 2px 0; }
+.yr .bar { height: 10px; background: #efece4; border-radius: 5px; position: relative; overflow: hidden; }
+.yr .bar i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--ok); border-radius: 5px; }
+.yr.over .bar i { background: var(--bad); } .yr.over span:last-child { color: var(--bad); font-weight: 700; }
+.yr span:last-child { text-align: right; font-variant-numeric: tabular-nums; }
 .vmid { align-self: center; text-align: center; font-weight: 800; color: var(--muted); font-size: .8em; }
 .probs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin: 10px 0 24px; text-align: left; }
 .pb { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 20px 22px; }
@@ -177,15 +183,14 @@
 
 <section>
   <img class="corner" src="img/dalashift_mark.png" alt="">
-  <h2>Same field, five years: the usual plan vs DalaShift.</h2>
+  <h2>The last five years, replayed: usual plan vs DalaShift.</h2>
   <div class="vs">
-    <div class='vcol bad5'><h3>Usual: wheat ↔ cotton</h3><div class='ychips'><span class='yc'>Wheat</span><span class='yc'>Cotton</span><span class='yc'>Wheat</span><span class='yc'>Cotton</span><span class='yc'>Wheat</span></div><div class='vrow'><span>Income, 5 years</span><b>≈ 26.5 mln soʻm/ha</b></div><div class='vrow'><span>Water</span><b>short of water in <b>2 of 5</b> years</b></div><div class='vrow'><span>Soil: legume years</span><b>0 of 5</b></div><div class='vrow'><span>Rotation health</span><b>5/10</b></div></div>
+    <div class='vcol bad5'><h3>Usual: wheat ↔ cotton</h3><div class='yrs'><div class='yr'><span>2021</span><span>Wheat</span><span class='bar'><i style='width:32%'></i></span><span>4,190 m³</span></div><div class='yr over'><span>2022</span><span>Cotton</span><span class='bar'><i style='width:99%'></i></span><span>12,840 m³</span></div><div class='yr'><span>2023</span><span>Wheat</span><span class='bar'><i style='width:37%'></i></span><span>4,820 m³</span></div><div class='yr over'><span>2024</span><span>Cotton</span><span class='bar'><i style='width:91%'></i></span><span>11,870 m³</span></div><div class='yr'><span>2025</span><span>Wheat</span><span class='bar'><i style='width:35%'></i></span><span>4,520 m³</span></div></div><div class='vrow'><span>Income, 5 years</span><b>≈ 26.5 mln soʻm/ha</b></div><div class='vrow'><span>Water</span><b>short in <b>2 of 5</b> years (−8,710 m³/ha)</b></div><div class='vrow'><span>Soil: legume years</span><b>0 of 5</b></div><div class='vrow'><span>Rotation health</span><b>5/10</b></div></div>
     <div class="vmid">vs</div>
-    <div class='vcol good5'><h3>DalaShift: balanced plan</h3><div class='ychips'><span class='yc'>Chickpea</span><span class='yc'>Wheat</span><span class='yc'>Chickpea</span><span class='yc'>Wheat</span><span class='yc'>Barley</span></div><div class='vrow'><span>Income, 5 years</span><b>≈ 32 mln soʻm/ha</b></div><div class='vrow'><span>Water</span><b>fits the water <b>every year</b></b></div><div class='vrow'><span>Soil: legume years</span><b>2 of 5</b></div><div class='vrow'><span>Rotation health</span><b>8/10</b></div></div>
+    <div class='vcol good5'><h3>DalaShift: balanced plan</h3><div class='yrs'><div class='yr'><span>2021</span><span>Chickpea</span><span class='bar'><i style='width:36%'></i></span><span>4,730 m³</span></div><div class='yr'><span>2022</span><span>Wheat</span><span class='bar'><i style='width:28%'></i></span><span>3,700 m³</span></div><div class='yr'><span>2023</span><span>Chickpea</span><span class='bar'><i style='width:40%'></i></span><span>5,190 m³</span></div><div class='yr'><span>2024</span><span>Wheat</span><span class='bar'><i style='width:21%'></i></span><span>2,720 m³</span></div><div class='yr'><span>2025</span><span>Barley</span><span class='bar'><i style='width:26%'></i></span><span>3,320 m³</span></div></div><div class='vrow'><span>Income, 5 years</span><b>≈ 32 mln soʻm/ha</b></div><div class='vrow'><span>Water</span><b>fits the water <b>every year</b></b></div><div class='vrow'><span>Soil: legume years</span><b>2 of 5</b></div><div class='vrow'><span>Rotation health</span><b>8/10</b></div></div>
   </div>
-  <p class="sub">Karshi, 8,000 m³ of water per ha a year · model estimate with 2011–2026 NASA POWER climate (not a replay of each past year) ·
-  income = cautious low end · rotation health is a rule score (repeats, legume breaks, crop diversity), not a soil measurement.<br>
-  Water use −51 %, income +20 % vs the usual plan.</p>
+  <p class="sub">Karshi field, 8,000 m³/ha of water a year. Red = more than that. Water: backcast with real NASA POWER weather 2021–2025.
+  Income: estimate, prices and costs are estimates. Rotation health is a rule score (repeats, legume breaks, crop diversity), not a soil measurement.</p>
 </section>
 
 <section>
