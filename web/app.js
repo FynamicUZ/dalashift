@@ -102,9 +102,9 @@
       var c = plan.cmp;
       h += "<div class='cmp'><div><div class='l'>" + t('vs_usual') + "</div><div class='v' style='font-size:.95rem'>" + esc(c.usual[S.lang]) + '</div>' +
         (c.usual_short ? "<div class='short'>" + esc(c.usual_short[S.lang]) + '</div>' : '') + '</div>' +
-        "<div><div class='l'>" + icon('coins', C.muted, 14) + ' ' + t('c_income') + "</div><div class='v' style='color:" + c.income_color + "'>" + esc(c.income[S.lang]) + '</div></div>' +
-        "<div><div class='l'>" + icon('drop', C.muted, 14) + ' ' + t('c_water') + "</div><div class='v' style='color:" + c.water_color + "'>" + esc(c.water[S.lang]) + '</div></div>' +
-        "<div><div class='l'>" + icon('shield', C.muted, 14) + ' ' + t('c_risk') + "</div><div class='v' style='color:" + c.risk_color + "'>" + esc(c.risk[S.lang]) + '</div></div></div></div>';
+        "<div><div class='l'>" + icon('coins', C.muted, 14) + ' ' + t('c_income') + "</div><div class='v' style='font-size:1rem;color:" + c.income_color + "'>" + esc(c.income[S.lang]) + '</div></div>' +
+        "<div><div class='l'>" + icon('drop', C.muted, 14) + ' ' + t('c_water') + "</div><div class='v' style='font-size:1rem;color:" + c.water_color + "'>" + esc(c.water[S.lang]) + '</div></div>' +
+        "<div><div class='l'>" + icon('shield', C.muted, 14) + ' ' + t('c_risk') + "</div><div class='v' style='color:" + c.risk_color + "'>" + esc(c.risk[S.lang]) + "</div><div class='sub' style='font-size:.78rem'>" + esc(c.risk_reason[S.lang]) + '</div></div></div></div>';
       if (S.must && plan.must_note) { h += "<div class='info'>" + esc(plan.must_note[S.lang]) + '</div>'; }
       h += "<div class='eyebrow'>" + t('why') + "</div><div class='card why'>" + esc(plan.why[S.lang]) + '</div>';
     }

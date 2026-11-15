@@ -143,10 +143,17 @@ FT = {
     "conservative": {"uz": "taxminan, ehtiyotkor hisob", "en": "approx., conservative estimate"},
     "band": {"uz": "oraliq ±15 %: {lo}–{hi} mln", "en": "range ±15 %: {lo}–{hi} mln"},
     "vs_usual": {"uz": "Odatiy almashlab ekishga nisbatan", "en": "Compared with your usual rotation"},
-    "usual_short": {"uz": "suvingiz yetmaydi: paxta yilida {n} ming tonna kam", "en": "not enough water: {n} thousand tonnes short in cotton years"},
+    "usual_short": {"uz": "Bu odatiy reja sizning suvingizga sigʻmaydi: paxta yilida {n} ming tonna (m³) suv yetmaydi.",
+                    "en": "This usual rotation does not fit your water: {n} thousand tonnes (m³) short in cotton years."},
+    "more_than_usual": {"uz": "odatiydan {p} koʻp", "en": "{p} more than usual"},
+    "less_than_usual": {"uz": "odatiydan {p} kam", "en": "{p} less than usual"},
+    "same_as_usual": {"uz": "odatiy bilan deyarli bir xil", "en": "about the same as usual"},
+    "risk_why_heat": {"uz": "{c} gullaganda jazirama kunlar koʻp", "en": "many very hot days while {c} flowers"},
+    "risk_why_frost": {"uz": "{c} uchun sovuq xavfi bor", "en": "frost risk for {c}"},
+    "risk_why_low": {"uz": "jazirama va sovuq xavfi kam", "en": "little heat or frost risk"},
     "c_income": {"uz": "Daromad", "en": "Income"},
-    "c_water": {"uz": "Suv", "en": "Water"},
-    "c_risk": {"uz": "Xavf", "en": "Risk"},
+    "c_water": {"uz": "Suv sarfi", "en": "Water use"},
+    "c_risk": {"uz": "Iqlim xavfi", "en": "Climate risk"},
     "risk_low": {"uz": "past", "en": "low"},
     "risk_medium": {"uz": "oʻrta", "en": "medium"},
     "risk_high": {"uz": "yuqori", "en": "high"},
@@ -257,6 +264,30 @@ def pct_text(p: float | None, lang: str) -> tuple[str, str]:
     return f"{p:+.0f} %", OK if p > 0 else BAD
 
 
+def vs_usual(p: float | None, lang: str, good_when_more: bool) -> tuple[str, str]:
+    """'odatiydan 39 % koʻp' / 'odatiydan 2,5 barobar koʻp' and a colour (green = good for the farmer)."""
+    if p is None:
+        return "–", MUTED
+    if abs(p) < 3:
+        return ft("same_as_usual", lang), MUTED
+    amount = (ft("times", lang, x=fmt_mln(round((1 + p / 100) * 2) / 2, lang)) if p >= 100 else f"{abs(p):.0f} %")
+    text = ft("more_than_usual" if p > 0 else "less_than_usual", lang, p=amount)
+    good = (p > 0) == good_when_more
+    return text, (OK if good else (BAD if good_when_more else WARN))
+
+
+def risk_reason(plan: dict, lang: str) -> str:
+    """Why the climate risk is what it is: the crops with high heat risk or frost risk (same inputs as risk_level)."""
+    heat = list(dict.fromkeys(c for y in plan["years"] if y["heat_risk"] == "high" for c in y["crops"][:1]))
+    frost = list(dict.fromkeys(c for y in plan["years"] if max(y["p_frost"], y["p_winterkill"]) > 0.1 for c in y["crops"][:1]))
+    names = lambda cs: ", ".join(CROP_NAMES[c][lang] for c in cs[:2])  # noqa: E731
+    if heat:
+        return ft("risk_why_heat", lang, c=names(heat))
+    if frost:
+        return ft("risk_why_frost", lang, c=names(frost))
+    return ft("risk_why_low", lang)
+
+
 def sparkline(values: list, width: int = 130, height: int = 26) -> str:
     vals = [v for v in values if v is not None]
     if len(vals) < 2:
@@ -315,10 +346,8 @@ def _timeline(plan: dict, point: dict, budget: float, lang: str) -> str:
 
 
 def _comparison(cmp: dict, usual: dict, lang: str, deficit: float = 0.0) -> str:
-    inc, inc_col = pct_text(cmp["income_pct"], lang)
-    wp = cmp["water_pct"]
-    wat = ft("same", lang) if abs(wp) < 3 else f"{wp:+.0f} %"
-    wat_col = MUTED if abs(wp) < 3 else (OK if wp < 0 else WARN)
+    inc, inc_col = vs_usual(cmp["income_pct"], lang, good_when_more=True)
+    wat, wat_col = vs_usual(cmp["water_pct"], lang, good_when_more=False)
     risk_col = {"low": OK, "medium": WARN, "high": BAD}[cmp["risk_plan"]]
     usual_name = " ↔ ".join(dict.fromkeys(CROP_NAMES[k][lang] for k in usual["sequence"]))
     return (f"<div class='f-cmp'><div><div class='l'>{ft('vs_usual', lang)}</div>"
@@ -326,10 +355,11 @@ def _comparison(cmp: dict, usual: dict, lang: str, deficit: float = 0.0) -> str:
             + (f"<div style='color:{BAD};font-size:.8rem;font-weight:600;margin-top:2px'>"
                f"{ft('usual_short', lang, n=fmt_mln(round(deficit / 100) / 10, lang))}</div>" if deficit > 0 else "")
             + "</div>"
-            f"<div><div class='l'>{icon('coins', MUTED, 14)} {ft('c_income', lang)}</div><div class='v' style='color:{inc_col}'>{inc}</div></div>"
-            f"<div><div class='l'>{icon('drop', MUTED, 14)} {ft('c_water', lang)}</div><div class='v' style='color:{wat_col}'>{wat}</div></div>"
+            f"<div><div class='l'>{icon('coins', MUTED, 14)} {ft('c_income', lang)}</div><div class='v' style='color:{inc_col};font-size:1rem'>{inc}</div></div>"
+            f"<div><div class='l'>{icon('drop', MUTED, 14)} {ft('c_water', lang)}</div><div class='v' style='color:{wat_col};font-size:1rem'>{wat}</div></div>"
             f"<div><div class='l'>{icon('shield', MUTED, 14)} {ft('c_risk', lang)}</div>"
-            f"<div class='v' style='color:{risk_col}'>{ft('risk_' + cmp['risk_plan'], lang)}</div></div></div>")
+            f"<div class='v' style='color:{risk_col}'>{ft('risk_' + cmp['risk_plan'], lang)}</div>"
+            f"<div class='f-sub' style='font-size:.78rem'>{cmp.get('risk_reason', '')}</div></div></div>")
 
 
 def _why(plan: dict, cmp: dict, point: dict, budget: float, lang: str) -> str:
@@ -410,6 +440,7 @@ def render(lang: str, planner_data: dict, summary: dict, points: pd.DataFrame, w
 
     usual = _usual(pj, float(budget), rate, fresh)
     cmp = compare(plan, usual)
+    cmp["risk_reason"] = risk_reason(plan, lang)
     r = plan["profit_per_year_range"]
     low, lo_b, hi_b = max(to_mln(r["low"]), 0), max(to_mln(r["low"]), 0), max(to_mln(r["high"], round), 0)
     st.markdown(f"<div class='f-card'>{_timeline(plan, point, budget, lang)}"
