@@ -42,7 +42,7 @@
     plan_h: { uz: 'Keyingi besh yil uchun reja', en: 'Plan for the next five years' },
     water: { uz: 'Suvingiz', en: 'Your water' },
     water_tip: { uz: 'Dalangizga bir yilda keladigan sugʻorish suvi, gektariga. Kam / Oʻrtacha / Koʻp = 6 000 / 8 000 / 12 000 m³/ga.', en: 'Irrigation water your field gets in a year, per hectare. Little / Medium / Plenty = 6,000 / 8,000 / 12,000 m³/ha.' },
-    k_t: { uz: 'm³/ga', en: 'm³/ha' },
+    k_t: { uz: 'm³/ga', en: 'm³/ha' },   // water unit on farmer screens (never tonnes)
     must: { uz: 'Paxta/bugʻdoy majburiy', en: 'Cotton/wheat required' },
     must_tip: { uz: 'Davlat buyurtmasi boʻlsa yoqing: rejada 5 yildan kamida 2 yil paxta va 2 yil bugʻdoy boʻladi.', en: 'Switch on if you have a state order: at least 2 years of cotton and 2 of wheat in 5.' },
     goal: { uz: 'Maqsad', en: 'Goal' },
@@ -187,7 +187,7 @@
     h += "<p class='note2'>" + f('note') + '</p>';
     document.getElementById('farmer').innerHTML = h;
     placeMap();
-    if (calc) { showCalc(); }
+    if (calc) { showCalc(); }   // re-render during a run (e.g. language switch): same run continues
   }
   function planBody(sc, plan) {
     var h = '';
@@ -211,26 +211,31 @@
   }
 
   // ------------------------------------------------------------------ "calculating" animation (real numbers from the engine)
+  var calcRun = 0;
   function startCalc() {
     var sc = scenario();
-    calc = { t0: Date.now(), dur: 5000, n: sc.n_sequences || 0, k: sc.n_options || 0 };
+    calcRun += 1;   // cancels any previous run
+    calc = { id: calcRun, t0: Date.now(), dur: 5000, n: sc.n_sequences || 0, k: sc.n_options || 0 };
     showCalc();
   }
   function showCalc() {
     var body = document.getElementById('planbody');
     if (!body || !calc) { return; }
+    body.querySelectorAll('.calc').forEach(function (c) { c.remove(); });
+    body.classList.remove('reveal');
     body.classList.add('calcing');
     var steps = ['s1', 's2', 's3', 's4', 's5'];
     var el = document.createElement('div');
     el.className = 'calc';
     el.innerHTML = "<div class='ctitle'><span class='spin'></span>" + f('calc_title') + "</div><ol>" + steps.map(function (s) {
       return "<li data-s='" + s + "'><span class='st'></span>" + f(s) + "<span class='cnt'></span></li>"; }).join('') +
-      "</ol><div class='cbar'><div></div></div><button class='skip' data-act='skip'>" + f('calc_skip') + '</button>';
+      "</ol><div class='cbar'><div></div></div>";
     body.appendChild(el);
-    tickCalc();
+    var id = calc.id;
+    requestAnimationFrame(function () { tickCalc(id); });
   }
-  function tickCalc() {
-    if (!calc) { return; }
+  function tickCalc(id) {
+    if (!calc || calc.id !== id) { return; }   // a newer run took over
     var el = document.querySelector('#planbody .calc');
     if (!el) { return; }
     var p = Math.min((Date.now() - calc.t0) / calc.dur, 1);
@@ -245,12 +250,12 @@
       if (li.dataset.s === 's4') { cnt.textContent = ' · ' + thousands(q * calc.n) + ' / ' + thousands(calc.n); }
     });
     if (p >= 1) { endCalc(); return; }
-    requestAnimationFrame(tickCalc);
+    requestAnimationFrame(function () { tickCalc(id); });
   }
   function endCalc() {
     calc = null;
     var body = document.getElementById('planbody');
-    if (body) { body.classList.remove('calcing'); var c = body.querySelector('.calc'); if (c) { c.remove(); } body.classList.add('reveal'); }
+    if (body) { body.classList.remove('calcing'); body.querySelectorAll('.calc').forEach(function (c) { c.remove(); }); body.classList.add('reveal'); }
   }
 
   // ------------------------------------------------------------------ expert view (dense, data-focused)
@@ -358,12 +363,11 @@
       " · <a href='https://t.me/dalashiftbot' rel='noopener'>Telegram: @dalashiftbot</a>";
     save();
   }
-  function planChanged() { render(); if (S.tab === 'farmer') { startCalc(); } }
+  function planChanged() { calc = null; render(); if (S.tab === 'farmer') { startCalc(); } }
   document.addEventListener('click', function (e) {
     var b = e.target.closest('button');
     if (!b) { return; }
     if (b.dataset.act === 'locate') { locate(); return; }
-    if (b.dataset.act === 'skip') { endCalc(); return; }
     var group = b.closest('[data-seg]');
     if (b.closest('#lang')) { S.lang = b.dataset.v; geoMsg = ''; render(); return; }
     if (b.closest('#tabs')) { S.tab = b.dataset.v; render(); return; }
@@ -374,6 +378,17 @@
     S[key] = b.dataset.v;
     planChanged();
   });
+  // tooltips: flip below / shift sideways when there is no room
+  function placeTip(e) {
+    var tp = e.target.closest && e.target.closest('.tip');
+    if (!tp) { return; }
+    var r = tp.getBoundingClientRect(), vw = window.innerWidth;
+    tp.classList.toggle('below', r.top < 170);
+    tp.classList.toggle('edge-r', r.right > vw - 140);
+    tp.classList.toggle('edge-l', r.left < 140);
+  }
+  document.addEventListener('mouseover', placeTip);
+  document.addEventListener('focusin', placeTip);
   document.addEventListener('input', function (e) {
     if (e.target.id === 'budget') {   // live label while dragging; plan recomputed on release
       var v = document.querySelector('.bval'); if (v) { v.textContent = thousands(+e.target.value) + ' ' + f('k_t'); }

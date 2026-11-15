@@ -162,3 +162,20 @@ code { font-size: .85em; background: #f1efe8; padding: 0 .25em; border-radius: 4
   .cmp3 > div { border-left: 0; border-top: 1px solid var(--line); }
   .cmp3 > div:first-child { border-top: 0; }
 }
+
+/* ---- fixes: tooltips above everything, opaque calculation overlay ---- */
+.cmp3 { overflow: visible; }
+.cmp3 > div:first-child { border-radius: 12px 0 0 12px; } .cmp3 > div:last-child { border-radius: 0 12px 12px 0; }
+.card, .plancard, #planbody, .result { overflow: visible; }
+.tip:hover, .tip:focus { z-index: 1000; }
+.tip .tipbox { z-index: 1000; }
+.tip.below .tipbox { bottom: auto; top: 22px; }
+#planbody.calcing { min-height: 260px; }
+#planbody.calcing > :not(.calc) { visibility: hidden; }
+.calc { z-index: 20; background: #fff; border-radius: 12px; padding: 14px 16px; }
+@media (max-width: 700px) {
+  .cmp3 > div:first-child, .cmp3 > div:last-child { border-radius: 0; }
+  .tip .tipbox { width: min(260px, 80vw); }
+}
+.tip.edge-r .tipbox { left: auto; right: -8px; transform: none; }
+.tip.edge-l .tipbox { left: -8px; transform: none; }
