@@ -87,11 +87,11 @@ def water_bars() -> str:
     top = 14000
     bars = "".join(
         f"<div class='wb'><div class='wcol'><div class='wfill {'bad' if v > BUDGET else 'ok'}' style='--h:{v / top * 100:.1f}%'></div></div>"
-        f"<div class='wl'>Year {i + 1}<br><b>{n}</b><br><span>{v:,.0f} t</span></div></div>"
+        f"<div class='wl'>Year {i + 1}<br><b>{n}</b><br><span>{v:,.0f} m³</span></div></div>"
         for i, (n, v) in enumerate(seq))
     # the bar area is the top 78 % of the 480 px block
     return (f"<div class='wbars'><div class='budget' style='bottom:calc(22% + 78% * {BUDGET / top:.4f})'>"
-            f"<span>water the farm gets: {BUDGET:,} t / ha</span></div>{bars}</div>")
+            f"<span>water the farm gets: {BUDGET:,} m³/ha</span></div>{bars}</div>")
 
 
 def cmp_bar(label: str, value: float, text: str, good: bool, scale: float = 60) -> str:
@@ -160,7 +160,7 @@ SLIDES = f"""
     <div class="sees">
       <div class="say fragment fade-up">“{k_now - k_then} more very hot days a year than in the 1990s.”</div>
       <div class="say fragment fade-up">“{rain_then - rain_now} mm less rain in the growing season.”</div>
-      <div class="say fragment fade-up">“Each hectare needs ~{et0_t:,.0f} more tonnes of water a year.”</div>
+      <div class="say fragment fade-up">“Each hectare needs ~{et0_t:,.0f} more m³ of water a year.”</div>
       {f'<div class="say fragment fade-up">“Without canal water, your soil dries {SMAP_K["drop_pct"]} % from spring to summer.” <small>(SMAP, {SMAP_K["year"]})</small></div>' if SMAP_K else ''}
     </div>
   </div>
@@ -175,8 +175,8 @@ SLIDES = f"""
     {cmp_bar("Water used", c_wc['water_pct'], f"{c_wc['water_pct']:+.0f} %", c_wc['water_pct'] < 0)}
     {cmp_bar("Income", c_wc['income_pct'], f"{c_wc['income_pct']:+.0f} %", c_wc['income_pct'] > 0)}
   </div>
-  <p class="sub">Balanced plan vs the usual wheat ↔ cotton, same farm, {BUDGET:,} t of water per ha · about {bal_low:g} mln soʻm / ha / year, conservative.<br>
-  Must grow cotton? It needs {cotton_need:,} t / ha here: DalaShift says so, then shows the closest plan.</p>
+  <p class="sub">Balanced plan vs the usual wheat ↔ cotton, same farm, {BUDGET:,} m³ of water per ha · about {bal_low:g} mln soʻm / ha / year, conservative.<br>
+  Must grow cotton? It needs {cotton_need:,} m³/ha here: DalaShift says so, then shows the closest plan.</p>
 </section>
 
 <section>
