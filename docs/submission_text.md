@@ -13,7 +13,7 @@ DalaShift
 
 ## Summary (1–2 sentences)
 
-DalaShift turns 35 years of NASA climate data and current NASA satellite observations into a simple 5-year crop rotation plan for a farmer's field in Uzbekistan, in Uzbek, with income in so'm and water measured against what the farm actually gets. *Don't just choose the most profitable crop for this year. Choose the best five-year future for your field.*
+The climate has shifted, but farm plans haven't: DalaShift turns 35 years of NASA climate data and current NASA satellite observations into a simple 5-year crop rotation plan for any irrigated field, piloted in Uzbekistan, in Uzbek, with income in so'm and water measured against what the farm actually gets. *Don't just choose the most profitable crop for this year. Choose the best five-year future for your field.*
 
 ## Project description (~250 words)
 

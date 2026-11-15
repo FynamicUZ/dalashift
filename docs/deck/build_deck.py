@@ -113,22 +113,26 @@ risk_now, risk_was = risk_level(bal), risk_level(wc)
 SLIDES = f"""
 <section class="hero" data-background-image="img/karshi_modis_terra_2025-08-12.jpg" data-background-size="cover"
          data-background-opacity="0.42" data-background-color="#0f1a14">
-  <p class="hook fragment fade-up">Every spring, a farmer near Karshi bets the family's year on one decision:</p>
-  <p class="hook2 fragment fade-up">what to plant.</p>
+  <p class="hook fragment fade-up">The climate has shifted.</p>
+  <p class="hook2 fragment fade-up">Farm plans haven't.</p>
   <div class="fragment fade-up">
     <h1><img class="logo" src="img/dalashift_logo_light.png" alt="DalaShift"></h1>
     <p class="tag">Don't just choose the most profitable crop for this year.<br>Choose the best five-year future for your field.</p>
-    <p class="meta">Field Shift: Adapting Farms with NASA Data · NASA Space Apps 2026 · Karshi · <b>KarPS</b></p>
+    <p class="meta">Field Shift: Adapting Farms with NASA Data · NASA Space Apps 2026 · pilot: Uzbekistan · <b>KarPS</b></p>
   </div>
-  <p class="credit">Karshi oasis from space: NASA MODIS Terra, 12 Aug 2025 (Worldview). The farmer is an illustrative persona.</p>
+  <p class="credit">Karshi oasis, Uzbekistan (our pilot) from space: NASA MODIS Terra, 12 Aug 2025 (Worldview).</p>
 </section>
 
 <section>
   <img class="corner" src="img/dalashift_mark.png" alt="">
-  <h2>The rules changed.</h2>
-  <div class="big"><span class="count" data-from="{k_then}" data-to="{k_now}">{k_now}</span> <small>very hot days a year in Karshi, up from {k_then}</small></div>
-  {chart_svg()}
-  <p class="sub">Days above 35 °C, 1991–2026 · season rain {rain_then} → {rain_now} mm · NASA POWER</p>
+  <h2>The problem: farms plan for a climate that no longer exists.</h2>
+  <div class="probs">
+    <div class="pb fragment fade-up"><div class="pn">~70 %</div><div class="pt">of the world's freshwater withdrawals go to agriculture <small>(FAO AQUASTAT)</small>. Every wasted cubic metre counts.</div></div>
+    <div class="pb fragment fade-up"><div class="pn">Shifting</div><div class="pt">Heat and drought are moving <i>when</i> and <i>where</i> crops can grow, but most farmers still plan by habit or old calendars.</div></div>
+    <div class="pb fragment fade-up"><div class="pn">1 season</div><div class="pt">Crops are chosen one year at a time. Nobody shows the next five, so soil and water losses appear too late.</div></div>
+  </div>
+  <div class="pilot fragment fade-up"><b>Test case: Uzbekistan</b>, hot, dry and fully irrigated. In Karshi, very hot days rose to
+    <b class="count" data-from="{k_then}" data-to="{k_now}">{k_now}</b> a year <small>(from {k_then}, NASA POWER)</small>{f' and, without canal water, the soil dries {SMAP_K["drop_pct"]} % from spring to summer <small>(NASA SMAP)</small>' if SMAP_K else ''}.</div>
 </section>
 
 <section>
@@ -149,7 +153,8 @@ SLIDES = f"""
       <li class="fragment fade-left">Get a five-year plan.</li>
     </ol>
   </div>
-  <p class="sub">Uzbek first · income in soʻm · one plain reason for every choice</p>
+  <p class="sub">Uzbek first · income in soʻm · one plain reason for every choice<br>
+  <b>Works anywhere:</b> NASA POWER, SMAP and HLS are global. Adding a region = its crop list + local prices.</p>
 </section>
 
 <section>
@@ -181,7 +186,7 @@ SLIDES = f"""
 
 <section>
   <img class="corner" src="img/dalashift_mark.png" alt="">
-  <h2>Next: every field in Uzbekistan.</h2>
+  <h2>Next: every field in Uzbekistan, then every dry farming region.</h2>
   <div class="road">
     <div class="rs fragment fade-up"><b>Uzcosmos</b><span>and national farm data</span></div>
     <div class="rs fragment fade-up"><b>Soil &amp; salinity</b><span>per field: SMAP, ECOSTRESS, HLS</span></div>
@@ -274,6 +279,13 @@ CSS = """
 .rs { background: #fff; border: 1px solid var(--line); border-top: 6px solid var(--green); border-radius: 14px; padding: 22px; text-align: left; }
 .rs b { display: block; font-size: .78em; } .rs span { font-size: .52em; color: var(--muted); }
 .team { font-size: .55em; }
+.probs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin: 10px 0 24px; text-align: left; }
+.pb { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 20px 22px; }
+.pn { font-size: 1.6em; font-weight: 800; color: var(--green); line-height: 1.1; margin-bottom: 8px; }
+.pt { font-size: .58em; line-height: 1.45; } .pt small { color: var(--muted); }
+.pilot { font-size: .62em; background: #f3efe4; border-radius: 14px; padding: 14px 20px; text-align: left; line-height: 1.5; }
+.pilot .count { color: var(--bad); font-size: 1.3em; }
+.reveal .pilot small, .reveal .pt small { color: var(--muted); vertical-align: baseline; font-size: .85em; top: 0; }
 .qrs { display: flex; justify-content: center; gap: 70px; margin: 0 0 10px; }
 .qrs figure { margin: 0; } .reveal .qrs img { width: 170px; height: 170px; margin: 0; background: #fff; padding: 8px; border: 1px solid var(--line); border-radius: 12px; }
 .qrs figcaption { font-size: .45em; color: var(--muted); margin-top: 4px; }
