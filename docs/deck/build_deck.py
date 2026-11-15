@@ -241,7 +241,7 @@ SLIDES = f"""
 
 <section>
   <img class="corner" src="img/dalashift_mark.png" alt="">
-  <h2>Next: every field in Uzbekistan, then every dry farming region.</h2>
+  <h2>Next: every field in Uzbekistan, then every field on Earth.</h2>
   <div class="road">
     <div class="rs fragment fade-up"><b>Uzcosmos</b><span>and national farm data</span></div>
     <div class="rs fragment fade-up"><b>Soil &amp; salinity</b><span>per field: SMAP, ECOSTRESS, HLS</span></div>

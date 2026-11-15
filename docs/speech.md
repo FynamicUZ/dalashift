@@ -11,7 +11,7 @@ Pace: about 140 words a minute. Every number is on the slide or comes from our o
 | 4 | DalaShift plans five years ahead. | Speaker 2 | 0:45 | ~105 | 2:35 |
 | 5 | NASA satellites, explained like a neighbour. | Speaker 3 | 0:40 | ~95 | 3:15 |
 | 6 | The last five years, replayed: usual plan vs DalaShift. | Speaker 3 | 0:45 | ~105 | 4:00 |
-| 7 | Next: every field in Uzbekistan, then every dry farming region. | Speaker 1 | 0:30 | ~70 | 4:30 |
+| 7 | Next: every field in Uzbekistan, then every field on Earth. | Speaker 1 | 0:30 | ~70 | 4:30 |
 
 ---
 
@@ -88,10 +88,10 @@ On the right, DalaShift's balanced plan: chickpea, wheat, chickpea, wheat, barle
 
 So: less water, healthier soil and more income.
 
-## Slide 7: Next: every field in Uzbekistan, then every dry farming region. (0:30, clock 4:30)
+## Slide 7: Next: every field in Uzbekistan, then every field on Earth. (0:30, clock 4:30)
 
 **Speaker 1:**
-What's next?
+What's next? Every field in Uzbekistan, then every field on Earth.
 [click] Uzcosmos and national farm data.
 [click] Soil and salinity for each field, from SMAP, ECOSTRESS and HLS.
 [click] Our Telegram bot, @dalashiftbot, in Uzbek.
