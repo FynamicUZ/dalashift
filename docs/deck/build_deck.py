@@ -174,7 +174,6 @@ SLIDES = f"""
   <div class="cmp">
     {cmp_bar("Water used", c_wc['water_pct'], f"{c_wc['water_pct']:+.0f} %", c_wc['water_pct'] < 0)}
     {cmp_bar("Income", c_wc['income_pct'], f"{c_wc['income_pct']:+.0f} %", c_wc['income_pct'] > 0)}
-    <div class="cb"><div class="cl">Risk</div><div class="cv" style="grid-column: 2 / 4; color:var(--muted)">{"same: " + risk_now if risk_now == risk_was else risk_was + " → " + risk_now}</div></div>
   </div>
   <p class="sub">Balanced plan vs the usual wheat ↔ cotton, same farm, {BUDGET:,} t of water per ha · about {bal_low:g} mln soʻm / ha / year, conservative.<br>
   Must grow cotton? It needs {cotton_need:,} t / ha here: DalaShift says so, then shows the closest plan.</p>

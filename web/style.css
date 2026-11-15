@@ -122,7 +122,7 @@ code { font-size: .85em; background: #f1efe8; padding: 0 .25em; border-radius: 4
 .bval { font-weight: 700; min-width: 7.5em; text-align: right; font-variant-numeric: tabular-nums; }
 .result { display: grid; grid-template-columns: 1fr 2fr; gap: 16px; margin-top: 18px; align-items: start; }
 .inc .lbl { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: .85rem; }
-.cmp3 { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.cmp3 { display: grid; grid-template-columns: repeat(2, 1fr); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
 .cmp3 > div { padding: 10px 12px; border-left: 1px solid var(--line); }
 .cmp3 > div:first-child { border-left: 0; }
 .cmp3 .l { display: flex; gap: 6px; align-items: center; font-size: .8rem; color: var(--muted); }
@@ -151,7 +151,7 @@ code { font-size: .85em; background: #f1efe8; padding: 0 .25em; border-radius: 4
 .foot a { color: var(--green); }
 @media (max-width: 700px) {
   .controls2, .result, .facts2 { grid-template-columns: 1fr; }
-  .cmp3 { grid-template-columns: 1fr 1fr 1fr; }
+  .cmp3 { grid-template-columns: 1fr 1fr; }
   .mapbox { height: 190px; }
   .tip .tipbox { left: auto; right: -10px; transform: none; }
 }

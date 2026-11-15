@@ -147,6 +147,7 @@
   }
 
   // ------------------------------------------------------------------ farmer view
+  var GOALS = ['profit', 'balanced', 'water'];   // UI goals (the low-risk plan is computed but not shown)
   var calc = null;   // running calculation animation
   function renderFarmer() {
     var dist = D.districts[S.d], fc = dist.facts;
@@ -177,7 +178,7 @@
       seg('lvl', Object.keys(D.water_levels), lv, function (k) { return t('w_' + k); }) +
       "<div class='slider'><input type='range' id='budget' min='" + D.budgets[0] + "' max='" + D.budgets[D.budgets.length - 1] + "' step='500' value='" + S.budget + "'>" +
       "<span class='bval'>" + thousands(S.budget) + ' ' + f('k_t') + '</span></div></div>' +
-      "<div class='ctl'><div class='lbl'>" + f('goal') + '</div>' + (sc.status === 'ok' ? seg('plan', D.plans, S.plan, function (k) { return t('plan_' + k); }) : '') +
+      "<div class='ctl'><div class='lbl'>" + f('goal') + '</div>' + (sc.status === 'ok' ? seg('plan', GOALS, S.plan, function (k) { return t('plan_' + k); }) : '') +
       "<label class='switch'><input type='checkbox' id='must'" + (S.must ? ' checked' : '') + "><span class='knob'></span><span>" + f('must') + '</span> ' + tip(f('must_tip')) + '</label></div>' +
       '</div>';
     h += "<div id='planbody'>" + planBody(sc, plan) + '</div></div>';
@@ -204,8 +205,7 @@
       "<div class='cmp3'>" +
       "<div><div class='l'>" + icon('coins', C.muted, 14) + ' ' + t('c_income') + ' ' + tip(f('usual_tip')) + "</div><div class='v' style='color:" + c.income_color + "'>" + esc(c.income[S.lang]) + '</div></div>' +
       "<div><div class='l'>" + icon('drop', C.muted, 14) + ' ' + t('c_water') + ' ' + tip(f('usual_tip')) + "</div><div class='v' style='color:" + c.water_color + "'>" + esc(c.water[S.lang]) + '</div></div>' +
-      "<div><div class='l'>" + icon('shield', C.muted, 14) + ' ' + t('c_risk') + ' ' + tip(f('risk_tip')) + "</div><div class='v' style='color:" + c.risk_color + "'>" + esc(c.risk[S.lang]) +
-      "</div><div class='rr'>" + esc(c.risk_reason[S.lang]) + '</div></div></div></div>';
+      '</div></div>';
     if (S.must && plan.must_note) { h += "<div class='info'>" + esc(plan.must_note[S.lang]) + '</div>'; }
     return h;
   }
@@ -336,7 +336,7 @@
       }).join('') + "</table></div><p class='xnote'>FAO-56 · " + (uz ? 'qizil: suv byudjetidan koʻp' : 'red: above the water budget') + ' (' + thousands(budget) + ' m³/ha)</p></section>';
     h += "<section class='xcard'><h3>" + x('plans') + "</h3><div class='tablewrap'><table class='xt'><tr><th>" + x('plan') + '</th><th>' + x('seq') +
       "</th><th class='num'>" + x('usd') + "</th><th class='num'>" + x('water') + "</th><th class='num'>" + x('health') + '</th><th>' + x('vsusual') + '</th></tr>' +
-      Object.keys(sc.plans).map(function (k) {
+      Object.keys(sc.plans).filter(function (k) { return k !== 'low_risk'; }).map(function (k) {
         var p = sc.plans[k];
         return '<tr><td>' + (k === 'least_harm' ? (uz ? 'Eng kam zararli' : 'Least harmful') : t('plan_' + k)) + '</td><td>' +
           p.years.map(function (y) { return esc(y.name[S.lang]); }).join(' → ') + "</td><td class='num'>" + thousands(p.usd_per_year[0]) + '–' + thousands(p.usd_per_year[1]) +
@@ -405,7 +405,7 @@
   fetch('data.json').then(function (r) { return r.json(); }).then(function (data) {
     D = data;
     if (!D.districts[S.d]) { S.d = 'Karshi'; }
-    if (D.plans.indexOf(S.plan) < 0) { S.plan = 'balanced'; }
+    if (GOALS.indexOf(S.plan) < 0) { S.plan = 'balanced'; }
     if (D.budgets.indexOf(+S.budget) < 0) { S.budget = 8000; }
     render();   // no animation on first load
   }).catch(function () {

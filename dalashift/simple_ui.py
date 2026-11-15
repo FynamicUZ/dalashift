@@ -25,7 +25,7 @@ from .hls import farmer_line as hls_line, summary as hls_summary
 FARMER_DISTRICTS = ["Karshi", "Fergana", "Urgench", "Nukus", "Gulistan"]
 # water a farmer can pick without knowing m3 (net irrigation water per ha per year; HYPOTHETICAL levels)
 WATER_LEVELS = {"little": 6000, "normal": 8000, "plenty": 12000}
-PLANS = ["profit", "balanced", "water", "low_risk"]
+PLANS = ["profit", "balanced", "water"]
 MUST_YEARS = 2          # "must grow cotton / wheat" = at least 2 of 5 years
 
 GREEN, BG, INK, MUTED, LINE = "#1f5f3f", "#faf9f6", "#1d2521", "#6b716d", "#e4e1d8"
@@ -83,7 +83,7 @@ html {{ font-size: 17px; }}
 .f-step .m {{ font-size:.82rem; color:{MUTED}; }}
 .f-wbar {{ height:6px; background:#efece4; border-radius:3px; margin-top:8px; overflow:hidden; }}
 .f-wbar > div {{ height:100%; border-radius:3px; }}
-.f-cmp {{ display:grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; margin-top: 16px; border:1px solid {LINE};
+.f-cmp {{ display:grid; grid-template-columns: 1.4fr 1fr 1fr; margin-top: 16px; border:1px solid {LINE};
           border-radius:12px; overflow:hidden; background:#fff; }}
 .f-cmp > div {{ padding: 12px 14px; border-left: 1px solid {LINE}; }}
 .f-cmp > div:first-child {{ border-left: none; background: #f6f3ea; }}
@@ -360,9 +360,7 @@ def _comparison(cmp: dict, usual: dict, lang: str, deficit: float = 0.0) -> str:
             + "</div>"
             f"<div><div class='l'>{icon('coins', MUTED, 14)} {ft('c_income', lang)}</div><div class='v' style='color:{inc_col};font-size:1rem'>{inc}</div></div>"
             f"<div><div class='l'>{icon('drop', MUTED, 14)} {ft('c_water', lang)}</div><div class='v' style='color:{wat_col};font-size:1rem'>{wat}</div></div>"
-            f"<div><div class='l'>{icon('shield', MUTED, 14)} {ft('c_risk', lang)}</div>"
-            f"<div class='v' style='color:{risk_col}'>{ft('risk_' + cmp['risk_plan'], lang)}</div>"
-            f"<div class='f-sub' style='font-size:.78rem'>{cmp.get('risk_reason', '')}</div></div></div>")
+            "</div>")
 
 
 def _why(plan: dict, cmp: dict, point: dict, budget: float, lang: str) -> str:
