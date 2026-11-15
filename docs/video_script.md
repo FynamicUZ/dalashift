@@ -15,7 +15,7 @@ lines as subtitles). It follows the deck's story. Every number comes from the ap
 | 0:13–0:17 | Demo: the plan | Scroll to *Keyingi besh yil uchun reja*, *Muvozanat*: 5-year timeline Chickpea → Wheat → Chickpea → Wheat → Barley, "≈ 6 mln soʻm" | "DalaShift checks every five-year crop plan and picks one that fits the farm's water." |
 | 0:17–0:20 | Demo: vs usual | Hold on the comparison strip and the "Nega bu reja?" paragraph | "Compared with the usual wheat and cotton, it uses about half the water and earns more." |
 | 0:20–0:23 | Demo: trade-off | Switch on *Paxta / bugʻdoy ekish majburiymi?*: red line "Paxta uchun … 13 ming tonna … sizda 8 ming tonna" | "Must you grow cotton? It needs 13 thousand tonnes of water per hectare here. The farm has 8." |
-| 0:23–0:30 | Future | Deck slide 7 (roadmap cards appear), then logo + [REPO LINK] / [APP LINK] | "Next: Uzcosmos and national farm data, soil and salinity, and a Telegram bot in Uzbek. Every field in Uzbekistan." |
+| 0:23–0:30 | Future | Deck slide 7 (roadmap cards appear), then logo + https://github.com/FynamicUZ/dalashift / [APP LINK] | "Next: Uzcosmos and national farm data, soil and salinity, and a Telegram bot in Uzbek. Every field in Uzbekistan." |
 
 ## Shot list
 

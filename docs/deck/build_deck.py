@@ -185,7 +185,7 @@ SLIDES = f"""
     <div class="rs fragment fade-up"><b>More crops</b><span>melon varieties, real costs</span></div>
   </div>
   <p class="team"><b>KarPS</b> · {TEAM}</p>
-  <p class="sub">{tests_txt}up to {n_seq:,} five-year plans checked per farm · Repo <span class="ph">[REPO LINK]</span> · App <span class="ph">[APP LINK]</span></p>
+  <p class="sub">{tests_txt}up to {n_seq:,} five-year plans checked per farm · Repo <b>github.com/FynamicUZ/dalashift</b> · App <span class="ph">[APP LINK]</span></p>
 </section>
 """
 
