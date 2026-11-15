@@ -163,7 +163,7 @@ def col(title, d, cls):
             f"<div class='vrow'><span>Rotation health</span><b>{d['health']}/10</b></div></div>")
 
 import hashlib  # noqa: E402
-SHOT_V = hashlib.md5((ROOT / "docs/screenshots/farmer_full_phone.png").read_bytes()).hexdigest()[:8]   # cache-buster: browsers reload a new screenshot
+SHOT_V = hashlib.md5((ROOT / "docs/screenshots/farmer_en_phone.png").read_bytes()).hexdigest()[:8]   # cache-buster: browsers reload a new screenshot
 
 SLIDES = f"""
 <section class="hero" data-background-image="img/karshi_modis_terra_2025-08-12.jpg" data-background-size="cover"
@@ -201,7 +201,7 @@ SLIDES = f"""
   <img class="corner" src="img/dalashift_mark.png" alt="">
   <h2>DalaShift plans five years ahead.</h2>
   <div class="phonewrap">
-    <div class="phone"><div class="screen"><img class="scroll" src="../screenshots/farmer_full_phone.png?v={SHOT_V}" alt="DalaShift on a phone"></div></div>
+    <div class="phone"><div class="screen"><img class="scroll" src="../screenshots/farmer_en_phone.png?v={SHOT_V}" alt="DalaShift on a phone"></div></div>
     <ol class="steps">
       <li class="fragment fade-left">Pick your field.</li>
       <li class="fragment fade-left">See what changed.</li>
@@ -246,7 +246,7 @@ SLIDES = f"""
     <div class="rs fragment fade-up"><b>Uzcosmos</b><span>and national farm data</span></div>
     <div class="rs fragment fade-up"><b>Soil &amp; salinity</b><span>per field: SMAP, ECOSTRESS, HLS</span></div>
     <div class="rs fragment fade-up"><b>Telegram bot</b><span>in Uzbek: @dalashiftbot (prototype)</span></div>
-    <div class="rs fragment fade-up"><b>More crops</b><span>melon varieties, real costs</span></div>
+    <div class="rs fragment fade-up"><b>More crops</b><span>and plant varieties, real costs</span></div>
   </div>
   <div class="qrs">
     <figure><img src="img/qr_site.png" alt="QR: dalashift.netlify.app"><figcaption>dalashift.netlify.app</figcaption></figure>

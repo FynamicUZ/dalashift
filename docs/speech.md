@@ -52,7 +52,7 @@ So cotton years need 62 percent more water than the farm gets. For one year, the
 ## Slide 4: DalaShift plans five years ahead. (0:45, clock 2:35)
 
 **Speaker 2:**
-This is our live app. It's in Uzbek first, with income in so'm. On the screen: Karshi is selected at the top, and the card below shows what changed there: hot days, rain, soil and the greenest month.
+This is our live app, shown in English here; farmers get it in Uzbek first, with income in so'm. Karshi is selected at the top, and the card below shows what changed there: hot days, rain, soil and the greenest month.
 
 Three steps.
 [click] Pick your field: tap a district or "My location".
@@ -95,7 +95,7 @@ What's next?
 [click] Uzcosmos and national farm data.
 [click] Soil and salinity for each field, from SMAP, ECOSTRESS and HLS.
 [click] Our Telegram bot, @dalashiftbot, in Uzbek.
-[click] More crops, and real farm costs.
+[click] More crops and plant varieties, and real farm costs.
 
 The left QR code opens the app, and the right one opens the bot. There's also a 30-second video link.
 We are KarPS. Thank you!

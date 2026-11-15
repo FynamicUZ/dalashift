@@ -174,7 +174,7 @@ def copy_deck() -> None:
     for f in list((src / "img").glob("*.jpg")) + list((src / "img").glob("*.png")):
         shutil.copy2(f, dst / "img" / f.name)
     shutil.copy2(src / "DalaShift_deck.pdf", dst / "DalaShift_deck.pdf")
-    shutil.copy2(ROOT / "docs/screenshots/farmer_full_phone.png", WEB / "screenshots/farmer_full_phone.png")
+    shutil.copy2(ROOT / "docs/screenshots/farmer_en_phone.png", WEB / "screenshots/farmer_en_phone.png")
 
 
 def main() -> None:

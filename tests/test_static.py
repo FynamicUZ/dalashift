@@ -19,7 +19,7 @@ CFG = load_planner_config()
 
 def test_static_site_files_exist_and_paths_are_relative():
     for f in ["index.html", "app.js", "style.css", "data.json", "deck/index.html", "deck/vendor/reveal.min.js",
-              "deck/DalaShift_deck.pdf", "screenshots/farmer_full_phone.png"]:
+              "deck/DalaShift_deck.pdf", "screenshots/farmer_en_phone.png"]:
         assert (ROOT / "web" / f).exists(), f
     html = (ROOT / "web/index.html").read_text(encoding="utf-8") + (ROOT / "web/app.js").read_text(encoding="utf-8")
     assert 'src="/' not in html and 'href="/' not in html
