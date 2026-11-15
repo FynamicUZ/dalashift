@@ -80,6 +80,8 @@
 .rs { background: #fff; border: 1px solid var(--line); border-top: 6px solid var(--green); border-radius: 14px; padding: 22px; text-align: left; }
 .rs b { display: block; font-size: .78em; } .rs span { font-size: .52em; color: var(--muted); }
 .team { font-size: .55em; }
+.reveal img.corner { position: absolute; top: -10px; left: 0; width: 64px; height: 64px; margin: 0; }
+.reveal .hero h1 img.logo { height: 1.4em; width: auto; margin: 0; display: block; }
 
 @media print { .reveal .slides .pdf-page:last-of-type { page-break-after: avoid !important; break-after: avoid !important; } }
 </style>
@@ -92,7 +94,7 @@
   <p class="hook fragment fade-up">Every spring, a farmer near Karshi bets the family's year on one decision:</p>
   <p class="hook2 fragment fade-up">what to plant.</p>
   <div class="fragment fade-up">
-    <h1>DalaShift</h1>
+    <h1><img class="logo" src="img/dalashift_logo_light.png" alt="DalaShift"></h1>
     <p class="tag">Don't just choose the most profitable crop for this year.<br>Choose the best five-year future for your field.</p>
     <p class="meta">Field Shift: Adapting Farms with NASA Data · NASA Space Apps 2026 · Karshi · <b>KarPS</b></p>
   </div>
@@ -100,6 +102,7 @@
 </section>
 
 <section>
+  <img class="corner" src="img/dalashift_mark.png" alt="">
   <h2>The rules changed.</h2>
   <div class="big"><span class="count" data-from="96" data-to="104">104</span> <small>very hot days a year in Karshi, up from 96</small></div>
   <svg class='chart' viewBox='0 0 900 360' width='900' height='360'><line x1='40' x2='860' y1='320' y2='320' stroke='#d9d4c7'/><polyline class='draw' points='40.0,148.0 63.4,272.0 86.9,184.0 110.3,176.0 133.7,176.0 157.1,192.0 180.6,180.0 204.0,212.0 227.4,160.0 250.9,68.0 274.3,112.0 297.7,172.0 321.1,196.0 344.6,184.0 368.0,192.0 391.4,124.0 414.9,88.0 438.3,88.0 461.7,232.0 485.1,168.0 508.6,108.0 532.0,172.0 555.4,124.0 578.9,116.0 602.3,176.0 625.7,88.0 649.1,124.0 672.6,204.0 696.0,220.0 719.4,216.0 742.9,76.0 766.3,152.0 789.7,148.0 813.1,180.0 836.6,76.0 860.0,96.0' fill='none' stroke='#c0442f' stroke-width='3' stroke-linejoin='round'/><line class='mean' x1='40.0' x2='368.0' y1='174.8' y2='174.8' stroke='#6b716d' stroke-width='4' stroke-dasharray='8 6'/><line class='mean' x1='508.57142857142856' x2='860.0' y1='142.39999999999998' y2='142.39999999999998' stroke='#c0442f' stroke-width='4' stroke-dasharray='8 6'/><text x='40.0' y='350' class='ax'>1991</text><text x='820.0' y='350' class='ax'>2026</text><text x='40.0' y='204.8' class='ax mean'>avg 96</text><text x='508.57142857142856' y='128.39999999999998' class='ax mean' style='fill:#c0442f'>avg 104</text></svg>
@@ -107,12 +110,14 @@
 </section>
 
 <section>
+  <img class="corner" src="img/dalashift_mark.png" alt="">
   <h2>But fields are still planned one year at a time.</h2>
   <div class='wbars'><div class='budget' style='bottom:calc(22% + 78% * 0.5714)'><span>water the farm gets: 8,000 t / ha</span></div><div class='wb'><div class='wcol'><div class='wfill ok' style='--h:25.6%'></div></div><div class='wl'>Year 1<br><b>Wheat</b><br><span>3,590 t</span></div></div><div class='wb'><div class='wcol'><div class='wfill bad' style='--h:92.4%'></div></div><div class='wl'>Year 2<br><b>Cotton</b><br><span>12,940 t</span></div></div><div class='wb'><div class='wcol'><div class='wfill ok' style='--h:25.6%'></div></div><div class='wl'>Year 3<br><b>Wheat</b><br><span>3,590 t</span></div></div><div class='wb'><div class='wcol'><div class='wfill bad' style='--h:92.4%'></div></div><div class='wl'>Year 4<br><b>Cotton</b><br><span>12,940 t</span></div></div><div class='wb'><div class='wcol'><div class='wfill ok' style='--h:25.6%'></div></div><div class='wl'>Year 5<br><b>Wheat</b><br><span>3,590 t</span></div></div></div>
   <p class="sub">The usual wheat ↔ cotton rotation: cotton years need <b class="badtxt">62 % more water</b> than the farm gets.</p>
 </section>
 
 <section>
+  <img class="corner" src="img/dalashift_mark.png" alt="">
   <h2>DalaShift plans five years ahead.</h2>
   <div class="phonewrap">
     <div class="phone"><div class="screen"><img class="scroll" src="../screenshots/farmer_full_phone.png" alt="DalaShift on a phone"></div></div>
@@ -126,6 +131,7 @@
 </section>
 
 <section>
+  <img class="corner" src="img/dalashift_mark.png" alt="">
   <h2>NASA satellites, explained like a neighbour.</h2>
   <div class="two">
     <div><div class='src'><div class='sn'>NASA POWER</div><div class='sd'>35 years of daily weather: heat, frost, rain, crop water demand</div><div class='st used'>used</div></div><div class='src'><div class='sn'>NASA SMAP</div><div class='sd'>How dry is the soil under the field?</div><div class='st used'>used</div></div><div class='src'><div class='sn'>NASA ECOSTRESS</div><div class='sd'>Are the crops thirsty right now? (only 2 clear scenes so far)</div><div class='st limited'>limited</div></div><div class='src'><div class='sn'>NASA / USGS HLS</div><div class='sd'>How green is each field?</div><div class='st used'>used</div></div></div>
@@ -140,6 +146,7 @@
 </section>
 
 <section>
+  <img class="corner" src="img/dalashift_mark.png" alt="">
   <h2>What it changes in Karshi.</h2>
   <p class="plan">Chickpea → Wheat → Chickpea → Wheat → Barley</p>
   <div class="cmp">
@@ -152,6 +159,7 @@
 </section>
 
 <section>
+  <img class="corner" src="img/dalashift_mark.png" alt="">
   <h2>Next: every field in Uzbekistan.</h2>
   <div class="road">
     <div class="rs fragment fade-up"><b>Uzcosmos</b><span>and national farm data</span></div>

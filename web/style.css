@@ -5,7 +5,7 @@ body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'Inter'
 .wrap { max-width: 1080px; margin: 0 auto; padding: 18px 16px 40px; }
 button { font: inherit; cursor: pointer; }
 .top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-.brand { display: flex; align-items: center; gap: 10px; font-size: 1.55rem; font-weight: 700; }
+.brand { display: flex; align-items: center; } .brand img { height: 42px; width: auto; display: block; }
 .tabs { display: flex; gap: 22px; align-items: center; border-bottom: 1px solid var(--line); margin: 14px 0 6px; flex-wrap: wrap; }
 .tabs button { background: none; border: 0; padding: 10px 0; color: var(--ink); border-bottom: 2px solid transparent; }
 .tabs button.on { color: var(--green); border-bottom-color: var(--green); font-weight: 600; }

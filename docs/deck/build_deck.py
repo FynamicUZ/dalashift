@@ -117,7 +117,7 @@ SLIDES = f"""
   <p class="hook fragment fade-up">Every spring, a farmer near Karshi bets the family's year on one decision:</p>
   <p class="hook2 fragment fade-up">what to plant.</p>
   <div class="fragment fade-up">
-    <h1>DalaShift</h1>
+    <h1><img class="logo" src="img/dalashift_logo_light.png" alt="DalaShift"></h1>
     <p class="tag">Don't just choose the most profitable crop for this year.<br>Choose the best five-year future for your field.</p>
     <p class="meta">Field Shift: Adapting Farms with NASA Data · NASA Space Apps 2026 · Karshi · <b>KarPS</b></p>
   </div>
@@ -125,6 +125,7 @@ SLIDES = f"""
 </section>
 
 <section>
+  <img class="corner" src="img/dalashift_mark.png" alt="">
   <h2>The rules changed.</h2>
   <div class="big"><span class="count" data-from="{k_then}" data-to="{k_now}">{k_now}</span> <small>very hot days a year in Karshi, up from {k_then}</small></div>
   {chart_svg()}
@@ -132,12 +133,14 @@ SLIDES = f"""
 </section>
 
 <section>
+  <img class="corner" src="img/dalashift_mark.png" alt="">
   <h2>But fields are still planned one year at a time.</h2>
   {water_bars()}
   <p class="sub">The usual wheat ↔ cotton rotation: cotton years need <b class="badtxt">{over_pct} % more water</b> than the farm gets.</p>
 </section>
 
 <section>
+  <img class="corner" src="img/dalashift_mark.png" alt="">
   <h2>DalaShift plans five years ahead.</h2>
   <div class="phonewrap">
     <div class="phone"><div class="screen"><img class="scroll" src="../screenshots/farmer_full_phone.png" alt="DalaShift on a phone"></div></div>
@@ -151,6 +154,7 @@ SLIDES = f"""
 </section>
 
 <section>
+  <img class="corner" src="img/dalashift_mark.png" alt="">
   <h2>NASA satellites, explained like a neighbour.</h2>
   <div class="two">
     <div>{data_html}</div>
@@ -165,6 +169,7 @@ SLIDES = f"""
 </section>
 
 <section>
+  <img class="corner" src="img/dalashift_mark.png" alt="">
   <h2>What it changes in Karshi.</h2>
   <p class="plan">{" → ".join(bal_names)}</p>
   <div class="cmp">
@@ -177,6 +182,7 @@ SLIDES = f"""
 </section>
 
 <section>
+  <img class="corner" src="img/dalashift_mark.png" alt="">
   <h2>Next: every field in Uzbekistan.</h2>
   <div class="road">
     <div class="rs fragment fade-up"><b>Uzcosmos</b><span>and national farm data</span></div>
@@ -262,6 +268,8 @@ CSS = """
 .rs { background: #fff; border: 1px solid var(--line); border-top: 6px solid var(--green); border-radius: 14px; padding: 22px; text-align: left; }
 .rs b { display: block; font-size: .78em; } .rs span { font-size: .52em; color: var(--muted); }
 .team { font-size: .55em; }
+.reveal img.corner { position: absolute; top: -10px; left: 0; width: 64px; height: 64px; margin: 0; }
+.reveal .hero h1 img.logo { height: 1.4em; width: auto; margin: 0; display: block; }
 """
 
 JS = """

@@ -169,7 +169,7 @@ def copy_deck() -> None:
     shutil.copy2(src / "offline.html", dst / "index.html")
     for f in ["reveal.min.css", "reveal.min.js", "reset.min.css", "theme/white.min.css"]:
         shutil.copy2(src / "vendor" / f, dst / "vendor" / f)
-    for f in (src / "img").glob("*.jpg"):
+    for f in list((src / "img").glob("*.jpg")) + list((src / "img").glob("*.png")):
         shutil.copy2(f, dst / "img" / f.name)
     shutil.copy2(src / "DalaShift_deck.pdf", dst / "DalaShift_deck.pdf")
     shutil.copy2(ROOT / "docs/screenshots/farmer_full_phone.png", WEB / "screenshots/farmer_full_phone.png")

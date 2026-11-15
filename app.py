@@ -29,7 +29,7 @@ C_THEN, C_NOW, C_MID = "#2a78d6", "#eb6834", "#c3c2b7"
 INK, INK2, MUTED, GRID, AXIS = "#0b0b0b", "#52514e", "#898781", "#e1e0d9", "#c3c2b7"
 RISK_ICON = {"low": "", "medium": "", "high": ""}
 
-st.set_page_config(page_title="DalaShift", page_icon="", layout="wide")
+st.set_page_config(page_title="DalaShift", page_icon=str(Path(__file__).parent / "docs/img/favicon.png"), layout="wide")
 
 
 # ------------------------------------------------------------------ data
@@ -85,12 +85,9 @@ with top_r:
     lang = "en" if st.segmented_control("Til / Language", ["Oʻzbekcha", "English"], default="Oʻzbekcha",
                                         key="lang_toggle", label_visibility="collapsed") == "English" else "uz"
 with top_l:
-    st.markdown("<div style='display:flex;align-items:center;gap:10px;font-family:Inter,system-ui,sans-serif'>"
-                "<svg width='30' height='30' viewBox='0 0 24 24' fill='none' stroke='#1f5f3f' stroke-width='2' "
-                "stroke-linecap='round' stroke-linejoin='round'><path d='M7 20h10'/><path d='M10 20c5.5-2.5.8-6.4 3-10'/>"
-                "<path d='M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z'/>"
-                "<path d='M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z'/></svg>"
-                "<span style='font-size:1.55rem;font-weight:700;color:#1d2521'>DalaShift</span></div>",
+    import base64
+    _logo = base64.b64encode((ROOT / "docs/img/dalashift_logo.png").read_bytes()).decode()
+    st.markdown(f"<img src='data:image/png;base64,{_logo}' alt='DalaShift' style='height:42px;margin:6px 0'>",
                 unsafe_allow_html=True)
 
 tab_farmer, tab_expert = st.tabs([t("tab_farmer", lang), t("tab_expert", lang)])
