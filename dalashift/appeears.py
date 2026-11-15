@@ -67,7 +67,8 @@ def load_appeears(folder: Path, points: pd.DataFrame) -> pd.DataFrame:
         if date_c is None:
             continue
         pid = _match_ids(df, points)
-        date = pd.to_datetime(df[date_c], errors="coerce")
+        # mixed sources: SMAP/ECOSTRESS dates carry "UTC", HLS dates do not -> all UTC, then tz-naive
+        date = pd.to_datetime(df[date_c], errors="coerce", utc=True).dt.tz_localize(None)
         series = {}
         if c := _find(df.columns, r"sm_rootzone$"):
             series["sm"] = _clean(df[c])

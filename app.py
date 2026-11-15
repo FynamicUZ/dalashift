@@ -292,6 +292,10 @@ with tab_water:
         units = {"sm": "m³/m³", "esi": "", "ndvi": ""}
         if (wp["var"] == "sm").any():
             st.caption("ℹ️ " + t("smap_note", lang))
+        if wp["var"].isin(["esi", "etdaily"]).any():
+            st.caption("ℹ️ " + t("ecostress_note", lang))
+        if (wp["var"] == "ndvi").any():
+            st.caption("ℹ️ " + t("hls_note", lang))
         for var in ["sm", "esi", "ndvi"]:
             v = wp[wp["var"] == var].sort_values("date")
             st.markdown(f"#### {t(var, lang)}")

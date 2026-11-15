@@ -103,7 +103,7 @@ def cmp_bar(label: str, value: float, text: str, good: bool, scale: float = 60) 
 data_rows = [
     ("NASA POWER", "35 years of daily weather: heat, frost, rain, crop water demand", "used"),
     ("NASA SMAP", "How dry is the soil under the field?", "used" if "sm" in HAS else "integrating"),
-    ("NASA ECOSTRESS", "Are the crops thirsty right now?", "used" if HAS & {"esi", "etdaily"} else "integrating"),
+    ("NASA ECOSTRESS", "Are the crops thirsty right now? (only 2 clear scenes so far)", "limited" if HAS & {"esi", "etdaily"} else "integrating"),
     ("NASA / USGS HLS", "How green is each field?", "used" if "ndvi" in HAS else "integrating"),
 ]
 data_html = "".join(f"<div class='src'><div class='sn'>{n}</div><div class='sd'>{d}</div><div class='st {s}'>{s}</div></div>"
@@ -245,7 +245,7 @@ CSS = """
 .src { display: grid; grid-template-columns: 220px 1fr 140px; gap: 14px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--line); font-size: .5em; }
 .src .sn { font-weight: 700; } .src .sd { color: var(--muted); }
 .src .st { font-weight: 700; text-align: center; border-radius: 999px; padding: 4px 8px; }
-.src .st.used { color: var(--ok); border: 2px solid var(--ok); } .src .st.integrating { color: var(--warn); border: 2px solid var(--warn); }
+.src .st.used { color: var(--ok); border: 2px solid var(--ok); } .src .st.limited, .src .st.integrating { color: var(--warn); border: 2px solid var(--warn); }
 .say { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 16px 22px; margin: 16px 0; font-size: .62em;
        box-shadow: 0 4px 16px rgba(20,30,25,.05); }
 /* 6 comparison */

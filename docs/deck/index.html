@@ -63,7 +63,7 @@
 .src { display: grid; grid-template-columns: 220px 1fr 140px; gap: 14px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--line); font-size: .5em; }
 .src .sn { font-weight: 700; } .src .sd { color: var(--muted); }
 .src .st { font-weight: 700; text-align: center; border-radius: 999px; padding: 4px 8px; }
-.src .st.used { color: var(--ok); border: 2px solid var(--ok); } .src .st.integrating { color: var(--warn); border: 2px solid var(--warn); }
+.src .st.used { color: var(--ok); border: 2px solid var(--ok); } .src .st.limited, .src .st.integrating { color: var(--warn); border: 2px solid var(--warn); }
 .say { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 16px 22px; margin: 16px 0; font-size: .62em;
        box-shadow: 0 4px 16px rgba(20,30,25,.05); }
 /* 6 comparison */
@@ -128,7 +128,7 @@
 <section>
   <h2>NASA satellites, explained like a neighbour.</h2>
   <div class="two">
-    <div><div class='src'><div class='sn'>NASA POWER</div><div class='sd'>35 years of daily weather: heat, frost, rain, crop water demand</div><div class='st used'>used</div></div><div class='src'><div class='sn'>NASA SMAP</div><div class='sd'>How dry is the soil under the field?</div><div class='st used'>used</div></div><div class='src'><div class='sn'>NASA ECOSTRESS</div><div class='sd'>Are the crops thirsty right now?</div><div class='st integrating'>integrating</div></div><div class='src'><div class='sn'>NASA / USGS HLS</div><div class='sd'>How green is each field?</div><div class='st integrating'>integrating</div></div></div>
+    <div><div class='src'><div class='sn'>NASA POWER</div><div class='sd'>35 years of daily weather: heat, frost, rain, crop water demand</div><div class='st used'>used</div></div><div class='src'><div class='sn'>NASA SMAP</div><div class='sd'>How dry is the soil under the field?</div><div class='st used'>used</div></div><div class='src'><div class='sn'>NASA ECOSTRESS</div><div class='sd'>Are the crops thirsty right now? (only 2 clear scenes so far)</div><div class='st limited'>limited</div></div><div class='src'><div class='sn'>NASA / USGS HLS</div><div class='sd'>How green is each field?</div><div class='st used'>used</div></div></div>
     <div class="sees">
       <div class="say fragment fade-up">“8 more very hot days a year than in the 1990s.”</div>
       <div class="say fragment fade-up">“14 mm less rain in the growing season.”</div>
@@ -160,7 +160,7 @@
     <div class="rs fragment fade-up"><b>More crops</b><span>melon varieties, real costs</span></div>
   </div>
   <p class="team"><b>KarPS</b> · Ahmedov Zuhriddin · Alisherov Azimbek · Shermaxmatov Ozodbek · Botirxonov Faxriyor · Boyqulov Afzalbek</p>
-  <p class="sub">238 automated tests · up to 248,832 five-year plans checked per farm · Repo <span class="ph">[REPO LINK]</span> · App <span class="ph">[APP LINK]</span></p>
+  <p class="sub">241 automated tests · up to 248,832 five-year plans checked per farm · Repo <span class="ph">[REPO LINK]</span> · App <span class="ph">[APP LINK]</span></p>
 </section>
 
 </div></div>

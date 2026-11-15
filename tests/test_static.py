@@ -47,3 +47,14 @@ def test_static_numbers_match_the_engine(district, water, must):
         assert w["water_per_year"] == round(plan["water_per_year"])
         c = compare(plan, usual)
         assert w["cmp"]["water_pct"] == round(c["water_pct"], 1)
+
+
+def test_app_js_has_valid_syntax():
+    import shutil
+    import subprocess
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("node not installed")
+    code = "new Function(require('fs').readFileSync(process.argv[1], 'utf8'))"
+    r = subprocess.run([node, "-e", code, str(ROOT / "web/app.js")], capture_output=True, text=True)
+    assert r.returncode == 0, r.stderr

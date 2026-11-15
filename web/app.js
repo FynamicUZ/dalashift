@@ -15,6 +15,7 @@
     drop: "<path d='M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z'/>",
     coins: "<circle cx='8' cy='8' r='6'/><path d='M18.09 10.37A6 6 0 1 1 10.34 18'/><path d='M7 6h1v4'/>",
     shield: "<path d='M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z'/>",
+    sprout: "<path d='M7 20h10'/><path d='M10 20c5.5-2.5.8-6.4 3-10'/><path d='M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z'/><path d='M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z'/>",
     alert: "<path d='m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z'/><path d='M12 9v4'/><path d='M12 17h.01'/>",
     map: "<path d='M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z'/><path d='M15 5.764v15'/><path d='M9 3.236v15'/>"
   };
@@ -33,7 +34,7 @@
     plan: { uz: 'Reja', en: 'Plan' }, seq: { uz: '5 yil', en: '5 years' },
     usd: { uz: 'Foyda, USD/ga/yil (±15 %)', en: 'Profit, USD/ha/yr (±15 %)' }, water: { uz: 'Suv, m³/ga/yil', en: 'Water, m³/ha/yr' },
     health: { uz: 'Salomatlik', en: 'Health' }, vsusual: { uz: 'Bugʻdoy ↔ paxtaga nisbatan', en: 'vs wheat ↔ cotton' },
-    limits: { uz: 'Cheklovlar', en: 'Limits' }, smap: { uz: 'NASA SMAP: ildiz qatlami tuproq namligi (m³/m³), haftalik', en: 'NASA SMAP: root-zone soil moisture (m³/m³), weekly' }, et0: { uz: 'ET0 tuzatmasi', en: 'ET0 correction' },
+    limits: { uz: 'Cheklovlar', en: 'Limits' }, hls: { uz: 'NASA/USGS HLS: yashillik (NDVI), haftalik', en: 'NASA/USGS HLS: greenness (NDVI), weekly' }, smap: { uz: 'NASA SMAP: ildiz qatlami tuproq namligi (m³/m³), haftalik', en: 'NASA SMAP: root-zone soil moisture (m³/m³), weekly' }, et0: { uz: 'ET0 tuzatmasi', en: 'ET0 correction' },
     deck: { uz: 'Taqdimotni ochish', en: 'Open the pitch deck' }, budget: { uz: 'Suv byudjeti', en: 'Water budget' },
     low: { uz: 'past', en: 'low' }, medium: { uz: 'oʻrta', en: 'medium' }, high: { uz: 'yuqori', en: 'high' }
   };
@@ -73,7 +74,8 @@
       " <span class='d' style='color:" + (dr < 0 ? C.bad : C.ok) + "'>" + (dr > 0 ? '+' : '') + dr + '</span></div></div>' +
       "<div class='fact'><div class='l'>" + icon('drop', C.muted, 15) + ' ' + t('budget') + "</div><div class='v'>" + fmt(budget / 1000) + ' ' + t('k_tonnes') + '</div></div>' +
       '</div>' + (dist.smap ? "<div class='smap'>" + icon('drop', C.green, 15) + '<div>' +
-        esc(t('smap').replace('{p}', dist.smap.drop_pct).replace('{y}', dist.smap.year)) + '</div></div>' : '') + '</div>';
+        esc(t('smap').replace('{p}', dist.smap.drop_pct).replace('{y}', dist.smap.year)) + '</div></div>' : '') +
+      (dist.hls ? "<div class='smap'>" + icon('sprout', C.green, 15) + '<div>' + esc(dist.hls_line[S.lang]) + '</div></div>' : '') + '</div>';
     h += "<div class='controls'><div class='lbl'>" + t('q_water') + '</div>' +
       seg('water', Object.keys(D.water_levels), S.water, function (k) { return t('w_' + k); }) +
       "<label class='switch'><input type='checkbox' id='must'" + (S.must ? ' checked' : '') + "><span class='knob'></span><span>" + t('q_must') + '</span></label>' +
@@ -128,15 +130,17 @@
     s += "<text x='" + X_(i0) + "' y='" + (Y_(f.hot_then) - 8) + "'>1991–2005: " + f.hot_then + "</text><text x='" + X_(j0) + "' y='" + (Y_(f.hot_now) - 8) + "' style='fill:" + C.bad + "'>2011–2026: " + f.hot_now + '</text>';
     return s + '</svg>';
   }
-  function smapChart(sm) {
+  function smapChart(sm, color, digits) {
+    color = color || C.green; digits = digits === undefined ? 2 : digits;
     var w = 760, hh = 220, pad = 34, v = sm.weekly, n = v.length;
     var lo = Math.floor(Math.min.apply(null, v) * 50) / 50, hi = Math.ceil(Math.max.apply(null, v) * 50) / 50;
     function X_(i) { return pad + i * (w - 2 * pad) / (n - 1); }
     function Y_(y) { return hh - pad - (y - lo) / (hi - lo) * (hh - 2 * pad); }
     var s = "<svg class='chart' viewBox='0 0 " + w + ' ' + hh + "' width='100%' role='img' aria-label='SMAP'>";
     [lo, (lo + hi) / 2, hi].forEach(function (y) { s += "<line x1='" + pad + "' x2='" + (w - pad) + "' y1='" + Y_(y) + "' y2='" + Y_(y) + "' stroke='#eee'/><text x='0' y='" + (Y_(y) + 4) + "'>" + y.toFixed(2) + '</text>'; });
-    s += "<polyline points='" + v.map(function (y, i) { return X_(i).toFixed(1) + ',' + Y_(y).toFixed(1); }).join(' ') + "' fill='none' stroke='" + C.green + "' stroke-width='2'/>";
+    s += "<polyline points='" + v.map(function (y, i) { return X_(i).toFixed(1) + ',' + Y_(y).toFixed(1); }).join(' ') + "' fill='none' stroke='" + color + "' stroke-width='2'/>";
     s += "<text x='" + pad + "' y='" + (hh - 8) + "'>" + sm.weekly_dates[0] + "</text><text x='" + (w - pad - 70) + "' y='" + (hh - 8) + "'>" + sm.weekly_dates[n - 1] + '</text>';
+    if (!sm.spring) { return s + '</svg>'; }
     return s + "</svg><div class='sub'>" + (S.lang === 'uz' ? 'Bahor (mart–aprel) ' : 'Spring (Mar–Apr) ') + sm.spring + ' → ' + (S.lang === 'uz' ? 'yoz (iyul–avgust) ' : 'summer (Jul–Aug) ') + sm.summer + ' m³/m³, ' + sm.year + ' (−' + sm.drop_pct + ' %)</div>';
   }
   function renderExpert() {
@@ -147,6 +151,9 @@
     h += "<div class='card' style='margin-top:14px'><b>" + x('climate') + '</b>' + hotChart(f) +
       "<div class='sub'>NASA POWER (MERRA-2) · " + (S.lang === 'uz' ? 'mavsumdagi yomgʻir' : 'season rain') + ' ' + f.rain_then + ' → ' + f.rain_now + ' mm</div></div>';
     if (dist.smap) { h += "<div class='card' style='margin-top:14px'><b>" + x('smap') + '</b>' + smapChart(dist.smap) + "<div class='sub'>" + esc(D.smap_note[S.lang]) + '</div></div>'; }
+    if (dist.hls) { h += "<div class='card' style='margin-top:14px'><b>" + x('hls') + '</b>' + smapChart({ weekly: dist.hls.weekly, weekly_dates: dist.hls.weekly_dates }, '#7a9a2e') +
+      "<div class='sub'>" + esc(dist.hls_line[S.lang]) + "</div><div class='sub'>" + esc(D.hls_note[S.lang]) + '</div></div>'; }
+    if (dist.has_ecostress) { h += "<div class='card' style='margin-top:14px'><b>NASA ECOSTRESS</b><div class='sub'>" + esc(D.ecostress_note[S.lang]) + '</div></div>'; }
     var et = dist.et0_correction;
     h += "<div class='card' style='margin-top:14px'><b>" + x('crops') + '</b>' + (et ? "<div class='sub'>" + x('et0') + ': × ' + et.factor + ' · ' + esc(et.label) + '</div>' : '') +
       "<div class='tablewrap'><table><tr><th>" + x('crop') + "</th><th class='num'>" + x('need') + '</th><th>' + x('fit') + '</th><th>' + x('season') + '</th><th>' + x('heat') + '</th></tr>' +

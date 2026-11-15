@@ -22,6 +22,7 @@ sys.path.insert(0, str(ROOT))
 from dalashift import simple_ui as su  # noqa: E402
 from dalashift.appeears import load_appeears  # noqa: E402
 from dalashift.smap import summary as smap_summary  # noqa: E402
+from dalashift.hls import farmer_line as hls_line, summary as hls_summary  # noqa: E402
 from dalashift.baseline import compare, evaluate_usual, water_deficit  # noqa: E402
 from dalashift.crops import load_crop_table  # noqa: E402
 from dalashift.i18n import CROP_NAMES, DISTRICTS, T  # noqa: E402
@@ -113,6 +114,8 @@ def build() -> dict:
            "limits": {lang: md_to_html(T["limits_text"][lang]) + md_to_html(T["pl_limits_text"][lang]) for lang in LANGS},
            "credits": {lang: T["credits"][lang] for lang in LANGS},
            "smap_note": {lang: T["smap_note"][lang] for lang in LANGS},
+           "hls_note": {lang: T["hls_note"][lang] for lang in LANGS},
+           "ecostress_note": {lang: T["ecostress_note"][lang] for lang in LANGS},
            "crop_names": {c: {lang: v[lang] for lang in LANGS} for c, v in CROP_NAMES.items()},
            "districts": {}}
     for d in su.FARMER_DISTRICTS:
@@ -131,6 +134,9 @@ def build() -> dict:
                       for c, m in point["baseline"].items() if c in CROP_NAMES],
             "et0_correction": point.get("et0_correction"),
             "smap": smap_summary(water, pid),
+            "hls": hls_summary(water, pid),
+            "hls_line": {lang: hls_line(hls_summary(water, pid), lang) for lang in LANGS},
+            "has_ecostress": bool(len(water) and water[(water["point"] == pid) & water["var"].isin(["esi", "etdaily"])].shape[0]),
             "scenarios": {},
         }
         cotton_need = point["baseline"]["cotton"]["need_m3ha"]

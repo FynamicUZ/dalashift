@@ -33,3 +33,20 @@ def test_real_smap_karshi_is_physical_and_exported():
     assert s and 0.02 < s["summer"] < s["spring"] < 0.6 and 10 <= s["drop_pct"] <= 80
     web = json.loads((ROOT / "web/data.json").read_text(encoding="utf-8"))
     assert web["districts"]["Karshi"]["smap"]["drop_pct"] == s["drop_pct"]
+
+
+HAS_NDVI = len(WATER) and (WATER["var"] == "ndvi").any()
+
+
+@pytest.mark.skipif(not HAS_NDVI, reason="no HLS file in data/appeears")
+def test_hls_karshi_matches_wheat_then_summer_crop():
+    from dalashift.hls import summary as hls
+    h = hls(WATER, "Karshi_field1")
+    assert h["years"][2025]["peak_month"] in (3, 4, 5)        # winter wheat peaks in spring
+    assert h["years"][2026]["kind"] == "summer_crop" and h["peak_month"] in (7, 8, 9)
+    assert 0.5 < h["peak"] <= 1
+
+
+def test_mixed_timezone_dates_load():
+    """SMAP/ECOSTRESS dates carry 'UTC', HLS dates do not: the loader must accept both together."""
+    assert len(WATER) == 0 or WATER["date"].dt.tz is None

@@ -20,6 +20,7 @@ from .i18n import CROP_NAMES, DISTRICTS, MONTHS
 from .planner import CONFIG, load_planner_config
 from .planner_ui import _run
 from .smap import summary as smap_summary
+from .hls import farmer_line as hls_line, summary as hls_summary
 
 FARMER_DISTRICTS = ["Karshi", "Fergana", "Urgench", "Nukus", "Gulistan"]
 # water a farmer can pick without knowing m3 (net irrigation water per ha per year; HYPOTHETICAL levels)
@@ -42,6 +43,7 @@ ICONS = {
     "drop": "<path d='M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z'/>",
     "coins": "<circle cx='8' cy='8' r='6'/><path d='M18.09 10.37A6 6 0 1 1 10.34 18'/><path d='M7 6h1v4'/>",
     "shield": "<path d='M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z'/>",
+    "sprout": "<path d='M7 20h10'/><path d='M10 20c5.5-2.5.8-6.4 3-10'/><path d='M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z'/><path d='M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z'/>",
     "alert": "<path d='m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z'/><path d='M12 9v4'/><path d='M12 17h.01'/>",
 }
 
@@ -275,7 +277,7 @@ def smap_line(sm: dict | None, lang: str) -> str:
             f"{ft('smap', lang, p=sm['drop_pct'], y=sm['year'])}</div></div>")
 
 
-def _field_card(d: str, summary: dict, budget: float, lang: str, sm: dict | None = None) -> str:
+def _field_card(d: str, summary: dict, budget: float, lang: str, sm: dict | None = None, hs: dict | None = None) -> str:
     S = summary["points"][f"{d}_field1"]
     th, nw = S["then"], S["now"]
     dh = round(nw["hot_days"] - th["hot_days"])
@@ -291,7 +293,9 @@ def _field_card(d: str, summary: dict, budget: float, lang: str, sm: dict | None
         f"<span class='d' style='color:{BAD if dr < 0 else OK}'>{dr:+d}</span></div></div>"
         f"<div class='f-fact'><div class='l'>{icon('drop', MUTED, 15)} {ft('budget', lang)}</div>"
         f"<div class='v'>{fmt_mln(budget / 1000, lang)} {ft('k_tonnes', lang)}</div></div>"
-        f"</div>{smap_line(sm, lang)}</div>")
+        f"</div>{smap_line(sm, lang)}"
+        + (f"<div class='f-smap'>{icon('sprout', GREEN, 15)}<div>{hls_line(hs, lang)}</div></div>" if hs else "")
+        + "</div>")
 
 
 def _timeline(plan: dict, point: dict, budget: float, lang: str) -> str:
@@ -380,7 +384,8 @@ def render(lang: str, planner_data: dict, summary: dict, points: pd.DataFrame, w
     budget = WATER_LEVELS[lvl]
     with c1:
         sm = smap_summary(water, f"{d}_field1") if water is not None else None
-        st.markdown(_field_card(d, summary, budget, lang, sm), unsafe_allow_html=True)
+        hs = hls_summary(water, f"{d}_field1") if water is not None else None
+        st.markdown(_field_card(d, summary, budget, lang, sm, hs), unsafe_allow_html=True)
 
     # ---------------------------------------------------------------- plan
     point = planner_data["points"][f"{d}_field1"]
