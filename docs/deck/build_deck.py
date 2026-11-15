@@ -109,6 +109,26 @@ data_html = "".join(f"<div class='src'><div class='sn'>{n}</div><div class='sd'>
                     for n, d, s in data_rows)
 tests_txt = f"{N_TESTS} automated tests · " if N_TESTS else ""
 risk_now, risk_was = risk_level(bal), risk_level(wc)
+NAMES5 = {"winter_wheat": "Wheat", "cotton": "Cotton", "chickpea": "Chickpea", "barley": "Barley", "mung_bean": "Mung bean"}
+
+
+def five(plan):
+    return {"crops": [" + ".join(NAMES5.get(c, c) for c in y["crops"]) for y in plan["years"]],
+            "income5": to_mln(plan["profit_total_range"]["low"]), "short": sum(y["water"] > BUDGET + 1e-6 for y in plan["years"]),
+            "legume": sum(bool(y["legume"]) for y in plan["years"]), "health": int(plan["health"])}
+
+
+U5, D5 = five(wc), five(bal)
+
+
+def col(title, d, cls):
+    chips = "".join(f"<span class='yc'>{c}</span>" for c in d["crops"])
+    water = (f"short of water in <b>{d['short']} of 5</b> years" if d["short"] else "fits the water <b>every year</b>")
+    return (f"<div class='vcol {cls}'><h3>{title}</h3><div class='ychips'>{chips}</div>"
+            f"<div class='vrow'><span>Income, 5 years</span><b>≈ {d['income5']:g} mln soʻm/ha</b></div>"
+            f"<div class='vrow'><span>Water</span><b>{water}</b></div>"
+            f"<div class='vrow'><span>Soil: legume years</span><b>{d['legume']} of 5</b></div>"
+            f"<div class='vrow'><span>Rotation health</span><b>{d['health']}/10</b></div></div>")
 
 SLIDES = f"""
 <section class="hero" data-background-image="img/karshi_modis_terra_2025-08-12.jpg" data-background-size="cover"
@@ -174,14 +194,15 @@ SLIDES = f"""
 
 <section>
   <img class="corner" src="img/dalashift_mark.png" alt="">
-  <h2>What it changes in Karshi.</h2>
-  <p class="plan">{" → ".join(bal_names)}</p>
-  <div class="cmp">
-    {cmp_bar("Water used", c_wc['water_pct'], f"{c_wc['water_pct']:+.0f} %", c_wc['water_pct'] < 0)}
-    {cmp_bar("Income", c_wc['income_pct'], f"{c_wc['income_pct']:+.0f} %", c_wc['income_pct'] > 0)}
+  <h2>Same field, five years: the usual plan vs DalaShift.</h2>
+  <div class="vs">
+    {col("Usual: wheat ↔ cotton", U5, "bad5")}
+    <div class="vmid">vs</div>
+    {col("DalaShift: balanced plan", D5, "good5")}
   </div>
-  <p class="sub">Balanced plan vs the usual wheat ↔ cotton, same farm, {BUDGET:,} m³ of water per ha · about {bal_low:g} mln soʻm / ha / year, conservative.<br>
-  Must grow cotton? It needs {cotton_need:,} m³/ha here: DalaShift says so, then shows the closest plan.</p>
+  <p class="sub">Karshi, {BUDGET:,} m³ of water per ha a year · model estimate with 2011–2026 NASA POWER climate (not a replay of each past year) ·
+  income = cautious low end · rotation health is a rule score (repeats, legume breaks, crop diversity), not a soil measurement.<br>
+  Water use −{abs(c_wc['water_pct']):.0f} %, income +{c_wc['income_pct']:.0f} % vs the usual plan.</p>
 </section>
 
 <section>
@@ -279,6 +300,16 @@ CSS = """
 .rs { background: #fff; border: 1px solid var(--line); border-top: 6px solid var(--green); border-radius: 14px; padding: 22px; text-align: left; }
 .rs b { display: block; font-size: .78em; } .rs span { font-size: .52em; color: var(--muted); }
 .team { font-size: .55em; }
+.vs { display: grid; grid-template-columns: 1fr 70px 1fr; gap: 10px; align-items: stretch; margin-top: 10px; text-align: left; }
+.vcol { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 18px 22px; }
+.vcol.bad5 { border-top: 6px solid var(--bad); } .vcol.good5 { border-top: 6px solid var(--ok); }
+.vcol h3 { font-size: .7em; margin: 0 0 10px; }
+.ychips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.yc { font-size: .42em; background: #f3efe4; border-radius: 999px; padding: 4px 10px; }
+.vrow { display: flex; justify-content: space-between; gap: 12px; font-size: .5em; padding: 7px 0; border-top: 1px solid var(--line); }
+.vrow span { color: var(--muted); }
+.bad5 .vrow b { color: var(--bad); } .good5 .vrow b { color: var(--ok); }
+.vmid { align-self: center; text-align: center; font-weight: 800; color: var(--muted); font-size: .8em; }
 .probs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin: 10px 0 24px; text-align: left; }
 .pb { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 20px 22px; }
 .pn { font-size: 1.6em; font-weight: 800; color: var(--green); line-height: 1.1; margin-bottom: 8px; }
