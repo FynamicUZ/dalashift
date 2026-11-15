@@ -24,7 +24,15 @@ from dalashift.simple_ui import to_mln  # noqa: E402
 DECK = Path(__file__).resolve().parent
 CDN = "https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1"
 N_TESTS = int(sys.argv[1]) if len(sys.argv) > 1 else None
-HAS_APPEEARS = any((ROOT / "data/appeears").glob("*.csv"))
+import pandas as pd  # noqa: E402
+
+from dalashift.appeears import load_appeears  # noqa: E402
+from dalashift.smap import summary as smap_summary  # noqa: E402
+
+WATER = load_appeears(ROOT / "data/appeears", pd.read_csv(ROOT / "data/points.csv"))
+HAS = set(WATER["var"]) if len(WATER) else set()
+HAS_APPEEARS = bool(HAS)
+SMAP_K = smap_summary(WATER, "Karshi_field1")
 
 S = json.loads((ROOT / "data/summary.json").read_text(encoding="utf-8"))
 P = json.loads((ROOT / "data/planner.json").read_text(encoding="utf-8"))["points"]
@@ -94,9 +102,9 @@ def cmp_bar(label: str, value: float, text: str, good: bool, scale: float = 60) 
 
 data_rows = [
     ("NASA POWER", "35 years of daily weather: heat, frost, rain, crop water demand", "used"),
-    ("NASA SMAP", "How dry is the soil under the field?", "used" if HAS_APPEEARS else "integrating"),
-    ("NASA ECOSTRESS", "Are the crops thirsty right now?", "used" if HAS_APPEEARS else "integrating"),
-    ("NASA / USGS HLS", "How green is each field?", "used" if HAS_APPEEARS else "integrating"),
+    ("NASA SMAP", "How dry is the soil under the field?", "used" if "sm" in HAS else "integrating"),
+    ("NASA ECOSTRESS", "Are the crops thirsty right now?", "used" if HAS & {"esi", "etdaily"} else "integrating"),
+    ("NASA / USGS HLS", "How green is each field?", "used" if "ndvi" in HAS else "integrating"),
 ]
 data_html = "".join(f"<div class='src'><div class='sn'>{n}</div><div class='sd'>{d}</div><div class='st {s}'>{s}</div></div>"
                     for n, d, s in data_rows)
@@ -150,6 +158,7 @@ SLIDES = f"""
       <div class="say fragment fade-up">“{k_now - k_then} more very hot days a year than in the 1990s.”</div>
       <div class="say fragment fade-up">“{rain_then - rain_now} mm less rain in the growing season.”</div>
       <div class="say fragment fade-up">“Each hectare needs ~{et0_t:,.0f} more tonnes of water a year.”</div>
+      {f'<div class="say fragment fade-up">“Without canal water, your soil dries {SMAP_K["drop_pct"]} % from spring to summer.” <small>(SMAP, {SMAP_K["year"]})</small></div>' if SMAP_K else ''}
     </div>
   </div>
   <p class="sub">Also used, non-NASA: FAO-56 crop water method · FAOSTAT yields · Korzinka and Uzum retail prices</p>

@@ -7,6 +7,8 @@ T = {
                 "uz": "Faqat shu yilning eng daromadli ekinini tanlamang. Dalangiz uchun eng yaxshi besh yillik kelajakni tanlang."},
     "language": {"en": "Language / Til", "uz": "Til / Language"},
     "field": {"en": "Field", "uz": "Dala"},
+    "smap_note": {"en": "NASA SMAP L4 (SPL4SMGP) root-zone soil moisture, 9 km, 3-hourly, via AppEEARS. It is a model + satellite product that does NOT simulate irrigation, so over irrigated fields it shows how dry the land is without canal water (how much the field depends on irrigation). DalaShift uses it as information and validation; it does not change the crop recommendations.",
+                  "uz": "NASA SMAP L4 (SPL4SMGP) ildiz qatlami tuproq namligi, 9 km, har 3 soatda, AppEEARS orqali. Bu model + sunʼiy yoʻldosh mahsuloti va sugʻorishni hisobga olmaydi: sugʻoriladigan dalada u kanal suvisiz yer qanchalik qurishini koʻrsatadi. DalaShift uni maʼlumot va tekshiruv uchun ishlatadi; ekin tavsiyalarini oʻzgartirmaydi."},
     "tab_farmer": {"en": "Farmer", "uz": "Fermer"},
     "tab_expert": {"en": "For judges & experts", "uz": "Mutaxassislar / For judges & experts"},
     "tab_map": {"en": "1 · Map", "uz": "1 · Xarita"},

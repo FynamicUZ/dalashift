@@ -20,6 +20,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from dalashift import simple_ui as su  # noqa: E402
+from dalashift.appeears import load_appeears  # noqa: E402
+from dalashift.smap import summary as smap_summary  # noqa: E402
 from dalashift.baseline import compare, evaluate_usual, water_deficit  # noqa: E402
 from dalashift.crops import load_crop_table  # noqa: E402
 from dalashift.i18n import CROP_NAMES, DISTRICTS, T  # noqa: E402
@@ -30,7 +32,7 @@ WEB = ROOT / "web"
 UI_KEYS = ["step1", "eyebrow1", "eyebrow2", "plan_h", "since", "hot", "rain", "budget", "mm", "k_tonnes", "q_water",
            "w_little", "w_normal", "w_plenty", "q_must", "must_help", "q_goal", "plan_profit", "plan_balanced",
            "plan_water", "income", "conservative", "vs_usual", "c_income", "c_water", "c_risk", "why",
-           "disclaimer", "mln"]
+           "disclaimer", "mln", "smap"]
 
 
 def both(fn, *a, **kw) -> dict:
@@ -105,10 +107,12 @@ def build() -> dict:
     summary = json.loads((ROOT / "data/summary.json").read_text(encoding="utf-8"))
     planner = json.loads((ROOT / "data/planner.json").read_text(encoding="utf-8"))["points"]
     pts = pd.read_csv(ROOT / "data/points.csv").set_index("id")
+    water = load_appeears(ROOT / "data/appeears", pts.reset_index())
     out = {"ui": {k: {lang: su.FT[k][lang] for lang in LANGS} for k in UI_KEYS},
            "water_levels": su.WATER_LEVELS, "plans": su.PLANS, "uzs_per_usd": su.uzs_per_usd(),
            "limits": {lang: md_to_html(T["limits_text"][lang]) + md_to_html(T["pl_limits_text"][lang]) for lang in LANGS},
            "credits": {lang: T["credits"][lang] for lang in LANGS},
+           "smap_note": {lang: T["smap_note"][lang] for lang in LANGS},
            "crop_names": {c: {lang: v[lang] for lang in LANGS} for c, v in CROP_NAMES.items()},
            "districts": {}}
     for d in su.FARMER_DISTRICTS:
@@ -126,6 +130,7 @@ def build() -> dict:
                        "heat_risk": m["heat_risk"], "p_frost": m["p_frost"]}
                       for c, m in point["baseline"].items() if c in CROP_NAMES],
             "et0_correction": point.get("et0_correction"),
+            "smap": smap_summary(water, pid),
             "scenarios": {},
         }
         cotton_need = point["baseline"]["cotton"]["need_m3ha"]

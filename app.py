@@ -97,7 +97,7 @@ tab_farmer, tab_expert = st.tabs([t("tab_farmer", lang), t("tab_expert", lang)])
 
 # ------------------------------------------------------------------ FARMER VIEW (default)
 with tab_farmer:
-    simple_ui.render(lang, planner_data, summary, points)
+    simple_ui.render(lang, planner_data, summary, points, load_water())
 
 # ------------------------------------------------------------------ EXPERT VIEW (everything else)
 with tab_expert:
@@ -290,6 +290,8 @@ with tab_water:
                 "3. Drop the result CSVs into `data/appeears/` and push — the app picks them up automatically.")
     else:
         units = {"sm": "m³/m³", "esi": "", "ndvi": ""}
+        if (wp["var"] == "sm").any():
+            st.caption("ℹ️ " + t("smap_note", lang))
         for var in ["sm", "esi", "ndvi"]:
             v = wp[wp["var"] == var].sort_values("date")
             st.markdown(f"#### {t(var, lang)}")

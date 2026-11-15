@@ -19,6 +19,7 @@ from .crops import load_crop_table
 from .i18n import CROP_NAMES, DISTRICTS, MONTHS
 from .planner import CONFIG, load_planner_config
 from .planner_ui import _run
+from .smap import summary as smap_summary
 
 FARMER_DISTRICTS = ["Karshi", "Fergana", "Urgench", "Nukus", "Gulistan"]
 # water a farmer can pick without knowing m3 (net irrigation water per ha per year; HYPOTHETICAL levels)
@@ -86,6 +87,8 @@ html {{ font-size: 17px; }}
 .f-cmp > div:first-child {{ border-left: none; background: #f6f3ea; }}
 .f-cmp .l {{ display:flex; align-items:center; gap:6px; font-size:.8rem; color:{MUTED}; }}
 .f-cmp .v {{ font-size:1.15rem; font-weight:700; margin-top: 2px; }}
+.f-smap {{ display:flex; gap:8px; align-items:flex-start; margin-top:14px; padding-top:12px; border-top:1px solid {LINE};
+           font-size:.9rem; color:{INK}; }}
 .f-money {{ font-size: 1.9rem; font-weight: 700; color: {INK}; line-height: 1.2; }}
 .f-why {{ font-size: 1rem; line-height: 1.65; color: {INK}; }}
 .f-note {{ display:flex; gap:8px; align-items:flex-start; font-size:.9rem; color:{INK}; background:#fbf3e4;
@@ -119,6 +122,8 @@ FT = {
     "rain": {"uz": "Mavsumdagi yomgʻir (aprel–oktabr)", "en": "Season rain (April–October)"},
     "budget": {"uz": "Sizning suvingiz, gektariga yiliga", "en": "Your water, per hectare a year"},
     "mm": {"uz": "mm", "en": "mm"},
+    "smap": {"uz": "NASA SMAP sunʼiy yoʻldoshi: sugʻorilmasa, tuproq namligi bahordan yozgacha {p} % kamayadi ({y}). Yozda dalangiz toʻliq kanal suviga bogʻliq.",
+             "en": "NASA SMAP satellite: without irrigation, root-zone soil moisture falls {p} % from spring to summer ({y}). In summer your field depends fully on canal water."},
     "k_tonnes": {"uz": "ming tonna", "en": "thousand tonnes"},
     "q_water": {"uz": "Dalangizga suv qancha keladi?", "en": "How much water does your field get?"},
     "w_little": {"uz": "Kam", "en": "Little"},
@@ -262,7 +267,15 @@ def sparkline(values: list, width: int = 130, height: int = 26) -> str:
             f"<polyline points='{pts}' fill='none' stroke='{BAD}' stroke-width='1.5' stroke-linejoin='round'/></svg>")
 
 
-def _field_card(d: str, summary: dict, budget: float, lang: str) -> str:
+def smap_line(sm: dict | None, lang: str) -> str:
+    """One plain sentence from NASA SMAP root-zone soil moisture (empty if no data for this field)."""
+    if not sm:
+        return ""
+    return (f"<div class='f-smap'>{icon('drop', GREEN, 15)}<div>"
+            f"{ft('smap', lang, p=sm['drop_pct'], y=sm['year'])}</div></div>")
+
+
+def _field_card(d: str, summary: dict, budget: float, lang: str, sm: dict | None = None) -> str:
     S = summary["points"][f"{d}_field1"]
     th, nw = S["then"], S["now"]
     dh = round(nw["hot_days"] - th["hot_days"])
@@ -278,7 +291,7 @@ def _field_card(d: str, summary: dict, budget: float, lang: str) -> str:
         f"<span class='d' style='color:{BAD if dr < 0 else OK}'>{dr:+d}</span></div></div>"
         f"<div class='f-fact'><div class='l'>{icon('drop', MUTED, 15)} {ft('budget', lang)}</div>"
         f"<div class='v'>{fmt_mln(budget / 1000, lang)} {ft('k_tonnes', lang)}</div></div>"
-        f"</div></div>")
+        f"</div>{smap_line(sm, lang)}</div>")
 
 
 def _timeline(plan: dict, point: dict, budget: float, lang: str) -> str:
@@ -344,7 +357,7 @@ def _why(plan: dict, cmp: dict, point: dict, budget: float, lang: str) -> str:
     return " ".join(parts)
 
 
-def render(lang: str, planner_data: dict, summary: dict, points: pd.DataFrame) -> None:
+def render(lang: str, planner_data: dict, summary: dict, points: pd.DataFrame, water: pd.DataFrame | None = None) -> None:
     st.markdown(CSS, unsafe_allow_html=True)
     cfg = load_planner_config()
     rate, fresh = float(cfg["discount_rate"]), int(cfg["max_fresh_market_years"])
@@ -366,7 +379,8 @@ def render(lang: str, planner_data: dict, summary: dict, points: pd.DataFrame) -
                color=GREEN)
     budget = WATER_LEVELS[lvl]
     with c1:
-        st.markdown(_field_card(d, summary, budget, lang), unsafe_allow_html=True)
+        sm = smap_summary(water, f"{d}_field1") if water is not None else None
+        st.markdown(_field_card(d, summary, budget, lang, sm), unsafe_allow_html=True)
 
     # ---------------------------------------------------------------- plan
     point = planner_data["points"][f"{d}_field1"]
