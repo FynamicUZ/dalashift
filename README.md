@@ -170,6 +170,17 @@ The engine is the same for both farms, but they get different plans: Fergana's w
 - Ayers, R.S., Westcot, D.W. (1985). *Water quality for agriculture.* **FAO Irrigation and Drainage Paper 29** Rev. 1. FAO, Rome.
 - FAOSTAT (2026). Crops and livestock products (QCL); Producer Prices (PP). FAO, Rome. Bulk download, accessed 2026-11-14.
 
+## How it scales (rough estimates)
+
+- **Climate is per NASA POWER grid cell (~50 km), not per field.** Uzbekistan is about 250 land cells, about 100 with irrigated farmland.
+- **Data volume:** 35 years of daily weather ≈ 1 MB per cell → roughly 100–250 MB for the whole country.
+- **Time:** downloading takes a few seconds per cell (< 1 hour in total); the crop engine takes ~25 s per cell on a laptop (~2 hours for the country, parallel, once per season).
+- **5-year plans** are computed when a farmer asks (1–3 s), or precomputed per cell and water level.
+- **Satellite layers:** SMAP (9 km) is small; HLS (30 m) is read only for the field a farmer opens, from NASA's cloud-optimised files or Google Earth Engine, and cached. AppEEARS was used for the prototype only (its shared queue is slow).
+- **Rollout:** field boundaries and farm data from Uzcosmos and the Ministry of Agriculture; one region first (Kashkadarya), then region by region.
+
+> *Climate is computed once per 50 km NASA grid cell (about 100 irrigated cells, a few hundred MB for the whole country), and satellite layers are read only for the field a farmer opens, straight from NASA's cloud. The whole country fits on one server and updates in hours, not weeks.*
+
 ## Limits (also shown in the app)
 
 - **Coarse grid.** NASA POWER weather is about 50 km (MERRA-2, 0.5° × 0.625°). Field pairs at Urgench, Gulistan, Fergana and Karshi fall in the same grid cell, so they share one district climate profile. Field-level differences come from the satellite layers (SMAP, ECOSTRESS, HLS).
