@@ -94,7 +94,7 @@ So: less water, healthier soil and more income.
 What's next? Every field in Uzbekistan, then every field on Earth.
 [click] Uzcosmos and national farm data.
 [click] Soil and salinity for each field, from SMAP, ECOSTRESS and HLS.
-[click] Our Telegram bot, @dalashiftbot, in Uzbek.
+[click] Our Telegram bot, @dalashiftbot.
 [click] More crops and plant varieties, and real farm costs.
 
 The left QR code opens the app, and the right one opens the bot. There's also a 30-second video link.

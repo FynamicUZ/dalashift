@@ -245,7 +245,7 @@ SLIDES = f"""
   <div class="road">
     <div class="rs fragment fade-up"><b>Uzcosmos</b><span>and national farm data</span></div>
     <div class="rs fragment fade-up"><b>Soil &amp; salinity</b><span>per field: SMAP, ECOSTRESS, HLS</span></div>
-    <div class="rs fragment fade-up"><b>Telegram bot</b><span>in Uzbek: @dalashiftbot (prototype)</span></div>
+    <div class="rs fragment fade-up"><b>Telegram bot</b><span>@dalashiftbot</span></div>
     <div class="rs fragment fade-up"><b>More crops</b><span>and plant varieties, real costs</span></div>
   </div>
   <div class="qrs">
