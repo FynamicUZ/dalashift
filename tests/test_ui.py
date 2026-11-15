@@ -54,9 +54,13 @@ def test_must_cotton_without_enough_water_explains_in_one_line():
     assert "13 ming tonna" in msg and "8 ming tonna" in msg
 
 
-def test_barley_and_wheat_have_different_icons():
-    from dalashift.i18n import CROP_NAMES
-    assert CROP_NAMES["barley"]["icon"] != CROP_NAMES["winter_wheat"]["icon"]
+def test_no_emoji_in_any_ui_text():
+    """Calm, professional UI: no emoji in the texts of either tab (farmer or expert)."""
+    import re
+    from dalashift.i18n import CROP_NAMES, T
+    pat = re.compile("[🌀-🫿☀-➿]")
+    texts = [v for d in T.values() for v in d.values()] + [v for d in CROP_NAMES.values() for v in d.values()]
+    assert not [t for t in texts if pat.search(t)]
 
 
 def test_farmer_view_has_no_emoji_and_shows_usual_rotation(at):

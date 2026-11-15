@@ -124,20 +124,20 @@ T = {
 }
 
 CROP_NAMES = {
-    "cotton": {"en": "Cotton", "uz": "Paxta", "icon": "🌱"},
-    "winter_wheat": {"en": "Winter wheat", "uz": "Kuzgi bugʻdoy", "icon": "🌾"},
-    "maize": {"en": "Maize", "uz": "Makkajoʻxori", "icon": "🌽"},
-    "rice": {"en": "Rice", "uz": "Sholi", "icon": "🍚"},
-    "sorghum": {"en": "Sorghum", "uz": "Joʻxori", "icon": "🎋"},
-    "sunflower": {"en": "Sunflower", "uz": "Kungaboqar", "icon": "🌻"},
-    "mung_bean": {"en": "Mung bean", "uz": "Mosh", "icon": "🫘"},
-    "melon": {"en": "Melon", "uz": "Qovun", "icon": "🍈"},
-    "alfalfa": {"en": "Alfalfa", "uz": "Beda", "icon": "☘️"},
-    "barley": {"en": "Barley", "uz": "Arpa", "icon": "🌿"},
-    "chickpea": {"en": "Chickpea", "uz": "Noʻxat", "icon": "🫛"},
-    "potato": {"en": "Potato", "uz": "Kartoshka", "icon": "🥔"},
-    "onion": {"en": "Onion", "uz": "Piyoz", "icon": "🧅"},
-    "tomato": {"en": "Tomato", "uz": "Pomidor", "icon": "🍅"},
+    "cotton": {"en": "Cotton", "uz": "Paxta", "icon": ""},
+    "winter_wheat": {"en": "Winter wheat", "uz": "Kuzgi bugʻdoy", "icon": ""},
+    "maize": {"en": "Maize", "uz": "Makkajoʻxori", "icon": ""},
+    "rice": {"en": "Rice", "uz": "Sholi", "icon": ""},
+    "sorghum": {"en": "Sorghum", "uz": "Joʻxori", "icon": ""},
+    "sunflower": {"en": "Sunflower", "uz": "Kungaboqar", "icon": ""},
+    "mung_bean": {"en": "Mung bean", "uz": "Mosh", "icon": ""},
+    "melon": {"en": "Melon", "uz": "Qovun", "icon": ""},
+    "alfalfa": {"en": "Alfalfa", "uz": "Beda", "icon": ""},
+    "barley": {"en": "Barley", "uz": "Arpa", "icon": ""},
+    "chickpea": {"en": "Chickpea", "uz": "Noʻxat", "icon": ""},
+    "potato": {"en": "Potato", "uz": "Kartoshka", "icon": ""},
+    "onion": {"en": "Onion", "uz": "Piyoz", "icon": ""},
+    "tomato": {"en": "Tomato", "uz": "Pomidor", "icon": ""},
 }
 
 ROTATION_NAMES = {

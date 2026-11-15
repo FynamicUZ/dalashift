@@ -27,9 +27,9 @@ DATA = ROOT / "data"
 # --- chart tokens (validated categorical pair: slot 1 blue = then, slot 2 orange = now)
 C_THEN, C_NOW, C_MID = "#2a78d6", "#eb6834", "#c3c2b7"
 INK, INK2, MUTED, GRID, AXIS = "#0b0b0b", "#52514e", "#898781", "#e1e0d9", "#c3c2b7"
-RISK_ICON = {"low": "🟢", "medium": "🟠", "high": "🔴"}
+RISK_ICON = {"low": "", "medium": "", "high": ""}
 
-st.set_page_config(page_title="DalaShift", page_icon="🌾", layout="wide")
+st.set_page_config(page_title="DalaShift", page_icon="", layout="wide")
 
 
 # ------------------------------------------------------------------ data
@@ -101,7 +101,7 @@ with tab_farmer:
 
 # ------------------------------------------------------------------ EXPERT VIEW (everything else)
 with tab_expert:
-    st.title("🌾 " + t("title", lang))
+    st.title("" + t("title", lang))
     st.caption(t("tagline", lang))
     # one widget per language so option labels re-render in the chosen language;
     # "point" stays the canonical selection and is synced in via the widget's state + on_change
@@ -166,7 +166,7 @@ with tab_map:
         st.caption(f"{S['lat']:.4f}° N, {S['lon']:.4f}° E · {t('elevation', lang)} {S['elevation_m']:.0f} m")
         top = R["ranking"]["now"][:3]
         st.markdown(f"**{t('top3', lang)}:** " + " · ".join(
-            f"{CROP_NAMES[k]['icon']} {CROP_NAMES[k][lang]}" for k in top))
+            f"{CROP_NAMES[k][lang]}" for k in top))
         st.markdown(f"**{t('climate_profile', lang)}: {climate_title}**")
         st.caption(t("shared_note", lang, fields=fields_str(cell_fields, lang)) if shared else t("own_cell", lang))
         rows = [(t("hot_days", lang), "hot_days", ""), (t("gdd10", lang), "gdd10", ""),
@@ -184,7 +184,7 @@ with tab_map:
 with tab_then:
     st.subheader(climate_title)
     if shared:
-        st.info("🛰️ " + t("shared_note", lang, fields=fields_str(cell_fields, lang)))
+        st.info("" + t("shared_note", lang, fields=fields_str(cell_fields, lang)))
     else:
         st.caption("ℹ️ " + t("own_cell", lang))
 
@@ -278,11 +278,11 @@ with tab_then:
 with tab_water:
     st.subheader(field_label(pid, lang))
     st.caption(t("water_intro", lang))
-    st.caption("🔎 " + t("field_level_note", lang))
+    st.caption("" + t("field_level_note", lang))
     water = load_water()
     wp = water[water["point"] == pid] if len(water) else water
     if wp.empty:
-        st.info("🛰️ " + t("coming_soon", lang))
+        st.info("" + t("coming_soon", lang))
         with st.expander("How to add the data (for the team)"):
             st.markdown(
                 "1. Upload `data/appeears_points.csv` to [NASA AppEEARS](https://appeears.earthdatacloud.nasa.gov/) → *Point Sample*.\n"
@@ -331,7 +331,7 @@ with tab_plant:
     for i, key in enumerate(rank_now[:3]):
         c = now[key]
         with cards[i].container(border=True):
-            st.markdown(f"#### {i + 1}. {CROP_NAMES[key]['icon']} {CROP_NAMES[key][lang]}")
+            st.markdown(f"#### {i + 1}. {CROP_NAMES[key][lang]}")
             st.metric(t("water_need", lang), f"{c['need_m3ha']:,} m³/ha".replace(",", " "))
             saved = c["saved_vs_cotton_m3ha"]
             if saved >= 0:
@@ -343,13 +343,13 @@ with tab_plant:
             st.markdown(f"{RISK_ICON[hr]} **{t('heat_risk', lang)}: {t(hr, lang)}** — "
                         + t("heat_detail", lang, d=c["heat_days"], t=c["heat_tmax"]))
             if c["p_frost"] > 0:
-                st.markdown("❄️ " + t("frost_risk", lang, p=100 * c["p_frost"]))
+                st.markdown("" + t("frost_risk", lang, p=100 * c["p_frost"]))
             if c.get("winterkill_tmin") is not None:
-                st.markdown(f"{'⚠️' if c['p_winterkill'] > 0 else '🟢'} " + t(
+                st.markdown(f"{'' if c['p_winterkill'] > 0 else ''} " + t(
                     "winterkill_risk", lang, p=100 * c["p_winterkill"], tk=c["winterkill_tmin"]))
             if c["p_gdd_ok"] < 1:
-                st.markdown("🌡️ " + t("gdd_short", lang, p=100 * (1 - c["p_gdd_ok"])))
-            st.markdown(("✅ " + t("fits", lang)) if c["fits"] else ("⚠️ " + t("not_fits", lang)))
+                st.markdown("" + t("gdd_short", lang, p=100 * (1 - c["p_gdd_ok"])))
+            st.markdown(("" + t("fits", lang)) if c["fits"] else ("" + t("not_fits", lang)))
             st.caption(t("sow_harvest", lang, s=ldate(c["sow"], lang), h=ldate(c["harvest"], lang))
                        + f" · {t('then', lang)}: #{rank_then.index(key) + 1}")
 
@@ -373,8 +373,8 @@ with tab_plant:
             c = now[k]
             rows.append({
                 "#": str(i + 1) if k in rank_now else "2nd",
-                t("crop", lang): f"{CROP_NAMES[k]['icon']} {CROP_NAMES[k][lang]}",
-                t("fits", lang): "✅" if c["fits"] else "⚠️",
+                t("crop", lang): f"{CROP_NAMES[k][lang]}",
+                t("fits", lang): "" if c["fits"] else "",
                 f"{t('water_need', lang)} (m³/ha)": c["need_m3ha"],
                 f"{t('then', lang)} (m³/ha)": then[k]["need_m3ha"],
                 f"{t('saved', lang)} (m³/ha)": c["saved_vs_cotton_m3ha"],
@@ -387,7 +387,7 @@ with tab_plant:
             })
         st.dataframe(pd.DataFrame(rows), hide_index=True, width="stretch")
 
-    st.markdown(f"### 🔄 {t('rotations', lang)}")
+    st.markdown(f"### {t('rotations', lang)}")
     rc = st.columns(len(R["rotations"]))
     for col, r in zip(rc, R["rotations"]):
         with col.container(border=True):
@@ -396,9 +396,9 @@ with tab_plant:
                       f"{-r['saved_vs_cotton_m3ha']:+,} vs {CROP_NAMES[BASELINE][lang]}".replace(",", " "),
                       delta_color="inverse")
             st.markdown(f"{RISK_ICON[r['heat_risk']]} {t('heat_risk', lang)}: {t(r['heat_risk'], lang)} · "
-                        + ("✅ " + t("fits", lang) if r["fits"] else "⚠️ " + t("not_fits", lang)))
+                        + ("" + t("fits", lang) if r["fits"] else "" + t("not_fits", lang)))
 
-    st.markdown(f"### 🌾 {t('wheat_shift', lang)}")
+    st.markdown(f"### {t('wheat_shift', lang)}")
     ws = R["wheat_sowing"]
     best, conv, best_then = ws["now"]["best"], ws["now"]["conventional"], ws["then"]["best"]
     st.markdown(t("wheat_shift_text", lang, best=ldate(best["sow"], lang), conv=ldate(conv["sow"], lang),
@@ -414,13 +414,13 @@ with tab_plant:
                         hovertemplate="%{x}: %{y:.1f} (heat %{customdata[0]:.0f} d, pre-winter %{customdata[1]:.0f} °C·d)"
                                       "<extra>" + names[per] + "</extra>")
         b = ws[per]["best"]
-        fig.add_annotation(x=ldate(b["sow"], lang), y=b["risk"], text="★ " + ldate(b["sow"], lang),
+        fig.add_annotation(x=ldate(b["sow"], lang), y=b["risk"], text="" + ldate(b["sow"], lang),
                            showarrow=True, arrowcolor=c,
                            ay=-30, font=dict(color=INK, size=11), bgcolor="rgba(255,255,255,0.85)")
     fig.update_xaxes(title_text=t("sowing_date", lang), title_font_color=MUTED)
     st.plotly_chart(style(fig, t("wheat_chart", lang), t("risk_score", lang)), width="stretch")
 
-    with st.expander("⚠️ " + t("limits", lang), expanded=True):
+    with st.expander("" + t("limits", lang), expanded=True):
         st.markdown(t("limits_text", lang))
 
 # ------------------------------------------------------------------ 5. FIVE-YEAR PLANNER

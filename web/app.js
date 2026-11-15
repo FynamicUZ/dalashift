@@ -112,65 +112,94 @@
     document.getElementById('farmer').innerHTML = h;
   }
 
-  // ------------------------------------------------------------------ expert view
-  function hotChart(f) {
-    var w = 760, hh = 240, pad = 34, vals = f.hot_series, yrs = f.years;
-    var good = vals.filter(function (v) { return v !== null; });
-    var lo = Math.floor(Math.min.apply(null, good) / 10) * 10, hi = Math.ceil(Math.max.apply(null, good) / 10) * 10;
-    function X_(i) { return pad + i * (w - 2 * pad) / (yrs.length - 1); }
-    function Y_(v) { return hh - pad - (v - lo) / (hi - lo) * (hh - 2 * pad); }
-    var pts = vals.map(function (v, i) { return v === null ? null : X_(i).toFixed(1) + ',' + Y_(v).toFixed(1); }).filter(Boolean).join(' ');
-    var i0 = yrs.indexOf(1991), i1 = yrs.indexOf(2005), j0 = yrs.indexOf(2011), j1 = yrs.length - 1;
-    var s = "<svg class='chart' viewBox='0 0 " + w + ' ' + hh + "' width='100%' role='img' aria-label='" + x('climate') + "'>";
-    [lo, (lo + hi) / 2, hi].forEach(function (v) { s += "<line x1='" + pad + "' x2='" + (w - pad) + "' y1='" + Y_(v) + "' y2='" + Y_(v) + "' stroke='#eee'/><text x='2' y='" + (Y_(v) + 4) + "'>" + v + '</text>'; });
-    s += "<polyline points='" + pts + "' fill='none' stroke='" + C.bad + "' stroke-width='2'/>";
-    s += "<line x1='" + X_(i0) + "' x2='" + X_(i1) + "' y1='" + Y_(f.hot_then) + "' y2='" + Y_(f.hot_then) + "' stroke='" + C.muted + "' stroke-width='3' stroke-dasharray='6 4'/>";
-    s += "<line x1='" + X_(j0) + "' x2='" + X_(j1) + "' y1='" + Y_(f.hot_now) + "' y2='" + Y_(f.hot_now) + "' stroke='" + C.bad + "' stroke-width='3' stroke-dasharray='6 4'/>";
-    s += "<text x='" + X_(0) + "' y='" + (hh - 8) + "'>" + yrs[0] + "</text><text x='" + (X_(j1) - 30) + "' y='" + (hh - 8) + "'>" + yrs[j1] + '</text>';
-    s += "<text x='" + X_(i0) + "' y='" + (Y_(f.hot_then) - 8) + "'>1991–2005: " + f.hot_then + "</text><text x='" + X_(j0) + "' y='" + (Y_(f.hot_now) - 8) + "' style='fill:" + C.bad + "'>2011–2026: " + f.hot_now + '</text>';
+  // ------------------------------------------------------------------ expert view (dense, data-focused)
+  var EC = { hot: '#a5533f', smap: '#3d6e8f', ndvi: '#6b8a3a', ref: '#8a8f8b', grid: '#ecebe6' };
+  // line chart with y-axis title, year ticks and optional dashed reference segments
+  function lineChart(o) {
+    var w = 640, hh = 230, l = 46, r = 12, t0 = 12, b = 34, v = o.values, n = v.length;
+    var good = v.filter(function (q) { return q !== null; });
+    var lo = o.lo !== undefined ? o.lo : Math.min.apply(null, good), hi = o.hi !== undefined ? o.hi : Math.max.apply(null, good);
+    var pad = (o.lo !== undefined) ? 0 : ((hi - lo) * 0.08 || 1); lo -= pad; hi += pad;
+    function X_(i) { return l + i * (w - l - r) / (n - 1); }
+    function Y_(q) { return t0 + (hi - q) / (hi - lo) * (hh - t0 - b); }
+    var s = "<svg class='chart' viewBox='0 0 " + w + ' ' + hh + "' width='100%' role='img' aria-label='" + esc(o.title) + "'>";
+    for (var k = 0; k <= 4; k++) {
+      var q = lo + (hi - lo) * k / 4;
+      s += "<line x1='" + l + "' x2='" + (w - r) + "' y1='" + Y_(q).toFixed(1) + "' y2='" + Y_(q).toFixed(1) + "' stroke='" + EC.grid + "'/>" +
+        "<text x='" + (l - 6) + "' y='" + (Y_(q) + 4).toFixed(1) + "' text-anchor='end'>" + q.toFixed(o.digits || 0) + '</text>';
+    }
+    var lastYear = null;
+    o.dates.forEach(function (d, i) {
+      var y = String(d).slice(0, 4);
+      if (y !== lastYear && (!o.yearStep || i === 0 || (+y) % o.yearStep === 0)) {
+        s += "<line x1='" + X_(i).toFixed(1) + "' x2='" + X_(i).toFixed(1) + "' y1='" + (hh - b) + "' y2='" + (hh - b + 4) + "' stroke='" + EC.ref + "'/>" +
+          "<text x='" + X_(i).toFixed(1) + "' y='" + (hh - b + 16) + "' text-anchor='middle'>" + y + '</text>';
+      }
+      lastYear = y;
+    });
+    s += "<line x1='" + l + "' x2='" + (w - r) + "' y1='" + (hh - b) + "' y2='" + (hh - b) + "' stroke='" + EC.ref + "'/>";
+    s += "<text transform='rotate(-90)' x='" + (-(t0 + (hh - b)) / 2) + "' y='12' text-anchor='middle' class='ax'>" + esc(o.ylabel) + '</text>';
+    (o.refs || []).forEach(function (rf) {
+      s += "<line x1='" + X_(rf.i0) + "' x2='" + X_(rf.i1) + "' y1='" + Y_(rf.y) + "' y2='" + Y_(rf.y) + "' stroke='" + rf.color + "' stroke-width='2' stroke-dasharray='5 4'/>" +
+        "<text x='" + (X_(rf.i0) + 4) + "' y='" + (Y_(rf.y) - 6) + "' class='lbl' style='fill:" + rf.color + "'>" + esc(rf.label) + '</text>';
+    });
+    var pts = v.map(function (q, i) { return q === null ? null : X_(i).toFixed(1) + ',' + Y_(q).toFixed(1); }).filter(Boolean).join(' ');
+    s += "<polyline points='" + pts + "' fill='none' stroke='" + o.color + "' stroke-width='1.8' stroke-linejoin='round'/>";
     return s + '</svg>';
   }
-  function smapChart(sm, color, digits) {
-    color = color || C.green; digits = digits === undefined ? 2 : digits;
-    var w = 760, hh = 220, pad = 34, v = sm.weekly, n = v.length;
-    var lo = Math.floor(Math.min.apply(null, v) * 50) / 50, hi = Math.ceil(Math.max.apply(null, v) * 50) / 50;
-    function X_(i) { return pad + i * (w - 2 * pad) / (n - 1); }
-    function Y_(y) { return hh - pad - (y - lo) / (hi - lo) * (hh - 2 * pad); }
-    var s = "<svg class='chart' viewBox='0 0 " + w + ' ' + hh + "' width='100%' role='img' aria-label='SMAP'>";
-    [lo, (lo + hi) / 2, hi].forEach(function (y) { s += "<line x1='" + pad + "' x2='" + (w - pad) + "' y1='" + Y_(y) + "' y2='" + Y_(y) + "' stroke='#eee'/><text x='0' y='" + (Y_(y) + 4) + "'>" + y.toFixed(2) + '</text>'; });
-    s += "<polyline points='" + v.map(function (y, i) { return X_(i).toFixed(1) + ',' + Y_(y).toFixed(1); }).join(' ') + "' fill='none' stroke='" + color + "' stroke-width='2'/>";
-    s += "<text x='" + pad + "' y='" + (hh - 8) + "'>" + sm.weekly_dates[0] + "</text><text x='" + (w - pad - 70) + "' y='" + (hh - 8) + "'>" + sm.weekly_dates[n - 1] + '</text>';
-    if (!sm.spring) { return s + '</svg>'; }
-    return s + "</svg><div class='sub'>" + (S.lang === 'uz' ? 'Bahor (mart–aprel) ' : 'Spring (Mar–Apr) ') + sm.spring + ' → ' + (S.lang === 'uz' ? 'yoz (iyul–avgust) ' : 'summer (Jul–Aug) ') + sm.summer + ' m³/m³, ' + sm.year + ' (−' + sm.drop_pct + ' %)</div>';
+  function chartCard(title, chart, notes) {
+    return "<section class='xcard'><h3>" + esc(title) + '</h3>' + chart + notes.map(function (nt) { return "<p class='xnote'>" + nt + '</p>'; }).join('') + '</section>';
+  }
+  function sel(id, items, value, label) {
+    return "<select data-sel='" + id + "'>" + items.map(function (it) {
+      return "<option value='" + it + "'" + (it === value ? ' selected' : '') + '>' + esc(label(it)) + '</option>';
+    }).join('') + '</select>';
   }
   function renderExpert() {
-    var dist = D.districts[S.d], f = dist.facts, sc = scenario(), budget = D.water_levels[S.water];
-    var h = "<div class='eyebrow'>DalaShift</div><div class='h'>" + esc(dist.name[S.lang]) + '</div>';
-    h += seg('d', Object.keys(D.districts), S.d, function (k) { return D.districts[k].short[S.lang]; });
-    h += " <div style='margin-top:8px'>" + seg('water', Object.keys(D.water_levels), S.water, function (k) { return t('w_' + k) + ' · ' + thousands(D.water_levels[k]) + ' m³/ha'; }) + '</div>';
-    h += "<div class='card' style='margin-top:14px'><b>" + x('climate') + '</b>' + hotChart(f) +
-      "<div class='sub'>NASA POWER (MERRA-2) · " + (S.lang === 'uz' ? 'mavsumdagi yomgʻir' : 'season rain') + ' ' + f.rain_then + ' → ' + f.rain_now + ' mm</div></div>';
-    if (dist.smap) { h += "<div class='card' style='margin-top:14px'><b>" + x('smap') + '</b>' + smapChart(dist.smap) + "<div class='sub'>" + esc(D.smap_note[S.lang]) + '</div></div>'; }
-    if (dist.hls) { h += "<div class='card' style='margin-top:14px'><b>" + x('hls') + '</b>' + smapChart({ weekly: dist.hls.weekly, weekly_dates: dist.hls.weekly_dates }, '#7a9a2e') +
-      "<div class='sub'>" + esc(dist.hls_line[S.lang]) + "</div><div class='sub'>" + esc(D.hls_note[S.lang]) + '</div></div>'; }
-    if (dist.has_ecostress) { h += "<div class='card' style='margin-top:14px'><b>NASA ECOSTRESS</b><div class='sub'>" + esc(D.ecostress_note[S.lang]) + '</div></div>'; }
-    var et = dist.et0_correction;
-    h += "<div class='card' style='margin-top:14px'><b>" + x('crops') + '</b>' + (et ? "<div class='sub'>" + x('et0') + ': × ' + et.factor + ' · ' + esc(et.label) + '</div>' : '') +
-      "<div class='tablewrap'><table><tr><th>" + x('crop') + "</th><th class='num'>" + x('need') + '</th><th>' + x('fit') + '</th><th>' + x('season') + '</th><th>' + x('heat') + '</th></tr>' +
+    var dist = D.districts[S.d], f = dist.facts, sc = scenario(), budget = D.water_levels[S.water], uz = S.lang === 'uz';
+    var h = "<div class='xhead'><h2>" + esc(dist.name[S.lang]) + "</h2><div class='xctl'>" +
+      sel('d', Object.keys(D.districts), S.d, function (k) { return D.districts[k].short[S.lang]; }) +
+      sel('water', Object.keys(D.water_levels), S.water, function (k) { return t('w_' + k) + ' · ' + thousands(D.water_levels[k]) + ' m³/ha'; }) +
+      '</div></div>';
+    var rows = [[uz ? 'Jazirama kunlar (>35 °C), kun/yil' : 'Days > 35 °C, per year', f.hot_then, f.hot_now, 'NASA POWER'],
+      [uz ? 'Mavsumdagi yomgʻir (apr–okt), mm' : 'Season rain (Apr–Oct), mm', f.rain_then, f.rain_now, 'NASA POWER']];
+    h += "<section class='xcard'><h3>" + (uz ? 'Asosiy koʻrsatkichlar' : 'Key numbers') + "</h3><div class='tablewrap'><table class='xt'><tr><th></th><th class='num'>1991–2005</th><th class='num'>2011–2026</th><th>" + (uz ? 'Manba' : 'Source') + '</th></tr>' +
+      rows.map(function (r) { return '<tr><td>' + r[0] + "</td><td class='num'>" + r[1] + "</td><td class='num'>" + r[2] + '</td><td>' + r[3] + '</td></tr>'; }).join('') +
+      (dist.smap ? '<tr><td>' + (uz ? 'Ildiz qatlami namligi, bahor → yoz, m³/m³' : 'Root-zone soil moisture, spring → summer, m³/m³') + "</td><td class='num'>" + dist.smap.spring + "</td><td class='num'>" + dist.smap.summer + ' (−' + dist.smap.drop_pct + ' %, ' + dist.smap.year + ')</td><td>NASA SMAP L4</td></tr>' : '') +
+      (dist.hls ? '<tr><td>' + (uz ? 'NDVI choʻqqisi' : 'NDVI peak') + "</td><td class='num'>–</td><td class='num'>" + dist.hls.peak + ' (' + dist.hls.peak_date + ')</td><td>NASA/USGS HLS</td></tr>' : '') +
+      (dist.et0_correction ? '<tr><td>' + x('et0') + "</td><td class='num'>–</td><td class='num'>× " + dist.et0_correction.factor + '</td><td>' + esc(dist.et0_correction.label) + '</td></tr>' : '') +
+      '</table></div></section>';
+    h += "<div class='xgrid'>";
+    var yrs = f.years, i0 = yrs.indexOf(1991), i1 = yrs.indexOf(2005), j0 = yrs.indexOf(2011), j1 = yrs.length - 1;
+    h += chartCard(x('climate'), lineChart({ title: x('climate'), dates: yrs, values: f.hot_series, color: EC.hot, ylabel: uz ? 'kun/yil' : 'days/yr', yearStep: 5,
+      refs: [{ i0: i0, i1: i1, y: f.hot_then, color: EC.ref, label: '1991–2005: ' + f.hot_then }, { i0: j0, i1: j1, y: f.hot_now, color: EC.hot, label: '2011–2026: ' + f.hot_now }] }),
+      ['NASA POWER daily (MERRA-2), T2M_MAX > 35 °C. ' + (uz ? 'Mavsumdagi yomgʻir ' : 'Season rain ') + f.rain_then + ' → ' + f.rain_now + ' mm.']);
+    if (dist.smap) {
+      h += chartCard(x('smap'), lineChart({ title: 'SMAP', dates: dist.smap.weekly_dates, values: dist.smap.weekly, color: EC.smap, ylabel: 'm³/m³', digits: 2 }),
+        [esc(D.smap_note[S.lang])]);
+    }
+    if (dist.hls) {
+      h += chartCard(x('hls'), lineChart({ title: 'NDVI', dates: dist.hls.weekly_dates, values: dist.hls.weekly, color: EC.ndvi, ylabel: 'NDVI', digits: 1, lo: 0, hi: 1 }),
+        [esc(dist.hls_line[S.lang]), esc(D.hls_note[S.lang])]);
+    }
+    if (dist.has_ecostress) { h += "<section class='xcard'><h3>NASA ECOSTRESS</h3><p class='xnote'>" + esc(D.ecostress_note[S.lang]) + '</p></section>'; }
+    h += '</div>';
+    h += "<section class='xcard'><h3>" + x('crops') + "</h3><div class='tablewrap'><table class='xt'><tr><th>" + x('crop') + "</th><th class='num'>" + x('need') + '</th><th>' + x('fit') + '</th><th>' + x('season') + '</th><th>' + x('heat') + '</th></tr>' +
       dist.crops.slice().sort(function (a, b) { return a.need - b.need; }).map(function (c) {
-        return '<tr><td>' + esc(D.crop_names[c.crop][S.lang]) + "</td><td class='num' style='color:" + (c.need > budget ? C.bad : 'inherit') + "'>" + thousands(c.need) +
+        return '<tr><td>' + esc(D.crop_names[c.crop][S.lang]) + "</td><td class='num" + (c.need > budget ? ' over' : '') + "'>" + thousands(c.need) +
           "</td><td class='" + (c.fits ? 'yes' : 'no') + "'>" + x(c.fits ? 'yes' : 'no') + '</td><td>' + esc(c.sow + ' → ' + c.harvest) + '</td><td>' + x(c.heat_risk) + '</td></tr>';
-      }).join('') + '</table></div></div>';
-    h += "<div class='card' style='margin-top:14px'><b>" + x('plans') + '</b> · ' + x('budget') + ' ' + thousands(budget) + " m³/ha<div class='tablewrap'><table><tr><th>" + x('plan') + '</th><th>' + x('seq') +
+      }).join('') + "</table></div><p class='xnote'>FAO-56 · " + (uz ? 'qizil: suv byudjetidan koʻp' : 'red: above the water budget') + ' (' + thousands(budget) + ' m³/ha)</p></section>';
+    h += "<section class='xcard'><h3>" + x('plans') + "</h3><div class='tablewrap'><table class='xt'><tr><th>" + x('plan') + '</th><th>' + x('seq') +
       "</th><th class='num'>" + x('usd') + "</th><th class='num'>" + x('water') + "</th><th class='num'>" + x('health') + '</th><th>' + x('vsusual') + '</th></tr>' +
       Object.keys(sc.plans).map(function (k) {
         var p = sc.plans[k];
-        return '<tr><td>' + (k === 'least_harm' ? (S.lang === 'uz' ? 'Eng kam zararli' : 'Least harmful') : t('plan_' + k)) + '</td><td>' +
+        return '<tr><td>' + (k === 'least_harm' ? (uz ? 'Eng kam zararli' : 'Least harmful') : t('plan_' + k)) + '</td><td>' +
           p.years.map(function (y) { return esc(y.name[S.lang]); }).join(' → ') + "</td><td class='num'>" + thousands(p.usd_per_year[0]) + '–' + thousands(p.usd_per_year[1]) +
-          "</td><td class='num'>" + thousands(p.water_per_year) + "</td><td class='num'>" + p.health + '/10</td><td>' + esc(p.cmp.income[S.lang]) + ' · ' + esc(p.cmp.water[S.lang]) + '</td></tr>';
-      }).join('') + '</table></div>' + (sc.status !== 'ok' ? "<div class='alert'>" + esc(sc.error[S.lang]) + '</div>' : '') + '</div>';
-    h += "<div class='card limits' style='margin-top:14px'><b>" + x('limits') + '</b>' + D.limits[S.lang] + '</div>';
-    h += "<p><a class='maplink' href='deck/index.html'>" + x('deck') + ' →</a></p>';
+          "</td><td class='num'>" + thousands(p.water_per_year) + "</td><td class='num'>" + p.health + "/10</td><td class='num'>" + esc(p.cmp.income[S.lang]) + ' · ' + esc(p.cmp.water[S.lang]) + '</td></tr>';
+      }).join('') + '</table></div>' + (sc.status !== 'ok' ? "<p class='xnote' style='color:" + C.bad + "'>" + esc(sc.error[S.lang]) + '</p>' : '') +
+      "<p class='xnote'>" + (uz ? 'Barcha 5 yillik ketma-ketliklar tekshirilgan; foyda ±15 % taxminiy; bugʻdoy ↔ paxtaga nisbatan.' : 'Every 5-year sequence checked; profit ±15 % estimate; compared with wheat ↔ cotton.') + '</p></section>';
+    h += "<section class='xcard limits'><h3>" + x('limits') + '</h3>' + D.limits[S.lang] + '</section>';
+    h += "<p class='xnote'><a href='deck/index.html'>" + x('deck') + " →</a> · <a href='https://github.com/FynamicUZ/dalashift'>GitHub</a></p>";
     document.getElementById('expert').innerHTML = h;
   }
 
@@ -198,7 +227,10 @@
     else { return; }
     render();
   });
-  document.addEventListener('change', function (e) { if (e.target.id === 'must') { S.must = e.target.checked; render(); } });
+  document.addEventListener('change', function (e) {
+    if (e.target.id === 'must') { S.must = e.target.checked; render(); }
+    else if (e.target.dataset && e.target.dataset.sel) { S[e.target.dataset.sel] = e.target.value; render(); }
+  });
 
   fetch('data.json').then(function (r) { return r.json(); }).then(function (data) {
     D = data;

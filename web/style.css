@@ -55,7 +55,22 @@ svg { flex-shrink: 0; }
 .why { font-size: 1rem; line-height: 1.65; }
 .note { display: flex; gap: 8px; align-items: flex-start; font-size: .9rem; background: #fbf3e4; border: 1px solid #f0dfbc; border-radius: 10px; padding: 10px 12px; margin-top: 14px; }
 .note .m { color: var(--muted); }
-/* expert */
+/* expert: dense, data-focused */
+#expert { font-size: 14px; }
+.xhead { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin: 16px 0 10px; }
+.xhead h2 { font-size: 1.25rem; font-weight: 600; margin: 0; }
+.xctl { display: flex; gap: 8px; flex-wrap: wrap; }
+.xctl select { font: inherit; font-size: 13px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink); }
+.xgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.xcard { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; margin-bottom: 12px; }
+.xcard h3 { font-size: 14px; font-weight: 600; margin: 0 0 8px; }
+.xnote { font-size: 12px; color: var(--muted); margin: 6px 0 0; line-height: 1.45; }
+.xnote a { color: var(--green); }
+table.xt { font-size: 13px; } table.xt th { font-size: 12px; } table.xt td, table.xt th { padding: 6px 8px; }
+td.over { color: var(--bad); }
+.chart text { font-size: 11px; } .chart .ax { font-size: 11px; fill: var(--muted); } .chart .lbl { font-size: 11px; font-weight: 600; }
+.limits li { font-size: 13px !important; }
+/* expert (shared) */
 table { width: 100%; border-collapse: collapse; font-size: .88rem; }
 th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
 th { color: var(--muted); font-weight: 600; font-size: .8rem; }
@@ -66,6 +81,7 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .foot { margin-top: 28px; color: var(--muted); font-size: .8rem; }
 code { font-size: .85em; background: #f1efe8; padding: 0 .25em; border-radius: 4px; }
 @media (max-width: 700px) {
+  .xgrid { grid-template-columns: 1fr; }
   .grid2 { grid-template-columns: 1fr; }
   .facts { grid-template-columns: 1fr; }
   .fact .l { min-height: 0; }

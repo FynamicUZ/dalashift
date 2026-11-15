@@ -17,7 +17,7 @@ from .planner import CONFIG, load_planner_config, plan_farm
 PLAN_COLORS = {"profit": "#2a78d6", "balanced": "#eb6834", "water": "#1baf7a", "repeat_best": "#c3c2b7",
                "least_harm": "#898781"}
 PLAN_KEYS = ["profit", "balanced", "water"]
-RISK_ICON = {"low": "🟢", "medium": "🟠", "high": "🔴"}
+RISK_ICON = {"low": "", "medium": "", "high": ""}
 INK, INK2, MUTED, GRID, AXIS = "#0b0b0b", "#52514e", "#898781", "#e1e0d9", "#c3c2b7"
 
 
@@ -34,7 +34,7 @@ def _run(point_json: str, budget: float, rate: float, fresh: int, must_c: int, m
 
 def option_name(key: str, lang: str, icons: bool = True) -> str:
     parts = key.split("+")
-    return " → ".join((CROP_NAMES[c]["icon"] + " " if icons else "") + CROP_NAMES[c][lang] for c in parts)
+    return " → ".join(CROP_NAMES[c][lang] for c in parts)
 
 
 def plan_name(kind: str, lang: str, res: dict | None = None) -> str:
@@ -94,12 +94,12 @@ def _year_card(y: dict, lang: str, rot: dict) -> None:
     st.markdown(f"**{t('pl_year', lang, y=y['year'])}**")
     st.markdown(f"#### {option_name(y['option'], lang)}")
     st.markdown(f"{t('pl_profit_y', lang).capitalize()} ({t('pl_estimate', lang)}): **{y['low']:,.0f} – {y['high']:,.0f}** "
-                f"{t('pl_usd_ha', lang)}  \n💧 {y['water']:,.0f} {t('pl_m3_ha', lang)}")
+                f"{t('pl_usd_ha', lang)}  \n{y['water']:,.0f} {t('pl_m3_ha', lang)}")
     if y.get("check_number"):
-        st.caption("⚠️ " + t("pl_check_number", lang))
+        st.caption("" + t("pl_check_number", lang))
     risk = f"{RISK_ICON[y['heat_risk']]} {t('heat_risk', lang)}: {t(y['heat_risk'], lang)}"
     if y["p_frost"] > 0 or y["p_winterkill"] > 0:
-        risk += f" · ❄️ {100 * max(y['p_frost'], y['p_winterkill']):.0f}%"
+        risk += f" · {100 * max(y['p_frost'], y['p_winterkill']):.0f}%"
     st.caption(risk)
     notes = []
     f = y["yield_factor"]
@@ -132,20 +132,20 @@ def _plan_metrics(plan: dict, rb: dict | None, lang: str, rate: float) -> None:
               help=t("pl_water_per_year", lang, w=plan["water_per_year"]))
     m4.metric(t("pl_health", lang), f"{plan['health']:.0f} / 10",
               f"{plan['health'] - rb['health']:+.0f}" if rb else None)
-    st.caption("💵 " + t("pl_money_note", lang))
+    st.caption("" + t("pl_money_note", lang))
     if plan.get("check_number"):
-        st.warning("⚠️ " + t("pl_check_plan", lang))
+        st.warning("" + t("pl_check_plan", lang))
 
 
 def _soft_note(plan: dict, lang: str) -> None:
     if "legume" in plan.get("soft_broken", []):
-        st.info("🌱 " + t("pl_soft_legume", lang))
+        st.info("" + t("pl_soft_legume", lang))
 
 
 def render(lang: str, pid: str, planner_data: dict) -> None:
     cfg = load_planner_config()
     farms = _demo_farms()
-    st.subheader("🗓️ " + t("pl_title", lang))
+    st.subheader("" + t("pl_title", lang))
     st.caption(t("pl_intro", lang))
 
     choices = ["field"] + list(farms)
@@ -160,11 +160,11 @@ def render(lang: str, pid: str, planner_data: dict) -> None:
         point_id, d_budget, d_fresh, d_must = (f["point"], f["water_budget_m3_ha"], f["max_fresh_market_years"],
                                                f.get("must_grow_pct", {}))
         pt = planner_data["coords"][point_id]
-        st.warning("🧪 " + t("pl_demo_note", lang, lat=pt[0], lon=pt[1], note=f["note"][lang]))
+        st.warning("" + t("pl_demo_note", lang, lat=pt[0], lon=pt[1], note=f["note"][lang]))
 
     corr = planner_data["points"][point_id].get("et0_correction")
     if corr:
-        st.caption("💧 " + t("pl_et0_note", lang, f=corr["factor"],
+        st.caption("" + t("pl_et0_note", lang, f=corr["factor"],
                              label=t("pl_et0_ecostress" if corr["method"] == "ecostress" else "pl_et0_provisional", lang)))
 
     c1, c2, c3 = st.columns(3)
@@ -194,7 +194,7 @@ def render(lang: str, pid: str, planner_data: dict) -> None:
         lh = out["plans"].get("least_harm")
         if lh:
             st.markdown(f"#### {t('pl_plan_least_harm', lang)}")
-            st.warning("⚠️ " + t("pl_least_harm_breaks", lang, rules=_fail_reason(lh, budget, lang)))
+            st.warning("" + t("pl_least_harm_breaks", lang, rules=_fail_reason(lh, budget, lang)))
             for y in lh["years"]:
                 y["fresh"] = opt_by_key[y["option"]]["fresh"]
                 y["area_cap"] = opt_by_key[y["option"]]["area_cap"]
@@ -236,7 +236,7 @@ def render(lang: str, pid: str, planner_data: dict) -> None:
     usual = evaluate_usual(planner_data["points"][point_id]["baseline"], float(budget), float(rate), int(fresh))
     c = compare(plan, usual)
     deficit = water_deficit(usual, float(budget))
-    st.caption("🔁 " + t("pl_vs_usual", lang, i=(f"{c['income_pct']:+.0f} %" if c["income_pct"] is not None else "–"),
+    st.caption("" + t("pl_vs_usual", lang, i=(f"{c['income_pct']:+.0f} %" if c["income_pct"] is not None else "–"),
                              w=f"{c['water_pct']:+.0f} %", d=(t("pl_usual_deficit", lang, n=deficit) if deficit > 0 else "")))
     _soft_note(plan, lang)
 
@@ -267,7 +267,7 @@ def render(lang: str, pid: str, planner_data: dict) -> None:
             if (must.get("cotton") and "cotton" in y["crops"]) or (must.get("winter_wheat") and "winter_wheat" in y["crops"]):
                 extra.append(t("pl_counts_must", lang))
             if y.get("check_number"):
-                extra.append("⚠️ " + t("pl_check_short", lang))
+                extra.append("" + t("pl_check_short", lang))
             st.markdown("- " + t("pl_year_reason", lang, y=y["year"], crop=option_name(y["option"], lang),
                                  lo=y["low"], hi=y["high"], r=rank.get(y["option"], "–"), n=len(cands), w=y["water"],
                                  extra=("; " + "; ".join(extra)) if extra else ""))
@@ -308,7 +308,7 @@ def render(lang: str, pid: str, planner_data: dict) -> None:
 
 
 def _scenarios(res: dict, lang: str, budget: float) -> None:
-    st.markdown(f"#### 🌡️ {t('pl_scen', lang)}")
+    st.markdown(f"#### {t('pl_scen', lang)}")
     scen = res["scenarios"]
     names = {s: t(f"scen_{s}", lang) for s in scen}
     plans = res["result"]["plans"]
@@ -341,5 +341,5 @@ def _scenarios(res: dict, lang: str, budget: float) -> None:
                 st.markdown(f"- {plan_name(k, lang)}: " + " → ".join(option_name(x, lang, False) for x in p["sequence"])
                             + f" · {money_range(p['profit_total_range'], lang)} · {p['water_total']:,.0f} {t('pl_m3_ha', lang)}"
                             + f" · {p['health']:.0f}/10")
-    with st.expander("⚠️ " + t("limits", lang)):
+    with st.expander("" + t("limits", lang)):
         st.markdown(t("pl_limits_text", lang))
