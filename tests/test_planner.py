@@ -354,3 +354,20 @@ def test_melon_is_excluded_from_the_planner_but_kept_in_the_table():
     assert "excluded" in TABLE.loc["melon", "planner_note"]
     ctx = make_context(PLANNER["points"]["Fergana_field1"]["baseline"], 20000)
     assert all("melon" not in o.crops for o in ctx.options)
+
+
+@pytest.mark.parametrize("point,budget", [("Karshi_field1", 8000), ("Fergana_field1", 12000), ("Nukus_field1", 6000)])
+def test_low_risk_plan_is_feasible_and_has_minimal_risk(point, budget):
+    import numpy as np
+    from dalashift.planner import enumerate_sequences, evaluate, low_risk_plan, option_risk
+    metrics = PLANNER["points"][point]["baseline"]
+    ctx = make_context(metrics, budget)
+    plan = low_risk_plan(ctx)
+    assert plan is not None and plan["feasible"]
+    assert check_plan(plan["sequence"], metrics, budget, CFG["max_fresh_market_years"], {}) == []
+    cands = [i for i, o in enumerate(ctx.options) if o.fits and o.water <= budget]
+    seq = enumerate_sequences(cands)
+    ev = evaluate(seq, ctx)
+    risk = np.array([option_risk(o) for o in ctx.options])[seq].mean(1)
+    plan_risk = np.mean([option_risk(ctx.options[ctx.index[k]]) for k in plan["sequence"]])
+    assert plan_risk == pytest.approx(risk[ev["feasible"]].min())

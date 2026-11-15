@@ -321,6 +321,31 @@ def optimize(ctx: Context) -> dict:
     return out
 
 
+RISK_SCORE = {"low": 0, "medium": 1, "high": 2}
+
+
+def option_risk(o: Option) -> float:
+    """Yearly climate-risk points of one option: heat risk at flowering (0/1/2) + 1 if frost or
+    winterkill hits more than 10 % of years. Same definition as dalashift.baseline.risk_level."""
+    return RISK_SCORE[o.heat_risk] + (1 if max(o.p_frost, o.p_winterkill) > 0.1 else 0)
+
+
+def low_risk_plan(ctx: Context) -> dict | None:
+    """'Low risk' plan: among ALL feasible 5-year sequences, the lowest mean climate risk;
+    ties broken by the highest discounted profit."""
+    cands = [i for i, o in enumerate(ctx.options) if o.fits and o.water <= ctx.budget + 1e-6]
+    if not cands:
+        return None
+    seq = enumerate_sequences(cands)
+    ev = evaluate(seq, ctx)
+    feas = np.flatnonzero(ev["feasible"])
+    if len(feas) == 0:
+        return None
+    risk = np.array([option_risk(o) for o in ctx.options])[seq].mean(1)
+    i = feas[np.lexsort((-ev["npv"][feas], risk[feas]))[0]]
+    return _plan_dict(i, seq, ev, ctx, "low_risk")
+
+
 def least_harmful(ctx: Context) -> dict:
     """No plan meets every hard rule. Search ALL sequences of climate-fit options (even ones over
     the water budget) and return the one that breaks the fewest hard rules, then needs the least
@@ -427,6 +452,10 @@ def plan_farm(point: dict, budget: float, discount_rate: float, max_fresh_years:
                         "check_number": o.revenue - o.cost > cfg["money"]["margin_check_usd_ha"]}
                        for o in base_ctx.options]}
     plans = res["result"]["plans"]
+    if res["result"]["status"] == "ok":
+        lr = low_risk_plan(base_ctx)
+        if lr:
+            plans["low_risk"] = lr
     res["why_not"] = ({k: why_not(p, base_ctx, k) for k, p in plans.items()}
                       if res["result"]["status"] == "ok" else {})
 

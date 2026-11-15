@@ -15,7 +15,7 @@ from .planner import CONFIG, load_planner_config, plan_farm
 
 # validated categorical slots 1-3 (blue, orange, aqua); comparison plan in neutral gray
 PLAN_COLORS = {"profit": "#2a78d6", "balanced": "#eb6834", "water": "#1baf7a", "repeat_best": "#c3c2b7",
-               "least_harm": "#898781"}
+               "least_harm": "#898781", "low_risk": "#4f7cac"}
 PLAN_KEYS = ["profit", "balanced", "water"]
 RISK_ICON = {"low": "", "medium": "", "high": ""}
 INK, INK2, MUTED, GRID, AXIS = "#0b0b0b", "#52514e", "#898781", "#e1e0d9", "#c3c2b7"

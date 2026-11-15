@@ -25,7 +25,7 @@ from .hls import farmer_line as hls_line, summary as hls_summary
 FARMER_DISTRICTS = ["Karshi", "Fergana", "Urgench", "Nukus", "Gulistan"]
 # water a farmer can pick without knowing m3 (net irrigation water per ha per year; HYPOTHETICAL levels)
 WATER_LEVELS = {"little": 6000, "normal": 8000, "plenty": 12000}
-PLANS = ["profit", "balanced", "water"]
+PLANS = ["profit", "balanced", "water", "low_risk"]
 MUST_YEARS = 2          # "must grow cotton / wheat" = at least 2 of 5 years
 
 GREEN, BG, INK, MUTED, LINE = "#1f5f3f", "#faf9f6", "#1d2521", "#6b716d", "#e4e1d8"
@@ -138,6 +138,7 @@ FT = {
     "plan_profit": {"uz": "Daromad", "en": "Income"},
     "plan_balanced": {"uz": "Muvozanat", "en": "Balanced"},
     "plan_water": {"uz": "Suv tejash", "en": "Save water"},
+    "plan_low_risk": {"uz": "Kam xavf", "en": "Low risk"},
     "year": {"uz": "{y}-yil", "en": "Year {y}"},
     "income": {"uz": "Daromad, gektariga yiliga", "en": "Income per hectare per year"},
     "conservative": {"uz": "taxminan, ehtiyotkor hisob", "en": "approx., conservative estimate"},
@@ -192,6 +193,8 @@ WHY = {
     "wheat": {"uz": "Kuzgi bugʻdoy qishda oʻsadi va kam suv ichadi.", "en": "Winter wheat grows over winter and needs little water."},
     "no_cotton": {"uz": "Paxta bu yerda gektariga taxminan {n} ming m³ suv talab qiladi — bu sizdagidan koʻp, shuning uchun u rejada yoʻq.",
                   "en": "Cotton needs about {n} thousand m³ of water per hectare here, more than you have, so it is not in the plan."},
+    "low_risk": {"uz": "Bu reja iqlim xavfi eng past boʻlgan ekinlarni tanlaydi: gullash paytida jazirama kam, sovuq xavfi past.",
+                 "en": "This plan picks the crops with the lowest climate risk: fewer very hot days at flowering and little frost risk."},
     "vs": {"uz": "Odatiy almashlab ekishingizga nisbatan daromad {i}, suv {w}.",
            "en": "Compared with your usual rotation, income is {i} and water use is {w}."},
     "more": {"uz": "{p} koʻproq", "en": "{p} higher"},
@@ -374,6 +377,8 @@ def _why(plan: dict, cmp: dict, point: dict, budget: float, lang: str) -> str:
     elif "winter_wheat" in crops:
         parts.append(wt("wheat", lang))
     seq = plan["sequence"]
+    if plan.get("kind") == "low_risk":
+        parts.insert(0, wt("low_risk", lang))
     if all(a != b for a, b in zip(seq, seq[1:])):
         parts.append(wt("rotate", lang))
     share = max(y["water"] for y in plan["years"]) / budget

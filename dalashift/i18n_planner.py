@@ -23,6 +23,7 @@ PLANNER_T = {
                    "uz": "{k} ta ekin variantidan {n:,} ta besh yillik ketma-ketlik tekshirildi; **{f:,}** tasi barcha qoidalar va suv byudjetiga mos."},
     "pl_plan_profit": {"en": "Most profit", "uz": "Eng daromadli"},
     "pl_plan_balanced": {"en": "Balanced", "uz": "Muvozanatli"},
+    "pl_plan_low_risk": {"en": "Low risk", "uz": "Kam xavf"},
     "pl_plan_water": {"en": "Least water", "uz": "Eng kam suv"},
     "pl_plan_repeat": {"en": "Repeat {crop} every year", "uz": "Har yili {crop}"},
     "pl_year": {"en": "Year {y}", "uz": "{y}-yil"},

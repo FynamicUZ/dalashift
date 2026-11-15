@@ -33,7 +33,7 @@ BUDGETS = list(range(4000, 16001, 500))   # water slider: every 500 m3/ha (Kam/O
 WEB = ROOT / "web"
 UI_KEYS = ["step1", "eyebrow1", "eyebrow2", "plan_h", "since", "hot", "rain", "budget", "mm", "k_tonnes", "q_water",
            "w_little", "w_normal", "w_plenty", "q_must", "must_help", "q_goal", "plan_profit", "plan_balanced",
-           "plan_water", "income", "conservative", "vs_usual", "c_income", "c_water", "c_risk", "why",
+           "plan_water", "plan_low_risk", "income", "conservative", "vs_usual", "c_income", "c_water", "c_risk", "why",
            "disclaimer", "mln", "smap"]
 
 
