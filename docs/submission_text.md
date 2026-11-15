@@ -3,7 +3,7 @@
 Team **KarPS**: Ahmedov Zuhriddin · Alisherov Azimbek · Shermaxmatov Ozodbek · Botirxonov Faxriyor · Boyqulov Afzalbek
 Challenge: **Field Shift: Adapting Farms with NASA Data** · Local event: Karshi, Uzbekistan
 
-Links: App **https://dalashift.netlify.app** · Deck **https://dalashift.netlify.app/deck/** · Code **https://github.com/FynamicUZ/dalashift**
+Links: Telegram bot **https://t.me/dalashiftbot** · App **https://dalashift.netlify.app** · Deck **https://dalashift.netlify.app/deck/** · Code **https://github.com/FynamicUZ/dalashift**
 
 ---
 

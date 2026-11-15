@@ -20,7 +20,7 @@ def at():
 def test_farmer_view_is_default_uzbek_and_in_soum(at):
     text = " ".join(m.value for m in at.tabs[0].markdown)     # farmer tab only
     assert "Dalangiz qayerda?" in text and "mln soʻm" in text
-    for jargon in ("ET0", "GDD", "NDVI", "USD", "m³/ha"):
+    for jargon in ("ET0", "GDD", "NDVI", "USD"):
         assert jargon not in text, jargon
 
 
@@ -51,7 +51,7 @@ def test_must_cotton_without_enough_water_explains_in_one_line():
     a.toggle(key="f_must").set_value(True).run()            # Qarshi, 8,000: cotton needs ~13,000
     assert not a.exception
     msg = " ".join(e.value for e in a.tabs[0].error)
-    assert "13 ming tonna" in msg and "8 ming tonna" in msg
+    assert "13 ming m³" in msg and "8 ming m³" in msg
 
 
 def test_no_emoji_in_any_ui_text():

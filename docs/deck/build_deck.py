@@ -186,8 +186,12 @@ SLIDES = f"""
   <div class="road">
     <div class="rs fragment fade-up"><b>Uzcosmos</b><span>and national farm data</span></div>
     <div class="rs fragment fade-up"><b>Soil &amp; salinity</b><span>per field: SMAP, ECOSTRESS, HLS</span></div>
-    <div class="rs fragment fade-up"><b>Telegram bot</b><span>in Uzbek</span></div>
+    <div class="rs fragment fade-up"><b>Telegram bot</b><span>in Uzbek: @dalashiftbot (prototype)</span></div>
     <div class="rs fragment fade-up"><b>More crops</b><span>melon varieties, real costs</span></div>
+  </div>
+  <div class="qrs">
+    <figure><img src="img/qr_site.png" alt="QR: dalashift.netlify.app"><figcaption>dalashift.netlify.app</figcaption></figure>
+    <figure><img src="img/qr_bot.png" alt="QR: t.me/dalashiftbot"><figcaption>Telegram: @dalashiftbot</figcaption></figure>
   </div>
   <p class="team"><b>KarPS</b> · {TEAM}</p>
   <p class="sub">{tests_txt}up to {n_seq:,} five-year plans checked per farm · Repo <b>github.com/FynamicUZ/dalashift</b> · App <b>dalashift.netlify.app</b></p>
@@ -271,6 +275,10 @@ CSS = """
 .rs { background: #fff; border: 1px solid var(--line); border-top: 6px solid var(--green); border-radius: 14px; padding: 22px; text-align: left; }
 .rs b { display: block; font-size: .78em; } .rs span { font-size: .52em; color: var(--muted); }
 .team { font-size: .55em; }
+.qrs { display: flex; justify-content: center; gap: 70px; margin: 0 0 10px; }
+.qrs figure { margin: 0; } .reveal .qrs img { width: 170px; height: 170px; margin: 0; background: #fff; padding: 8px; border: 1px solid var(--line); border-radius: 12px; }
+.qrs figcaption { font-size: .45em; color: var(--muted); margin-top: 4px; }
+.road { margin: 18px 0 !important; }
 .reveal img.corner { position: absolute; top: -10px; left: 0; width: 64px; height: 64px; margin: 0; }
 .reveal .hero h1 img.logo { height: 1.4em; width: auto; margin: 0; display: block; }
 """

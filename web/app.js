@@ -41,8 +41,8 @@
     green: { uz: 'Eng yashil oy: {m}', en: 'Greenest month: {m}' },
     plan_h: { uz: 'Keyingi besh yil uchun reja', en: 'Plan for the next five years' },
     water: { uz: 'Suvingiz', en: 'Your water' },
-    water_tip: { uz: 'Dalangizga bir yilda keladigan sugʻorish suvi, gektariga (1 m³ = 1 tonna). Kam / Oʻrtacha / Koʻp = 6 / 8 / 12 ming tonna.', en: 'Irrigation water your field gets in a year, per hectare (1 m³ = 1 tonne). Little / Medium / Plenty = 6 / 8 / 12 thousand tonnes.' },
-    k_t: { uz: 'ming tonna', en: 'thousand t' },
+    water_tip: { uz: 'Dalangizga bir yilda keladigan sugʻorish suvi, gektariga. Kam / Oʻrtacha / Koʻp = 6 000 / 8 000 / 12 000 m³/ga.', en: 'Irrigation water your field gets in a year, per hectare. Little / Medium / Plenty = 6,000 / 8,000 / 12,000 m³/ha.' },
+    k_t: { uz: 'm³/ga', en: 'm³/ha' },
     must: { uz: 'Paxta/bugʻdoy majburiy', en: 'Cotton/wheat required' },
     must_tip: { uz: 'Davlat buyurtmasi boʻlsa yoqing: rejada 5 yildan kamida 2 yil paxta va 2 yil bugʻdoy boʻladi.', en: 'Switch on if you have a state order: at least 2 years of cotton and 2 of wheat in 5.' },
     goal: { uz: 'Maqsad', en: 'Goal' },
@@ -176,7 +176,7 @@
       "<div class='ctl'><div class='lbl'>" + icon('drop', C.muted, 14) + ' ' + f('water') + ' ' + tip(f('water_tip')) + "</div>" +
       seg('lvl', Object.keys(D.water_levels), lv, function (k) { return t('w_' + k); }) +
       "<div class='slider'><input type='range' id='budget' min='" + D.budgets[0] + "' max='" + D.budgets[D.budgets.length - 1] + "' step='500' value='" + S.budget + "'>" +
-      "<span class='bval'>" + fmt(S.budget / 1000) + ' ' + f('k_t') + '</span></div></div>' +
+      "<span class='bval'>" + thousands(S.budget) + ' ' + f('k_t') + '</span></div></div>' +
       "<div class='ctl'><div class='lbl'>" + f('goal') + '</div>' + (sc.status === 'ok' ? seg('plan', D.plans, S.plan, function (k) { return t('plan_' + k); }) : '') +
       "<label class='switch'><input type='checkbox' id='must'" + (S.must ? ' checked' : '') + "><span class='knob'></span><span>" + f('must') + '</span> ' + tip(f('must_tip')) + '</label></div>' +
       '</div>';
@@ -355,7 +355,7 @@
     document.getElementById('expert').hidden = S.tab !== 'expert';
     if (S.tab === 'farmer') { renderFarmer(); } else { renderExpert(); }
     document.getElementById('foot').innerHTML = esc(D.credits[S.lang]) + ' · Team KarPS · NASA Space Apps 2026' +
-      (D.telegram ? " · <a href='" + esc(D.telegram) + "'>Telegram bot</a>" : '');
+      " · <a href='https://t.me/dalashiftbot' rel='noopener'>Telegram: @dalashiftbot</a>";
     save();
   }
   function planChanged() { render(); if (S.tab === 'farmer') { startCalc(); } }
@@ -376,7 +376,7 @@
   });
   document.addEventListener('input', function (e) {
     if (e.target.id === 'budget') {   // live label while dragging; plan recomputed on release
-      var v = document.querySelector('.bval'); if (v) { v.textContent = fmt(e.target.value / 1000) + ' ' + f('k_t'); }
+      var v = document.querySelector('.bval'); if (v) { v.textContent = thousands(+e.target.value) + ' ' + f('k_t'); }
     }
   });
   document.addEventListener('change', function (e) {
