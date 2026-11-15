@@ -6,6 +6,7 @@ kept in memory only, never printed and never written to disk):
     python scripts/appeears_request.py            # submit, then wait and download
     python scripts/appeears_request.py --no-wait  # only submit
     python scripts/appeears_request.py --netrc    # use your own _netrc entry instead of typing
+    python scripts/appeears_request.py --netrc --resume   # no new requests: download finished ones, wait for the rest
 
 What it does
   1. logs in to the AppEEARS API (https://appeears.earthdatacloud.nasa.gov/api/) -> temporary token
@@ -116,13 +117,20 @@ def main() -> None:
     ap.add_argument("--no-wait", action="store_true")
     ap.add_argument("--every", type=int, default=600, help="seconds between status checks")
     ap.add_argument("--netrc", action="store_true", help="use your _netrc entry for urs.earthdata.nasa.gov")
+    ap.add_argument("--resume", action="store_true",
+                    help="do NOT submit anything: download the finished *_fast requests and wait for the rest")
     args = ap.parse_args()
     token = login(args.netrc)
     h = {"Authorization": f"Bearer {token}"}
     try:
-        print("Submitting 3 small requests ...")
-        ids = submit(h)
-        delete_old(h)
+        if args.resume:
+            tasks = requests.get(f"{API}/task", headers=h, timeout=60).json()
+            ids = {t["task_name"]: t["task_id"] for t in tasks if t.get("task_name") in REQUESTS}
+            print("Found:", ", ".join(f"{t['task_name']} ({t['status']})" for t in tasks if t.get("task_name") in REQUESTS) or "nothing")
+        else:
+            print("Submitting 3 small requests ...")
+            ids = submit(h)
+            delete_old(h)
         if args.no_wait or not ids:
             return
         left = dict(ids)
